@@ -19,7 +19,7 @@
     ],
     "require": {
         "php": "^8.5.0",
-        "cline/webhook": "^1.1.1",
+        "cline/webhook": "^2.0",
         "illuminate/bus": "^10.0 || ^11.0 || ^12.0 || ^13.0",
         "illuminate/http": "^10.0 || ^11.0 || ^12.0 || ^13.0",
         "illuminate/support": "^10.0 || ^11.0 || ^12.0 || ^13.0",
@@ -29,7 +29,7 @@
         "symfony/intl": "^7.4.6"
     },
     "require-dev": {
-        "cline/coding-standard": "^1.7.0",
+        "cline/coding-standard": "^2.0",
         "orchestra/testbench": "^10.9",
         "symfony/var-dumper": "^7.4.6"
     },
