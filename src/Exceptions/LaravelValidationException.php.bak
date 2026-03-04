@@ -1,0 +1,57 @@
+<?php declare(strict_types=1);
+
+/**
+ * Copyright (C) Brian Faust
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Cline\Forrst\Exceptions;
+
+use Cline\Forrst\Enums\ErrorCode;
+use Illuminate\Validation\ValidationException;
+
+/**
+ * Exception adapter that converts Laravel ValidationException to Forrst RPC error format.
+ *
+ * Transforms Laravel's validation errors into Forrst compliant error responses with
+ * SCHEMA_VALIDATION_FAILED error code. Each validation error is mapped to a separate
+ * error detail with JSON Pointer source references, enabling precise client-side
+ * error handling and field-level error display.
+ *
+ * @author Brian Faust <brian@cline.sh>
+ * @see https://docs.cline.sh/forrst/errors
+ */
+final class LaravelValidationException extends UnprocessableEntityException
+{
+    /**
+     * Creates a Forrst exception from Laravel validation errors.
+     *
+     * Converts each validation error into a Forrst error detail with HTTP 422 status,
+     * JSON Pointer to the failing parameter, and the validation message.
+     *
+     * @param  ValidationException $exception Laravel validation exception containing error
+     *                                        bag with field-level validation failures
+     * @return self                a new instance with SCHEMA_VALIDATION_FAILED code and
+     *                             normalized error details for each validation failure
+     */
+    public static function fromException(ValidationException $exception): self
+    {
+        $normalized = [];
+
+        // @phpstan-ignore-next-line foreach.nonIterable
+        foreach ($exception->errors() as $attribute => $errors) {
+            foreach ($errors as $error) {
+                $normalized[] = [
+                    'status' => '422',
+                    'source' => ['pointer' => '/params/'.$attribute],
+                    'title' => 'Invalid params',
+                    'detail' => $error,
+                ];
+            }
+        }
+
+        return self::new(ErrorCode::SchemaValidationFailed, 'Validation error', details: $normalized);
+    }
+}

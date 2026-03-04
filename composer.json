@@ -1,0 +1,71 @@
+{
+    "name": "cline/forrst",
+    "description": "Forrst protocol implementation for PHP - internal microservice RPC with per-function versioning and rich query capabilities",
+    "license": "MIT",
+    "keywords": [
+        "php",
+        "forrst",
+        "rpc",
+        "microservices",
+        "api",
+        "laravel",
+        "internal-api"
+    ],
+    "authors": [
+        {
+            "name": "Brian Faust",
+            "email": "brian@cline.sh"
+        }
+    ],
+    "require": {
+        "php": "^8.5.0",
+        "cline/webhook": "^1.1.1",
+        "illuminate/bus": "^10.0 || ^11.0 || ^12.0 || ^13.0",
+        "illuminate/http": "^10.0 || ^11.0 || ^12.0 || ^13.0",
+        "illuminate/support": "^10.0 || ^11.0 || ^12.0 || ^13.0",
+        "illuminate/validation": "^10.0 || ^11.0 || ^12.0 || ^13.0",
+        "saloonphp/saloon": "^3.15.0",
+        "spatie/laravel-data": "^4.20.0",
+        "symfony/intl": "^7.4.6"
+    },
+    "require-dev": {
+        "cline/coding-standard": "^1.7.0",
+        "orchestra/testbench": "^10.9",
+        "symfony/var-dumper": "^7.4.6"
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "Cline\\Forrst\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "ergebnis/composer-normalize": true,
+            "pestphp/pest-plugin": true
+        }
+    },
+    "scripts": {
+        "lint": "vendor/bin/ecs check --fix",
+        "refactor": "rector",
+        "test": [
+            "@test:lint",
+            "@test:type-coverage",
+            "@test:unit",
+            "@test:types",
+            "@test:refactor"
+        ],
+        "test:lint": "vendor/bin/ecs check",
+        "test:refactor": "rector --dry-run",
+        "test:type-coverage": "pest --parallel --min=70 --type-coverage",
+        "test:types": "phpstan",
+        "test:unit": "pest --parallel --min=70 --coverage"
+    }
+}

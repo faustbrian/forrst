@@ -1,0 +1,11 @@
+{
+    "code": "UNAVAILABLE",
+    "message": "Service unavailable",
+    "details": [
+        {
+            "status": "503",
+            "title": "Service Unavailable",
+            "detail": "Database maintenance in progress"
+        }
+    ]
+}

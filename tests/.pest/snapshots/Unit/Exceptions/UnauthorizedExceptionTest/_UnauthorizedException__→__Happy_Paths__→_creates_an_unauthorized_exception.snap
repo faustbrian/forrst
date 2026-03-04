@@ -1,0 +1,11 @@
+{
+    "code": "UNAUTHORIZED",
+    "message": "Unauthorized",
+    "details": [
+        {
+            "status": "401",
+            "title": "Unauthorized",
+            "detail": "You are not authorized to perform this action."
+        }
+    ]
+}

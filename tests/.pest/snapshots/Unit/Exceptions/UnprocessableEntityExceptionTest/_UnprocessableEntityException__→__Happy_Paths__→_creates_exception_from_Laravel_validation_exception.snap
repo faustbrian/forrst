@@ -1,0 +1,22 @@
+{
+    "code": "SCHEMA_VALIDATION_FAILED",
+    "message": "Validation error",
+    "details": [
+        {
+            "status": "422",
+            "source": {
+                "pointer": "\/params\/email"
+            },
+            "title": "Invalid params",
+            "detail": "The email field must be a valid email address."
+        },
+        {
+            "status": "422",
+            "source": {
+                "pointer": "\/params\/age"
+            },
+            "title": "Invalid params",
+            "detail": "The age field must be an integer."
+        }
+    ]
+}

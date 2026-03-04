@@ -1,0 +1,54 @@
+<?php declare(strict_types=1);
+
+/**
+ * Copyright (C) Brian Faust
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Cline\Forrst\Exceptions;
+
+use Cline\Forrst\Enums\ErrorCode;
+
+use function sprintf;
+
+/**
+ * Exception thrown when JSON Schema validation rules are unsupported or invalid.
+ *
+ * Represents Forrst error code INTERNAL_ERROR for server-side schema configuration
+ * issues. This exception indicates an unsupported validation rule was referenced,
+ * typically during schema compilation or validation setup rather than actual
+ * request validation.
+ *
+ * @author Brian Faust <brian@cline.sh>
+ * @see https://docs.cline.sh/forrst/errors
+ */
+final class JsonSchemaException extends AbstractRequestException
+{
+    /**
+     * Creates a JSON Schema exception for an unsupported validation rule.
+     *
+     * Generates a Forrst compliant error response indicating server-side schema
+     * misconfiguration. Uses HTTP 418 status to distinguish from client validation
+     * failures.
+     *
+     * @param  string $rule Name of the unsupported JSON Schema validation rule. Occurs when
+     *                      custom or extension rules are used without proper configuration,
+     *                      or when referencing deprecated schema features.
+     * @return self   a new instance with INTERNAL_ERROR code, HTTP 418 status, JSON
+     *                Pointer to root (/), and detailed message identifying the rule
+     */
+    public static function invalidRule(string $rule): self
+    {
+        // @phpstan-ignore-next-line argument.type
+        return self::new(ErrorCode::InternalError, 'Internal error', details: [
+            [
+                'status' => '418',
+                'source' => ['pointer' => '/'],
+                'title' => 'Invalid JSON Schema',
+                'detail' => sprintf("The '%s' rule is not supported.", $rule),
+            ],
+        ]);
+    }
+}

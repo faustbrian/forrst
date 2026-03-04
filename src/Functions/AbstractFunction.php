@@ -1,0 +1,493 @@
+<?php declare(strict_types=1);
+
+/**
+ * Copyright (C) Brian Faust
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Cline\Forrst\Functions;
+
+use Cline\Forrst\Attributes\Descriptor;
+use Cline\Forrst\Contracts\DescriptorInterface;
+use Cline\Forrst\Contracts\FunctionInterface;
+use Cline\Forrst\Data\RequestObjectData;
+use Cline\Forrst\Discovery\ArgumentData;
+use Cline\Forrst\Discovery\DeprecatedData;
+use Cline\Forrst\Discovery\ErrorDefinitionData;
+use Cline\Forrst\Discovery\ExampleData;
+use Cline\Forrst\Discovery\ExternalDocsData;
+use Cline\Forrst\Discovery\FunctionDescriptor;
+use Cline\Forrst\Discovery\FunctionExtensionsData;
+use Cline\Forrst\Discovery\LinkData;
+use Cline\Forrst\Discovery\Query\QueryCapabilitiesData;
+use Cline\Forrst\Discovery\ResultDescriptorData;
+use Cline\Forrst\Discovery\SimulationScenarioData;
+use Cline\Forrst\Discovery\TagData;
+use Cline\Forrst\Exceptions\DataTransformationException;
+use Cline\Forrst\Exceptions\InvalidFieldTypeException;
+use Cline\Forrst\Exceptions\InvalidFieldValueException;
+use Cline\Forrst\Exceptions\InvalidMethodCallException;
+use Cline\Forrst\Exceptions\MissingMethodImplementationException;
+use Cline\Forrst\Functions\Concerns\InteractsWithAuthentication;
+use Cline\Forrst\Functions\Concerns\InteractsWithCancellation;
+use Cline\Forrst\Functions\Concerns\InteractsWithQueryBuilder;
+use Cline\Forrst\Functions\Concerns\InteractsWithTransformer;
+use Illuminate\Support\Str;
+use Override;
+use ReflectionClass;
+
+use function class_basename;
+use function config;
+use function gettype;
+use function is_callable;
+use function is_string;
+use function is_subclass_of;
+use function method_exists;
+use function preg_replace;
+use function sprintf;
+
+/**
+ * Base class for all Forrst function implementations.
+ *
+ * Provides comprehensive foundation for building Forrst functions with authentication
+ * helpers, query building, data transformation, cancellation checking, and Forrst
+ * Discovery metadata generation. Implements FunctionInterface with sensible defaults
+ * that streamline function development while allowing full customization.
+ *
+ * Functions extend this class and implement a handle() or __invoke() method to define
+ * their business logic. Discovery metadata can be provided via the #[Descriptor] attribute
+ * pointing to a dedicated descriptor class, or by overriding the getter methods directly.
+ *
+ * @author Brian Faust <brian@cline.sh>
+ *
+ * @see https://docs.cline.sh/forrst/system-functions
+ * @see https://docs.cline.sh/forrst/protocol
+ */
+abstract class AbstractFunction implements FunctionInterface
+{
+    use InteractsWithAuthentication;
+    use InteractsWithCancellation;
+    use InteractsWithQueryBuilder;
+    use InteractsWithTransformer;
+
+    /**
+     * The current Forrst request object containing arguments and metadata.
+     *
+     * Set by the framework before function execution via setRequest(). Access
+     * this property to retrieve request arguments, extension options, and other
+     * request metadata within your function's handle() method.
+     */
+    protected ?RequestObjectData $requestObject = null;
+
+    /**
+     * Cached function descriptor resolved from #[Descriptor] attribute.
+     */
+    private ?FunctionDescriptor $descriptor = null;
+
+    /**
+     * Whether we've attempted to resolve the descriptor.
+     */
+    private bool $descriptorResolved = false;
+
+    /**
+     * Get the URN (Uniform Resource Name) for this function.
+     *
+     * Reads from the #[Descriptor] attribute if present, otherwise generates
+     * the URN using the configured vendor and class name in kebab-case.
+     *
+     * @return string The Forrst function URN (e.g., 'urn:acme:forrst:fn:users:list')
+     */
+    #[Override()]
+    public function getUrn(): string
+    {
+        return $this->fromDescriptorOr(
+            fn (FunctionDescriptor $d): string => $d->getUrn(),
+            function (): string {
+                $vendor = config('rpc.vendor', 'app');
+
+                if (!is_string($vendor)) {
+                    throw InvalidFieldValueException::forField(
+                        'rpc.vendor',
+                        'Configuration key "rpc.vendor" must be a string, '.gettype($vendor).' provided',
+                    );
+                }
+
+                $name = Str::kebab(class_basename(static::class));
+                $name = preg_replace('/-function$/', '', $name);
+
+                if ($name === null) {
+                    throw DataTransformationException::cannotTransform(
+                        'class name',
+                        'URN component',
+                        'Failed to process function name via regex for class '.static::class,
+                    );
+                }
+
+                return sprintf('urn:%s:forrst:fn:%s', $vendor, $name);
+            },
+        );
+    }
+
+    /**
+     * Get the function version.
+     *
+     * Reads from the #[Descriptor] attribute if present, otherwise returns "1.0.0".
+     *
+     * @return string The function version (e.g., "1.0.0", "2.0.0-beta.1")
+     */
+    #[Override()]
+    public function getVersion(): string
+    {
+        return $this->fromDescriptorOr(
+            fn (FunctionDescriptor $d): string => $d->getVersion(),
+            '1.0.0',
+        );
+    }
+
+    /**
+     * Get the function summary for discovery documentation.
+     *
+     * Reads from the #[Descriptor] attribute if present, otherwise returns the function URN.
+     *
+     * @return string A brief summary of the function's purpose
+     */
+    #[Override()]
+    public function getSummary(): string
+    {
+        return $this->fromDescriptorOr(
+            fn (FunctionDescriptor $d): string => $d->getSummary(),
+            fn (): string => $this->getUrn(),
+        );
+    }
+
+    /**
+     * Get the argument descriptors for the function.
+     *
+     * Reads from the #[Descriptor] attribute if present, otherwise returns an empty array.
+     *
+     * @return list<ArgumentData> Array of argument descriptors
+     */
+    #[Override()]
+    public function getArguments(): array
+    {
+        return $this->fromDescriptorOr(
+            fn (FunctionDescriptor $d): array => $d->getArguments(),
+            [],
+        );
+    }
+
+    /**
+     * Get the result descriptor for the function.
+     *
+     * Reads from the #[Descriptor] attribute if present, otherwise returns null.
+     *
+     * @return null|ResultDescriptorData The result descriptor, or null if none specified
+     */
+    #[Override()]
+    public function getResult(): ?ResultDescriptorData
+    {
+        return $this->fromDescriptorOr(
+            fn (FunctionDescriptor $d): ?ResultDescriptorData => $d->getResult(),
+            null,
+        );
+    }
+
+    /**
+     * Get the error definitions for the function.
+     *
+     * Reads from the #[Descriptor] attribute if present, otherwise returns an empty array.
+     *
+     * @return list<ErrorDefinitionData> Array of error definitions
+     */
+    #[Override()]
+    public function getErrors(): array
+    {
+        return $this->fromDescriptorOr(
+            fn (FunctionDescriptor $d): array => $d->getErrors(),
+            [],
+        );
+    }
+
+    /**
+     * Get a detailed description of the function.
+     *
+     * Reads from the #[Descriptor] attribute if present, otherwise returns null.
+     *
+     * @return null|string Detailed description or null
+     */
+    #[Override()]
+    public function getDescription(): ?string
+    {
+        return $this->fromDescriptorOr(
+            fn (FunctionDescriptor $d): ?string => $d->getDescription(),
+            null,
+        );
+    }
+
+    /**
+     * Get tags for logical grouping of functions.
+     *
+     * Reads from the #[Descriptor] attribute if present, otherwise returns null.
+     *
+     * @return null|list<TagData> Array of tags or null
+     */
+    #[Override()]
+    public function getTags(): ?array
+    {
+        return $this->fromDescriptorOr(
+            fn (FunctionDescriptor $d): ?array => $d->getTags(),
+            null,
+        );
+    }
+
+    /**
+     * Get query capabilities for list functions.
+     *
+     * Reads from the #[Descriptor] attribute if present, otherwise returns null.
+     *
+     * @return null|QueryCapabilitiesData Query capabilities or null
+     */
+    #[Override()]
+    public function getQuery(): ?QueryCapabilitiesData
+    {
+        return $this->fromDescriptorOr(
+            fn (FunctionDescriptor $d): ?QueryCapabilitiesData => $d->getQuery(),
+            null,
+        );
+    }
+
+    /**
+     * Get deprecation information if the function is deprecated.
+     *
+     * Reads from the #[Descriptor] attribute if present, otherwise returns null.
+     *
+     * @return null|DeprecatedData Deprecation info or null
+     */
+    #[Override()]
+    public function getDeprecated(): ?DeprecatedData
+    {
+        return $this->fromDescriptorOr(
+            fn (FunctionDescriptor $d): ?DeprecatedData => $d->getDeprecated(),
+            null,
+        );
+    }
+
+    /**
+     * Get side effects this function may cause.
+     *
+     * Reads from the #[Descriptor] attribute if present, otherwise returns null (read-only).
+     *
+     * @return null|list<string> Side effects or null
+     */
+    #[Override()]
+    public function getSideEffects(): ?array
+    {
+        return $this->fromDescriptorOr(
+            fn (FunctionDescriptor $d): ?array => $d->getSideEffects(),
+            null,
+        );
+    }
+
+    /**
+     * Check if the function should appear in discovery responses.
+     *
+     * Reads from the #[Descriptor] attribute if present, otherwise returns true.
+     *
+     * @return bool True if discoverable
+     */
+    #[Override()]
+    public function isDiscoverable(): bool
+    {
+        return $this->fromDescriptorOr(
+            fn (FunctionDescriptor $d): bool => $d->isDiscoverable(),
+            true,
+        );
+    }
+
+    /**
+     * Get usage examples for the function.
+     *
+     * Reads from the #[Descriptor] attribute if present, otherwise returns null.
+     *
+     * @return null|list<ExampleData> Examples or null
+     */
+    #[Override()]
+    public function getExamples(): ?array
+    {
+        return $this->fromDescriptorOr(
+            fn (FunctionDescriptor $d): ?array => $d->getExamples(),
+            null,
+        );
+    }
+
+    /**
+     * Get related function links for navigation.
+     *
+     * Reads from the #[Descriptor] attribute if present, otherwise returns null.
+     *
+     * @return null|list<LinkData> Links or null
+     */
+    #[Override()]
+    public function getLinks(): ?array
+    {
+        return $this->fromDescriptorOr(
+            fn (FunctionDescriptor $d): ?array => $d->getLinks(),
+            null,
+        );
+    }
+
+    /**
+     * Get external documentation reference.
+     *
+     * Reads from the #[Descriptor] attribute if present, otherwise returns null.
+     *
+     * @return null|ExternalDocsData External docs or null
+     */
+    #[Override()]
+    public function getExternalDocs(): ?ExternalDocsData
+    {
+        return $this->fromDescriptorOr(
+            fn (FunctionDescriptor $d): ?ExternalDocsData => $d->getExternalDocs(),
+            null,
+        );
+    }
+
+    /**
+     * Get simulation scenarios for sandbox/demo mode.
+     *
+     * Reads from the #[Descriptor] attribute if present, otherwise returns null.
+     *
+     * @return null|list<SimulationScenarioData> Scenarios or null
+     */
+    #[Override()]
+    public function getSimulations(): ?array
+    {
+        return $this->fromDescriptorOr(
+            fn (FunctionDescriptor $d): ?array => $d->getSimulations(),
+            null,
+        );
+    }
+
+    /**
+     * Get per-function extension support configuration.
+     *
+     * Reads from the #[Descriptor] attribute if present, otherwise returns null.
+     *
+     * @return null|FunctionExtensionsData Extension support config or null
+     */
+    #[Override()]
+    public function getExtensions(): ?FunctionExtensionsData
+    {
+        return $this->fromDescriptorOr(
+            fn (FunctionDescriptor $d): ?FunctionExtensionsData => $d->getExtensions(),
+            null,
+        );
+    }
+
+    /**
+     * Set the current request object for the function.
+     *
+     * Called before function execution to provide access to request arguments
+     * and metadata throughout the function's lifecycle.
+     *
+     * @param RequestObjectData $requestObject The Forrst request data
+     */
+    #[Override()]
+    public function setRequest(RequestObjectData $requestObject): void
+    {
+        $this->requestObject = $requestObject;
+    }
+
+    /**
+     * Get the current request object.
+     *
+     * @throws InvalidMethodCallException When accessed before setRequest() is called
+     */
+    protected function getRequestObject(): RequestObjectData
+    {
+        if (!$this->requestObject instanceof RequestObjectData) {
+            throw InvalidMethodCallException::cannotCall(
+                'getRequestObject',
+                'Request object not available. Ensure setRequest() is called before accessing request data.',
+            );
+        }
+
+        return $this->requestObject;
+    }
+
+    /**
+     * Delegate to descriptor or return default value.
+     *
+     * @template T
+     *
+     * @param  callable(FunctionDescriptor): T $getter
+     * @param  T                               $default
+     * @return T
+     */
+    private function fromDescriptorOr(callable $getter, mixed $default): mixed
+    {
+        $descriptor = $this->resolveDescriptor();
+
+        if ($descriptor instanceof FunctionDescriptor) {
+            return $getter($descriptor);
+        }
+
+        return is_callable($default) ? $default() : $default;
+    }
+
+    /**
+     * Resolve the function descriptor from the #[Descriptor] attribute.
+     *
+     * Caches the result to avoid repeated reflection lookups.
+     *
+     * @return null|FunctionDescriptor The descriptor if attribute present, null otherwise
+     */
+    private function resolveDescriptor(): ?FunctionDescriptor
+    {
+        if ($this->descriptorResolved) {
+            return $this->descriptor;
+        }
+
+        $reflection = new ReflectionClass($this);
+        $attributes = $reflection->getAttributes(Descriptor::class);
+
+        if ($attributes === []) {
+            $this->descriptorResolved = true;
+            $this->descriptor = null;
+
+            return null;
+        }
+
+        /** @var Descriptor $attribute */
+        $attribute = $attributes[0]->newInstance();
+
+        $descriptorClass = $attribute->class;
+
+        // Validate the descriptor class implements the correct interface
+        if (!is_subclass_of($descriptorClass, DescriptorInterface::class)) {
+            throw InvalidFieldTypeException::forField(
+                'descriptor class',
+                sprintf('must implement %s', DescriptorInterface::class),
+                $descriptorClass,
+            );
+        }
+
+        // Validate create() method exists
+        if (!method_exists($descriptorClass, 'create')) {
+            throw MissingMethodImplementationException::forMethod(
+                $descriptorClass,
+                'create',
+            );
+        }
+
+        /** @var class-string<DescriptorInterface> $descriptorClass */
+        $descriptor = $descriptorClass::create();
+        $this->descriptor = $descriptor;
+
+        $this->descriptorResolved = true;
+
+        return $this->descriptor;
+    }
+}

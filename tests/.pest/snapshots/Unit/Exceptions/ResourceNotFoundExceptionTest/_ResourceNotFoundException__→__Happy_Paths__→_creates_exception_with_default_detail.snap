@@ -1,0 +1,11 @@
+{
+    "code": "INTERNAL_ERROR",
+    "message": "Server error",
+    "details": [
+        {
+            "status": "404",
+            "title": "Resource Not Found",
+            "detail": "The requested model could not be found."
+        }
+    ]
+}

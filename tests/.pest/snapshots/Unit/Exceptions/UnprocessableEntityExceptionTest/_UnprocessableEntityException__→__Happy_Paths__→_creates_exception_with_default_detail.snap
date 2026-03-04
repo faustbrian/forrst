@@ -1,0 +1,11 @@
+{
+    "code": "SCHEMA_VALIDATION_FAILED",
+    "message": "Validation error",
+    "details": [
+        {
+            "status": "422",
+            "title": "Unprocessable Entity",
+            "detail": "The request was well-formed but was unable to be followed due to semantic errors."
+        }
+    ]
+}

@@ -1,0 +1,100 @@
+{
+    "name": "urn:cline:forrst:ext:cancellation:fn:cancel",
+    "version": "1.0.0",
+    "stability": "stable",
+    "summary": "Cancel a request by its cancellation token",
+    "arguments": [
+        {
+            "name": "token",
+            "schema": {
+                "type": "string"
+            },
+            "required": true,
+            "summary": null,
+            "description": "Cancellation token from original request",
+            "default": null,
+            "deprecated": null,
+            "examples": null
+        }
+    ],
+    "result": {
+        "resource": null,
+        "schema": {
+            "type": "object",
+            "properties": {
+                "cancelled": {
+                    "type": "boolean",
+                    "description": "Whether cancellation was successful"
+                },
+                "token": {
+                    "type": "string",
+                    "description": "The cancellation token"
+                }
+            },
+            "required": [
+                "cancelled",
+                "token"
+            ]
+        },
+        "collection": false,
+        "description": "Cancellation result"
+    },
+    "errors": [
+        {
+            "code": "PARSE_ERROR",
+            "message": "Parse error"
+        },
+        {
+            "code": "INVALID_REQUEST",
+            "message": "Invalid request"
+        },
+        {
+            "code": "FUNCTION_NOT_FOUND",
+            "message": "Function not found"
+        },
+        {
+            "code": "INVALID_ARGUMENTS",
+            "message": "Invalid arguments"
+        },
+        {
+            "code": "SCHEMA_VALIDATION_FAILED",
+            "message": "Validation error"
+        },
+        {
+            "code": "INTERNAL_ERROR",
+            "message": "Internal error"
+        },
+        {
+            "code": "INTERNAL_ERROR",
+            "message": "Server error"
+        },
+        {
+            "code": "UNAVAILABLE",
+            "message": "Service unavailable"
+        },
+        {
+            "code": "UNAUTHORIZED",
+            "message": "Unauthorized"
+        },
+        {
+            "code": "FORBIDDEN",
+            "message": "Forbidden"
+        },
+        {
+            "code": "RATE_LIMITED",
+            "message": "Rate limited"
+        },
+        {
+            "code": "CANCELLATION_TOKEN_UNKNOWN",
+            "message": "Unknown cancellation token",
+            "description": "The specified cancellation token does not exist or has expired",
+            "details": null
+        },
+        {
+            "code": "CANCELLATION_TOO_LATE",
+            "message": "Request already completed",
+            "description": "The request has already completed and cannot be cancelled",
+            "details": null
+        }
+    ]
+}

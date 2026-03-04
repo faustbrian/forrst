@@ -1,0 +1,18 @@
+{
+    "code": "INVALID_ARGUMENTS",
+    "message": "Invalid arguments",
+    "details": [
+        {
+            "status": "422",
+            "source": {
+                "pointer": "\/params\/relationships"
+            },
+            "title": "Invalid relationships",
+            "detail": "Requested relationships `relationship1` are not allowed. Allowed relationships are `relationship2, relationship3`.",
+            "meta": {
+                "unknown": "relationship1",
+                "allowed": "relationship2, relationship3"
+            }
+        }
+    ]
+}

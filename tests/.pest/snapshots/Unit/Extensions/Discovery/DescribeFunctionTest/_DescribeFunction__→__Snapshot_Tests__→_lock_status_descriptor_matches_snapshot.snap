@@ -1,0 +1,115 @@
+{
+    "name": "urn:cline:forrst:ext:atomic-lock:fn:status",
+    "version": "1.0.0",
+    "stability": "stable",
+    "summary": "Check the status of a lock",
+    "arguments": [
+        {
+            "name": "key",
+            "schema": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200,
+                "pattern": "^[a-zA-Z0-9\\-_:.]+$"
+            },
+            "required": true,
+            "summary": null,
+            "description": "Lock key (with scope prefix if applicable). Must contain only alphanumeric characters, dash, underscore, colon, and dot.",
+            "default": null,
+            "deprecated": null,
+            "examples": null
+        }
+    ],
+    "result": {
+        "resource": null,
+        "schema": {
+            "type": "object",
+            "properties": {
+                "key": {
+                    "type": "string",
+                    "description": "The lock key"
+                },
+                "locked": {
+                    "type": "boolean",
+                    "description": "Whether the lock is currently held"
+                },
+                "owner": {
+                    "type": "string",
+                    "description": "Owner token (only if locked)"
+                },
+                "acquired_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "When lock was acquired (only if locked)"
+                },
+                "expires_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "When lock expires (only if locked)"
+                },
+                "ttl_remaining": {
+                    "type": "integer",
+                    "description": "Seconds until lock expires (only if locked)"
+                }
+            },
+            "required": [
+                "key",
+                "locked"
+            ]
+        },
+        "collection": false,
+        "description": "Lock status information"
+    },
+    "errors": [
+        {
+            "code": "PARSE_ERROR",
+            "message": "Parse error"
+        },
+        {
+            "code": "INVALID_REQUEST",
+            "message": "Invalid request"
+        },
+        {
+            "code": "FUNCTION_NOT_FOUND",
+            "message": "Function not found"
+        },
+        {
+            "code": "INVALID_ARGUMENTS",
+            "message": "Invalid arguments"
+        },
+        {
+            "code": "SCHEMA_VALIDATION_FAILED",
+            "message": "Validation error"
+        },
+        {
+            "code": "INTERNAL_ERROR",
+            "message": "Internal error"
+        },
+        {
+            "code": "INTERNAL_ERROR",
+            "message": "Server error"
+        },
+        {
+            "code": "UNAVAILABLE",
+            "message": "Service unavailable"
+        },
+        {
+            "code": "UNAUTHORIZED",
+            "message": "Unauthorized"
+        },
+        {
+            "code": "FORBIDDEN",
+            "message": "Forbidden"
+        },
+        {
+            "code": "RATE_LIMITED",
+            "message": "Rate limited"
+        },
+        {
+            "code": "INVALID_ARGUMENTS",
+            "message": "Invalid or missing key",
+            "description": "The lock key is required and must be a non-empty string",
+            "details": null
+        }
+    ]
+}

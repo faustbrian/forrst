@@ -1,0 +1,70 @@
+[
+    {
+        "protocol": {
+            "name": "forrst",
+            "version": "0.1.0"
+        },
+        "id": "1",
+        "call": {
+            "function": "urn:app:forrst:fn:sum",
+            "arguments": [
+                1,
+                2,
+                4
+            ]
+        }
+    },
+    {
+        "protocol": {
+            "name": "forrst",
+            "version": "0.1.0"
+        },
+        "id": "req-6940149f49adc",
+        "call": {
+            "function": "urn:app:forrst:fn:notify-hello",
+            "arguments": [
+                7
+            ]
+        }
+    },
+    {
+        "protocol": {
+            "name": "forrst",
+            "version": "0.1.0"
+        },
+        "id": "2",
+        "call": {
+            "function": "urn:app:forrst:fn:subtract",
+            "arguments": [
+                42,
+                23
+            ]
+        }
+    },
+    {
+        "foo": "boo"
+    },
+    {
+        "protocol": {
+            "name": "forrst",
+            "version": "0.1.0"
+        },
+        "id": "5",
+        "call": {
+            "function": "urn:app:forrst:fn:foo-get",
+            "arguments": {
+                "name": "myself"
+            }
+        }
+    },
+    {
+        "protocol": {
+            "name": "forrst",
+            "version": "0.1.0"
+        },
+        "id": "9",
+        "call": {
+            "function": "urn:app:forrst:fn:get-data"
+        }
+    }
+]

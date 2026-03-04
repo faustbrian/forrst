@@ -1,0 +1,85 @@
+{
+    "name": "urn:cline:forrst:ext:diagnostics:fn:ping",
+    "version": "1.0.0",
+    "stability": "stable",
+    "summary": "Simple connectivity check",
+    "arguments": [],
+    "result": {
+        "resource": null,
+        "schema": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "healthy",
+                        "degraded",
+                        "unhealthy"
+                    ],
+                    "description": "Health status"
+                },
+                "timestamp": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "ISO 8601 timestamp"
+                },
+                "details": {
+                    "type": "object",
+                    "description": "Optional additional health info"
+                }
+            },
+            "required": [
+                "status",
+                "timestamp"
+            ]
+        },
+        "collection": false,
+        "description": "Ping response with health status"
+    },
+    "errors": [
+        {
+            "code": "PARSE_ERROR",
+            "message": "Parse error"
+        },
+        {
+            "code": "INVALID_REQUEST",
+            "message": "Invalid request"
+        },
+        {
+            "code": "FUNCTION_NOT_FOUND",
+            "message": "Function not found"
+        },
+        {
+            "code": "INVALID_ARGUMENTS",
+            "message": "Invalid arguments"
+        },
+        {
+            "code": "SCHEMA_VALIDATION_FAILED",
+            "message": "Validation error"
+        },
+        {
+            "code": "INTERNAL_ERROR",
+            "message": "Internal error"
+        },
+        {
+            "code": "INTERNAL_ERROR",
+            "message": "Server error"
+        },
+        {
+            "code": "UNAVAILABLE",
+            "message": "Service unavailable"
+        },
+        {
+            "code": "UNAUTHORIZED",
+            "message": "Unauthorized"
+        },
+        {
+            "code": "FORBIDDEN",
+            "message": "Forbidden"
+        },
+        {
+            "code": "RATE_LIMITED",
+            "message": "Rate limited"
+        }
+    ]
+}

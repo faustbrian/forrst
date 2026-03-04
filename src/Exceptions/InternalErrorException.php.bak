@@ -1,0 +1,58 @@
+<?php declare(strict_types=1);
+
+/**
+ * Copyright (C) Brian Faust
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Cline\Forrst\Exceptions;
+
+use Cline\Forrst\Enums\ErrorCode;
+use Throwable;
+
+/**
+ * Exception thrown when an unexpected internal error occurs during RPC request processing.
+ *
+ * Represents Forrst error code INTERNAL_ERROR, indicating a server-side error that is not
+ * related to the request format or parameters. This exception wraps underlying system
+ * exceptions and formats them according to the Forrst error response specification.
+ *
+ * Results in HTTP 500 status and indicates the server encountered an unexpected condition
+ * that prevented it from fulfilling the request.
+ *
+ * @author Brian Faust <brian@cline.sh>
+ *
+ * @see https://docs.cline.sh/forrst/errors Error handling specification
+ * @see https://docs.cline.sh/forrst/protocol Protocol specification
+ */
+final class InternalErrorException extends AbstractRequestException
+{
+    /**
+     * Creates an internal error exception from an underlying throwable.
+     *
+     * Wraps any system exception into a Forrst compliant error response with
+     * error code INTERNAL_ERROR. The original exception message is preserved
+     * in the error details for debugging purposes.
+     *
+     * @param Throwable $exception The underlying exception that caused the internal error,
+     *                             typically from failed business logic, database errors,
+     *                             or other unexpected system failures during request
+     *                             processing that should be reported to the client.
+     *
+     * @return self A new instance containing the formatted error with HTTP 500 status,
+     *              Forrst error code INTERNAL_ERROR, and the original exception message
+     *              in the error details array for client-side error handling.
+     */
+    public static function create(Throwable $exception): self
+    {
+        return self::new(ErrorCode::InternalError, 'Internal error', details: [
+            [
+                'status' => '500',
+                'title' => 'Internal error',
+                'detail' => $exception->getMessage(),
+            ],
+        ]);
+    }
+}

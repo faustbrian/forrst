@@ -1,0 +1,20 @@
+{
+  "protocol": {
+    "name": "forrst",
+    "version": "0.1.0"
+  },
+  "id": "req-694014b0c592b",
+  "result": null,
+  "errors": [
+    {
+      "code": "PARSE_ERROR",
+      "message": "Parse error"
+    }
+  ],
+  "meta": {
+    "duration": {
+      "value": 0,
+      "unit": "millisecond"
+    }
+  }
+}

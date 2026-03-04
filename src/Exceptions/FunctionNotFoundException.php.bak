@@ -1,0 +1,59 @@
+<?php declare(strict_types=1);
+
+/**
+ * Copyright (C) Brian Faust
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Cline\Forrst\Exceptions;
+
+use Cline\Forrst\Enums\ErrorCode;
+
+/**
+ * Exception thrown when a requested RPC method does not exist or is not accessible.
+ *
+ * Represents Forrst error code FUNCTION_NOT_FOUND for requests to methods that are not
+ * registered, not enabled, or do not exist in the RPC server's method registry.
+ * This is distinct from Invalid Request (INVALID_REQUEST) which indicates structural
+ * problems, and Invalid Params (INVALID_ARGUMENTS) which indicates parameter issues.
+ *
+ * This exception results in an HTTP 404 status and informs clients that the requested
+ * RPC function is not available on the server.
+ *
+ * @author Brian Faust <brian@cline.sh>
+ *
+ * @see https://docs.cline.sh/forrst/errors Error handling specification
+ * @see https://docs.cline.sh/forrst/protocol Protocol specification
+ */
+final class FunctionNotFoundException extends AbstractRequestException
+{
+    /**
+     * Creates a method not found exception with optional error details.
+     *
+     * Generates a Forrst compliant error response indicating that the requested
+     * method is not available on this RPC server. This occurs when clients attempt
+     * to invoke methods that don't exist, have been removed, or are disabled in
+     * the current server configuration.
+     *
+     * @param null|string                           $function Optional function name for context. When
+     *                                                        provided, creates a more specific error
+     *                                                        message identifying the missing function.
+     * @param null|array<int, array<string, mixed>> $data     Optional array of error details following
+     *                                                        JSON:API error object structure. Each error
+     *                                                        should contain status, source, title, and
+     *                                                        detail fields for client debugging.
+     *
+     * @return self A new instance with Forrst error code FUNCTION_NOT_FOUND, HTTP 404
+     *              status, and a descriptive message indicating the missing function.
+     */
+    public static function create(?string $function = null, ?array $data = null): self
+    {
+        $message = $function !== null
+            ? 'Function not found: '.$function
+            : 'Function not found';
+
+        return self::new(ErrorCode::FunctionNotFound, $message, details: $data);
+    }
+}

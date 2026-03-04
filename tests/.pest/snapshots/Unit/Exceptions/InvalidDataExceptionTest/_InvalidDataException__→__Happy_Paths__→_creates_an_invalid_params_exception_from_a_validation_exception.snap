@@ -1,0 +1,14 @@
+{
+    "code": "INVALID_ARGUMENTS",
+    "message": "Invalid arguments",
+    "details": [
+        {
+            "status": "422",
+            "source": {
+                "pointer": "\/params\/data\/field"
+            },
+            "title": "Invalid params",
+            "detail": "The field is required."
+        }
+    ]
+}

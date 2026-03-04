@@ -1,0 +1,11 @@
+{
+    "code": "INTERNAL_ERROR",
+    "message": "Server error",
+    "details": [
+        {
+            "status": "404",
+            "title": "Resource Not Found",
+            "detail": "User with ID 123 not found"
+        }
+    ]
+}

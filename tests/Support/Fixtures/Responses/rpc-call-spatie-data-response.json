@@ -1,0 +1,18 @@
+{
+  "protocol": {
+    "name": "forrst",
+    "version": "0.1.0"
+  },
+  "id": "101",
+  "result": {
+    "id": 42,
+    "name": "Test Item",
+    "email": "test@example.com"
+  },
+  "meta": {
+    "duration": {
+      "value": 0,
+      "unit": "millisecond"
+    }
+  }
+}

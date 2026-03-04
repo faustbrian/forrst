@@ -1,0 +1,11 @@
+{
+    "protocol": {
+        "name": "forrst",
+        "version": "0.1.0"
+    },
+    "id": "req-6940149f49ebf",
+    "call": {
+        "function": 1,
+        "arguments": "bar"
+    }
+}

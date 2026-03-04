@@ -1,0 +1,94 @@
+{
+    "name": "urn:cline:forrst:ext:discovery:fn:capabilities",
+    "version": "1.0.0",
+    "stability": "stable",
+    "summary": "Discover service capabilities and supported features",
+    "arguments": [],
+    "result": {
+        "resource": null,
+        "schema": {
+            "type": "object",
+            "properties": {
+                "service": {
+                    "type": "string",
+                    "description": "Service identifier"
+                },
+                "protocolVersions": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Supported Forrst protocol versions"
+                },
+                "extensions": {
+                    "type": "array",
+                    "description": "Supported extensions"
+                },
+                "functions": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Available function names"
+                },
+                "limits": {
+                    "type": "object",
+                    "description": "Service limits"
+                }
+            },
+            "required": [
+                "service",
+                "protocolVersions",
+                "functions"
+            ]
+        },
+        "collection": false,
+        "description": "Service capabilities response"
+    },
+    "errors": [
+        {
+            "code": "PARSE_ERROR",
+            "message": "Parse error"
+        },
+        {
+            "code": "INVALID_REQUEST",
+            "message": "Invalid request"
+        },
+        {
+            "code": "FUNCTION_NOT_FOUND",
+            "message": "Function not found"
+        },
+        {
+            "code": "INVALID_ARGUMENTS",
+            "message": "Invalid arguments"
+        },
+        {
+            "code": "SCHEMA_VALIDATION_FAILED",
+            "message": "Validation error"
+        },
+        {
+            "code": "INTERNAL_ERROR",
+            "message": "Internal error"
+        },
+        {
+            "code": "INTERNAL_ERROR",
+            "message": "Server error"
+        },
+        {
+            "code": "UNAVAILABLE",
+            "message": "Service unavailable"
+        },
+        {
+            "code": "UNAUTHORIZED",
+            "message": "Unauthorized"
+        },
+        {
+            "code": "FORBIDDEN",
+            "message": "Forbidden"
+        },
+        {
+            "code": "RATE_LIMITED",
+            "message": "Rate limited"
+        }
+    ]
+}

@@ -1,0 +1,30 @@
+[
+    {
+        "protocol": {
+            "name": "forrst",
+            "version": "0.1.0"
+        },
+        "id": "req-6940149f498b6",
+        "call": {
+            "function": "urn:app:forrst:fn:notify-sum",
+            "arguments": [
+                1,
+                2,
+                4
+            ]
+        }
+    },
+    {
+        "protocol": {
+            "name": "forrst",
+            "version": "0.1.0"
+        },
+        "id": "req-6940149f498bc",
+        "call": {
+            "function": "urn:app:forrst:fn:notify-hello",
+            "arguments": [
+                7
+            ]
+        }
+    }
+]

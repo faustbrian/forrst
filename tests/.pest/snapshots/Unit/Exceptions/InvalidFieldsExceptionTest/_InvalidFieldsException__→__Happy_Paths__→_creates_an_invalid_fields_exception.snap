@@ -1,0 +1,18 @@
+{
+    "code": "INVALID_ARGUMENTS",
+    "message": "Invalid arguments",
+    "details": [
+        {
+            "status": "422",
+            "source": {
+                "pointer": "\/params\/fields"
+            },
+            "title": "Invalid fields",
+            "detail": "Requested fields `field1` are not allowed. Allowed fields are `field2, field3`.",
+            "meta": {
+                "unknown": "field1",
+                "allowed": "field2, field3"
+            }
+        }
+    ]
+}

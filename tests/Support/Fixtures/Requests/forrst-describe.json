@@ -1,0 +1,10 @@
+{
+    "protocol": {
+        "name": "forrst",
+        "version": "0.1.0"
+    },
+    "id": "1",
+    "call": {
+        "function": "urn:cline:forrst:ext:discovery:fn:describe"
+    }
+}

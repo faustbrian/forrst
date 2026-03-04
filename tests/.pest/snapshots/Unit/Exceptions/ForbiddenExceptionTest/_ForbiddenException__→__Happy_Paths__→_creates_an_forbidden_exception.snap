@@ -1,0 +1,11 @@
+{
+    "code": "FORBIDDEN",
+    "message": "Forbidden",
+    "details": [
+        {
+            "status": "403",
+            "title": "Forbidden",
+            "detail": "You are not authorized to perform this action."
+        }
+    ]
+}

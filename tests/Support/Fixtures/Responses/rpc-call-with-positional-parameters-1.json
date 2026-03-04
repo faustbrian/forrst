@@ -1,0 +1,14 @@
+{
+  "protocol": {
+    "name": "forrst",
+    "version": "0.1.0"
+  },
+  "id": "1",
+  "result": 19,
+  "meta": {
+    "duration": {
+      "value": 0,
+      "unit": "millisecond"
+    }
+  }
+}

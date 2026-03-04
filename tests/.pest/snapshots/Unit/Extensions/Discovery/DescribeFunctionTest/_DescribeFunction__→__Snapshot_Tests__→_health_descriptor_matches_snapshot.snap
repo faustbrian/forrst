@@ -1,0 +1,120 @@
+{
+    "name": "urn:cline:forrst:ext:diagnostics:fn:health",
+    "version": "1.0.0",
+    "stability": "stable",
+    "summary": "Comprehensive health check with component-level status",
+    "arguments": [
+        {
+            "name": "component",
+            "schema": {
+                "type": "string",
+                "description": "Specific component to check. Use \"self\" for basic server ping without running component checks."
+            },
+            "required": false,
+            "summary": null,
+            "description": "Check specific component only (use \"self\" for basic ping)",
+            "default": null,
+            "deprecated": null,
+            "examples": null
+        },
+        {
+            "name": "include_details",
+            "schema": {
+                "type": "boolean",
+                "default": true
+            },
+            "required": false,
+            "summary": null,
+            "description": "Include detailed check info (default: true)",
+            "default": null,
+            "deprecated": null,
+            "examples": null
+        }
+    ],
+    "result": {
+        "resource": null,
+        "schema": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "healthy",
+                        "degraded",
+                        "unhealthy"
+                    ],
+                    "description": "Aggregate health status"
+                },
+                "components": {
+                    "type": "object",
+                    "description": "Component health status"
+                },
+                "functions": {
+                    "type": "object",
+                    "description": "Function-level health (optional)"
+                },
+                "timestamp": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "ISO 8601 timestamp"
+                },
+                "version": {
+                    "type": "string",
+                    "description": "Optional service version"
+                }
+            },
+            "required": [
+                "status",
+                "timestamp"
+            ]
+        },
+        "collection": false,
+        "description": "Health check response with component status"
+    },
+    "errors": [
+        {
+            "code": "PARSE_ERROR",
+            "message": "Parse error"
+        },
+        {
+            "code": "INVALID_REQUEST",
+            "message": "Invalid request"
+        },
+        {
+            "code": "FUNCTION_NOT_FOUND",
+            "message": "Function not found"
+        },
+        {
+            "code": "INVALID_ARGUMENTS",
+            "message": "Invalid arguments"
+        },
+        {
+            "code": "SCHEMA_VALIDATION_FAILED",
+            "message": "Validation error"
+        },
+        {
+            "code": "INTERNAL_ERROR",
+            "message": "Internal error"
+        },
+        {
+            "code": "INTERNAL_ERROR",
+            "message": "Server error"
+        },
+        {
+            "code": "UNAVAILABLE",
+            "message": "Service unavailable"
+        },
+        {
+            "code": "UNAUTHORIZED",
+            "message": "Unauthorized"
+        },
+        {
+            "code": "FORBIDDEN",
+            "message": "Forbidden"
+        },
+        {
+            "code": "RATE_LIMITED",
+            "message": "Rate limited"
+        }
+    ]
+}

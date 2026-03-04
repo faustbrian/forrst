@@ -1,0 +1,186 @@
+{
+    "name": "urn:cline:forrst:ext:async:fn:list",
+    "version": "1.0.0",
+    "stability": "stable",
+    "summary": "List operations for the current caller",
+    "arguments": [
+        {
+            "name": "status",
+            "schema": {
+                "type": "string",
+                "enum": [
+                    "pending",
+                    "processing",
+                    "completed",
+                    "failed",
+                    "cancelled"
+                ]
+            },
+            "required": false,
+            "summary": null,
+            "description": "Filter by status",
+            "default": null,
+            "deprecated": null,
+            "examples": null
+        },
+        {
+            "name": "function",
+            "schema": {
+                "type": "string"
+            },
+            "required": false,
+            "summary": null,
+            "description": "Filter by function name",
+            "default": null,
+            "deprecated": null,
+            "examples": null
+        },
+        {
+            "name": "limit",
+            "schema": {
+                "type": "integer",
+                "default": 50,
+                "minimum": 1,
+                "maximum": 100
+            },
+            "required": false,
+            "summary": null,
+            "description": "Max results (default 50)",
+            "default": null,
+            "deprecated": null,
+            "examples": null
+        },
+        {
+            "name": "cursor",
+            "schema": {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9+\/=_-]+$",
+                "description": "Opaque pagination cursor from previous response"
+            },
+            "required": false,
+            "summary": null,
+            "description": "Pagination cursor for retrieving next page",
+            "default": null,
+            "deprecated": null,
+            "examples": null
+        }
+    ],
+    "result": {
+        "resource": null,
+        "schema": {
+            "type": "object",
+            "properties": {
+                "operations": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "string",
+                                "pattern": "^op_[a-f0-9]{24}$",
+                                "description": "Unique operation identifier"
+                            },
+                            "function": {
+                                "type": "string",
+                                "description": "Function URN that was called"
+                            },
+                            "version": {
+                                "type": "string",
+                                "pattern": "^\\d+$",
+                                "description": "Function version"
+                            },
+                            "status": {
+                                "type": "string",
+                                "enum": [
+                                    "pending",
+                                    "processing",
+                                    "completed",
+                                    "failed",
+                                    "cancelled"
+                                ],
+                                "description": "Current operation status"
+                            },
+                            "progress": {
+                                "type": "number",
+                                "minimum": 0,
+                                "maximum": 1,
+                                "description": "Progress percentage (0-1)"
+                            },
+                            "started_at": {
+                                "type": [
+                                    "string",
+                                    "null"
+                                ],
+                                "format": "date-time",
+                                "description": "When operation started processing"
+                            }
+                        },
+                        "required": [
+                            "id",
+                            "function",
+                            "version",
+                            "status"
+                        ]
+                    },
+                    "description": "List of operations matching filter criteria"
+                },
+                "next_cursor": {
+                    "type": "string",
+                    "description": "Opaque cursor for fetching next page"
+                }
+            },
+            "required": [
+                "operations"
+            ],
+            "additionalProperties": false
+        },
+        "collection": false,
+        "description": "Paginated operation list response"
+    },
+    "errors": [
+        {
+            "code": "PARSE_ERROR",
+            "message": "Parse error"
+        },
+        {
+            "code": "INVALID_REQUEST",
+            "message": "Invalid request"
+        },
+        {
+            "code": "FUNCTION_NOT_FOUND",
+            "message": "Function not found"
+        },
+        {
+            "code": "INVALID_ARGUMENTS",
+            "message": "Invalid arguments"
+        },
+        {
+            "code": "SCHEMA_VALIDATION_FAILED",
+            "message": "Validation error"
+        },
+        {
+            "code": "INTERNAL_ERROR",
+            "message": "Internal error"
+        },
+        {
+            "code": "INTERNAL_ERROR",
+            "message": "Server error"
+        },
+        {
+            "code": "UNAVAILABLE",
+            "message": "Service unavailable"
+        },
+        {
+            "code": "UNAUTHORIZED",
+            "message": "Unauthorized"
+        },
+        {
+            "code": "FORBIDDEN",
+            "message": "Forbidden"
+        },
+        {
+            "code": "RATE_LIMITED",
+            "message": "Rate limited"
+        }
+    ]
+}

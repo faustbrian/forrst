@@ -1,0 +1,30 @@
+{
+  "protocol": {
+    "name": "forrst",
+    "version": "0.1.0"
+  },
+  "id": "req-694014b0c4ac3",
+  "result": null,
+  "errors": [
+    {
+      "code": "INVALID_REQUEST",
+      "message": "Invalid request",
+      "details": [
+        {
+          "status": "400",
+          "source": {
+            "pointer": "/"
+          },
+          "title": "Batch requests not supported",
+          "detail": "This server does not support batch requests. Send requests individually or use HTTP/2 multiplexing."
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "duration": {
+      "value": 0,
+      "unit": "millisecond"
+    }
+  }
+}

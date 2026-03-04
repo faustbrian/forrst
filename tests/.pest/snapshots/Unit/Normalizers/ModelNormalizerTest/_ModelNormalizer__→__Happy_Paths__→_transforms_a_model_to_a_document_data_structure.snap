@@ -1,0 +1,17 @@
+{
+    "type": "user",
+    "id": "1",
+    "attributes": {
+        "name": "John"
+    },
+    "relationships": {
+        "posts": {
+            "data": [
+                {
+                    "type": "post",
+                    "id": "1"
+                }
+            ]
+        }
+    }
+}

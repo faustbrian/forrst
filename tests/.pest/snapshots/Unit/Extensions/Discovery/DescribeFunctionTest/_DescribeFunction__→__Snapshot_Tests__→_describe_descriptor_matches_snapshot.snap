@@ -1,0 +1,87 @@
+{
+    "name": "urn:cline:forrst:ext:discovery:fn:describe",
+    "version": "1.0.0",
+    "stability": "stable",
+    "summary": "Returns the Forrst Discovery document describing this service",
+    "arguments": [
+        {
+            "name": "function",
+            "schema": {
+                "type": "string"
+            },
+            "required": false,
+            "summary": null,
+            "description": "Specific function to describe",
+            "default": null,
+            "deprecated": null,
+            "examples": null
+        },
+        {
+            "name": "version",
+            "schema": {
+                "type": "string"
+            },
+            "required": false,
+            "summary": null,
+            "description": "Specific version (with function)",
+            "default": null,
+            "deprecated": null,
+            "examples": null
+        }
+    ],
+    "result": {
+        "resource": null,
+        "schema": {
+            "type": "object",
+            "description": "Forrst Discovery Document"
+        },
+        "collection": false,
+        "description": "Complete discovery document or single function descriptor"
+    },
+    "errors": [
+        {
+            "code": "PARSE_ERROR",
+            "message": "Parse error"
+        },
+        {
+            "code": "INVALID_REQUEST",
+            "message": "Invalid request"
+        },
+        {
+            "code": "FUNCTION_NOT_FOUND",
+            "message": "Function not found"
+        },
+        {
+            "code": "INVALID_ARGUMENTS",
+            "message": "Invalid arguments"
+        },
+        {
+            "code": "SCHEMA_VALIDATION_FAILED",
+            "message": "Validation error"
+        },
+        {
+            "code": "INTERNAL_ERROR",
+            "message": "Internal error"
+        },
+        {
+            "code": "INTERNAL_ERROR",
+            "message": "Server error"
+        },
+        {
+            "code": "UNAVAILABLE",
+            "message": "Service unavailable"
+        },
+        {
+            "code": "UNAUTHORIZED",
+            "message": "Unauthorized"
+        },
+        {
+            "code": "FORBIDDEN",
+            "message": "Forbidden"
+        },
+        {
+            "code": "RATE_LIMITED",
+            "message": "Rate limited"
+        }
+    ]
+}

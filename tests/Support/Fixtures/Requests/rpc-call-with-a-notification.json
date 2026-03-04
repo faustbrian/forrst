@@ -1,0 +1,14 @@
+{
+    "protocol": {
+        "name": "forrst",
+        "version": "0.1.0"
+    },
+    "id": "req-6940149f49d10",
+    "call": {
+        "function": "urn:app:forrst:fn:subtract",
+        "arguments": [
+            23,
+            42
+        ]
+    }
+}

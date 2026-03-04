@@ -1,0 +1,11 @@
+{
+    "code": "UNAVAILABLE",
+    "message": "Service unavailable",
+    "details": [
+        {
+            "status": "503",
+            "title": "Service Unavailable",
+            "detail": "The server is currently unable to handle the request due to a temporary overload or scheduled maintenance, which will likely be alleviated after some delay."
+        }
+    ]
+}

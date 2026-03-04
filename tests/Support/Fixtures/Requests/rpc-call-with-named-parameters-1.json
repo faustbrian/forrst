@@ -1,0 +1,14 @@
+{
+    "protocol": {
+        "name": "forrst",
+        "version": "0.1.0"
+    },
+    "id": "3",
+    "call": {
+        "function": "urn:app:forrst:fn:subtract-with-binding",
+        "arguments": {
+            "subtrahend": 23,
+            "minuend": 42
+        }
+    }
+}

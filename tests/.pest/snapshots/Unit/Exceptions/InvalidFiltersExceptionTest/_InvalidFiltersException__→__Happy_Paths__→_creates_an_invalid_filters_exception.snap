@@ -1,0 +1,18 @@
+{
+    "code": "INVALID_ARGUMENTS",
+    "message": "Invalid arguments",
+    "details": [
+        {
+            "status": "422",
+            "source": {
+                "pointer": "\/params\/filters"
+            },
+            "title": "Invalid filters",
+            "detail": "Requested filters `filter1` are not allowed. Allowed filters are `filter2, filter3`.",
+            "meta": {
+                "unknown": "filter1",
+                "allowed": "filter2, filter3"
+            }
+        }
+    ]
+}

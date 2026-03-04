@@ -1,0 +1,109 @@
+{
+    "name": "urn:cline:forrst:ext:atomic-lock:fn:force-release",
+    "version": "1.0.0",
+    "stability": "stable",
+    "summary": "Force release a lock without ownership check (admin only)",
+    "description": "Administratively releases a lock without verifying ownership. This is a privileged operation that should be restricted to administrative users or automated cleanup processes. Regular applications should use forrst.locks.release instead. WARNING: Improper use can cause data corruption in critical sections.",
+    "arguments": [
+        {
+            "name": "key",
+            "schema": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200,
+                "pattern": "^[a-zA-Z0-9\\-_:.]+$"
+            },
+            "required": true,
+            "summary": null,
+            "description": "Full lock key including scope prefix (e.g., \"forrst_lock:function_name:my_key\"). Must contain only alphanumeric characters, dash, underscore, colon, and dot.",
+            "default": null,
+            "deprecated": null,
+            "examples": null
+        }
+    ],
+    "result": {
+        "resource": null,
+        "schema": {
+            "type": "object",
+            "properties": {
+                "released": {
+                    "type": "boolean",
+                    "description": "Whether release was successful"
+                },
+                "key": {
+                    "type": "string",
+                    "description": "The lock key that was released"
+                },
+                "forced": {
+                    "type": "boolean",
+                    "description": "Always true for force release operations"
+                }
+            },
+            "required": [
+                "released",
+                "key",
+                "forced"
+            ]
+        },
+        "collection": false,
+        "description": "Lock force release result"
+    },
+    "errors": [
+        {
+            "code": "PARSE_ERROR",
+            "message": "Parse error"
+        },
+        {
+            "code": "INVALID_REQUEST",
+            "message": "Invalid request"
+        },
+        {
+            "code": "FUNCTION_NOT_FOUND",
+            "message": "Function not found"
+        },
+        {
+            "code": "INVALID_ARGUMENTS",
+            "message": "Invalid arguments"
+        },
+        {
+            "code": "SCHEMA_VALIDATION_FAILED",
+            "message": "Validation error"
+        },
+        {
+            "code": "INTERNAL_ERROR",
+            "message": "Internal error"
+        },
+        {
+            "code": "INTERNAL_ERROR",
+            "message": "Server error"
+        },
+        {
+            "code": "UNAVAILABLE",
+            "message": "Service unavailable"
+        },
+        {
+            "code": "UNAUTHORIZED",
+            "message": "Unauthorized"
+        },
+        {
+            "code": "FORBIDDEN",
+            "message": "Forbidden"
+        },
+        {
+            "code": "RATE_LIMITED",
+            "message": "Rate limited"
+        },
+        {
+            "code": "LOCK_NOT_FOUND",
+            "message": "Lock does not exist",
+            "description": "The specified lock does not exist or has already been released",
+            "details": null
+        },
+        {
+            "code": "UNAUTHORIZED",
+            "message": "Unauthorized",
+            "description": "Force release requires administrative privileges",
+            "details": null
+        }
+    ]
+}

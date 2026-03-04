@@ -1,0 +1,111 @@
+{
+    "name": "urn:cline:forrst:ext:async:fn:cancel",
+    "version": "1.0.0",
+    "stability": "stable",
+    "summary": "Cancel a pending async operation",
+    "arguments": [
+        {
+            "name": "operation_id",
+            "schema": {
+                "type": "string",
+                "pattern": "^op_[a-f0-9]{24}$",
+                "minLength": 27,
+                "maxLength": 27,
+                "description": "Operation identifier (format: op_ followed by 24 hex characters)"
+            },
+            "required": true,
+            "summary": null,
+            "description": "Unique operation identifier",
+            "default": null,
+            "deprecated": null,
+            "examples": null
+        }
+    ],
+    "result": {
+        "resource": null,
+        "schema": {
+            "type": "object",
+            "properties": {
+                "operation_id": {
+                    "type": "string",
+                    "description": "Operation ID"
+                },
+                "status": {
+                    "type": "string",
+                    "const": "cancelled",
+                    "description": "New status"
+                },
+                "cancelled_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Cancellation timestamp"
+                }
+            },
+            "required": [
+                "operation_id",
+                "status",
+                "cancelled_at"
+            ]
+        },
+        "collection": false,
+        "description": "Operation cancellation response"
+    },
+    "errors": [
+        {
+            "code": "PARSE_ERROR",
+            "message": "Parse error"
+        },
+        {
+            "code": "INVALID_REQUEST",
+            "message": "Invalid request"
+        },
+        {
+            "code": "FUNCTION_NOT_FOUND",
+            "message": "Function not found"
+        },
+        {
+            "code": "INVALID_ARGUMENTS",
+            "message": "Invalid arguments"
+        },
+        {
+            "code": "SCHEMA_VALIDATION_FAILED",
+            "message": "Validation error"
+        },
+        {
+            "code": "INTERNAL_ERROR",
+            "message": "Internal error"
+        },
+        {
+            "code": "INTERNAL_ERROR",
+            "message": "Server error"
+        },
+        {
+            "code": "UNAVAILABLE",
+            "message": "Service unavailable"
+        },
+        {
+            "code": "UNAUTHORIZED",
+            "message": "Unauthorized"
+        },
+        {
+            "code": "FORBIDDEN",
+            "message": "Forbidden"
+        },
+        {
+            "code": "RATE_LIMITED",
+            "message": "Rate limited"
+        },
+        {
+            "code": "ASYNC_OPERATION_NOT_FOUND",
+            "message": "Operation not found",
+            "description": "The specified operation ID does not exist",
+            "details": null
+        },
+        {
+            "code": "ASYNC_CANNOT_CANCEL",
+            "message": "Operation cannot be cancelled",
+            "description": "The operation has already completed or cannot be cancelled",
+            "details": null
+        }
+    ]
+}

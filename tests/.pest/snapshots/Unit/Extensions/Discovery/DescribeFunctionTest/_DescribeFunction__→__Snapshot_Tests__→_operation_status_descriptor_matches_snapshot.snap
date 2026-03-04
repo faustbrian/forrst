@@ -1,0 +1,136 @@
+{
+    "name": "urn:cline:forrst:ext:async:fn:status",
+    "version": "1.0.0",
+    "stability": "stable",
+    "summary": "Check status of an async operation",
+    "arguments": [
+        {
+            "name": "operation_id",
+            "schema": {
+                "type": "string",
+                "pattern": "^op_[a-f0-9]{24}$",
+                "minLength": 27,
+                "maxLength": 27,
+                "description": "Operation identifier (format: op_ followed by 24 hex characters)"
+            },
+            "required": true,
+            "summary": null,
+            "description": "Unique operation identifier",
+            "default": null,
+            "deprecated": null,
+            "examples": null
+        }
+    ],
+    "result": {
+        "resource": null,
+        "schema": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Operation ID"
+                },
+                "function": {
+                    "type": "string",
+                    "description": "Function that was called"
+                },
+                "version": {
+                    "type": "string",
+                    "description": "Function version"
+                },
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "pending",
+                        "processing",
+                        "completed",
+                        "failed",
+                        "cancelled"
+                    ],
+                    "description": "Operation status"
+                },
+                "progress": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1,
+                    "description": "Progress percentage (0-1)"
+                },
+                "result": {
+                    "description": "Operation result (when completed)"
+                },
+                "errors": {
+                    "type": "array",
+                    "description": "Errors (when failed)"
+                },
+                "started_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "When operation started"
+                },
+                "completed_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "When operation completed"
+                }
+            },
+            "required": [
+                "id",
+                "status"
+            ]
+        },
+        "collection": false,
+        "description": "Operation status response"
+    },
+    "errors": [
+        {
+            "code": "PARSE_ERROR",
+            "message": "Parse error"
+        },
+        {
+            "code": "INVALID_REQUEST",
+            "message": "Invalid request"
+        },
+        {
+            "code": "FUNCTION_NOT_FOUND",
+            "message": "Function not found"
+        },
+        {
+            "code": "INVALID_ARGUMENTS",
+            "message": "Invalid arguments"
+        },
+        {
+            "code": "SCHEMA_VALIDATION_FAILED",
+            "message": "Validation error"
+        },
+        {
+            "code": "INTERNAL_ERROR",
+            "message": "Internal error"
+        },
+        {
+            "code": "INTERNAL_ERROR",
+            "message": "Server error"
+        },
+        {
+            "code": "UNAVAILABLE",
+            "message": "Service unavailable"
+        },
+        {
+            "code": "UNAUTHORIZED",
+            "message": "Unauthorized"
+        },
+        {
+            "code": "FORBIDDEN",
+            "message": "Forbidden"
+        },
+        {
+            "code": "RATE_LIMITED",
+            "message": "Rate limited"
+        },
+        {
+            "code": "ASYNC_OPERATION_NOT_FOUND",
+            "message": "Operation not found",
+            "description": "The specified operation ID does not exist",
+            "details": null
+        }
+    ]
+}

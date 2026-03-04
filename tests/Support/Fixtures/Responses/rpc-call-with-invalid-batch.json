@@ -1,0 +1,30 @@
+{
+  "protocol": {
+    "name": "forrst",
+    "version": "0.1.0"
+  },
+  "id": "req-694014b0c582d",
+  "result": null,
+  "errors": [
+    {
+      "code": "INVALID_REQUEST",
+      "message": "Invalid request",
+      "details": [
+        {
+          "status": "400",
+          "source": {
+            "pointer": "/"
+          },
+          "title": "Malformed request",
+          "detail": "Request must be a JSON object, not an array."
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "duration": {
+      "value": 0,
+      "unit": "millisecond"
+    }
+  }
+}
