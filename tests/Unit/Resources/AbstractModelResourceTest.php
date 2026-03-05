@@ -13,7 +13,6 @@ use Cline\Forrst\Data\RequestObjectData;
 use Cline\Forrst\QueryBuilders\QueryBuilder;
 use Cline\Forrst\Repositories\ResourceRepository;
 use Cline\Forrst\Resources\AbstractModelResource;
-use Override;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -43,14 +42,11 @@ final class AbstractModelResourceTest extends TestCase
 
     private UserResource $resource;
 
-    #[Override()]
     protected function setUp(): void
     {
         parent::setUp();
-
         // Arrange
         ResourceRepository::register(User::class, UserResource::class);
-
         $this->user = new User();
         $this->user->id = 1;
         $this->user->name = 'John Doe';

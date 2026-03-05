@@ -12,7 +12,6 @@ namespace Tests\Unit\Repositories;
 use Cline\Forrst\Contracts\ResourceInterface;
 use Cline\Forrst\Exceptions\InternalErrorException;
 use Cline\Forrst\Repositories\ResourceRepository;
-use Override;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
@@ -42,11 +41,9 @@ final class ResourceRepositoryTest extends TestCase
      * Set up the test environment.
      * Clears all registered resources to ensure test isolation.
      */
-    #[Override()]
     protected function setUp(): void
     {
         parent::setUp();
-
         // Clear all registered resources for test isolation
         $allResources = ResourceRepository::all();
 

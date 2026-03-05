@@ -12,6 +12,7 @@ namespace Tests\Support\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Override;
 
 /**
  * @author Brian Faust <brian@cline.sh>
@@ -20,6 +21,7 @@ final class Post extends Model
 {
     use HasFactory;
 
+    #[Override()]
     protected $guarded = [];
 
     public function user(): BelongsTo

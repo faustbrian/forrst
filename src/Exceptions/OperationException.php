@@ -9,6 +9,10 @@
 
 namespace Cline\Forrst\Exceptions;
 
+use Facade\IgnitionContracts\BaseSolution;
+use Facade\IgnitionContracts\ProvidesSolution;
+use Facade\IgnitionContracts\Solution;
+
 /**
  * Base exception for async operation-related errors in Forrst RPC.
  *
@@ -21,7 +25,19 @@ namespace Cline\Forrst\Exceptions;
  * @see https://docs.cline.sh/forrst/extensions/async
  * @see https://docs.cline.sh/forrst/errors
  */
-abstract class OperationException extends AbstractRequestException
+abstract class OperationException extends AbstractRequestException implements ProvidesSolution
 {
     // Abstract base - concrete subclasses implement factory methods
+
+    public function getSolution(): Solution
+    {
+        /** @var BaseSolution $solution */
+        $solution = BaseSolution::create('Review package usage and configuration.');
+
+        return $solution
+            ->setSolutionDescription('Exception: '.$this->getMessage())
+            ->setDocumentationLinks([
+                'Package documentation' => 'https://github.com/cline/forrst',
+            ]);
+    }
 }
