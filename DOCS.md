@@ -1,13 +1,15 @@
 ## Table of Contents
 
-1. Getting Started (`docs/getting-started.md`)
-2. Servers (`docs/servers.md`)
-3. Functions (`docs/functions.md`)
-4. Extensions (`docs/extensions.md`)
-5. Clients (`docs/clients.md`)
-6. Testing (`docs/testing.md`)
-7. Request Validated Priority (`docs/events/request-validated-priority.md`)
-8. Naming Conventions (`docs/naming-conventions.md`)
+1. [Getting Started](#doc-docs-getting-started) (`docs/getting-started.md`)
+2. [Servers](#doc-docs-servers) (`docs/servers.md`)
+3. [Functions](#doc-docs-functions) (`docs/functions.md`)
+4. [Extensions](#doc-docs-extensions) (`docs/extensions.md`)
+5. [Clients](#doc-docs-clients) (`docs/clients.md`)
+6. [Testing](#doc-docs-testing) (`docs/testing.md`)
+7. [Request Validated Priority](#doc-docs-events-request-validated-priority) (`docs/events/request-validated-priority.md`)
+8. [Naming Conventions](#doc-docs-naming-conventions) (`docs/naming-conventions.md`)
+<a id="doc-docs-getting-started"></a>
+
 ---
 title: Getting Started
 description: Install and configure Forrst, an internal microservice RPC protocol with per-function versioning
@@ -300,6 +302,8 @@ test('creates order with parameters', function () {
 - **[Extensions](extensions)** - Add caching, idempotency, rate limiting, and more
 - **[Clients](clients)** - Create type-safe Forrst clients using Saloon
 - **[Protocol Specification](spec/)** - Deep dive into the Forrst protocol
+
+<a id="doc-docs-servers"></a>
 
 ---
 title: Servers
@@ -697,6 +701,8 @@ public function extensions(): array
 - **[Functions](functions)** - Implement function handlers with validation and authentication
 - **[Extensions](extensions)** - Add cross-cutting concerns like caching and rate limiting
 - **[Protocol Specification](spec/)** - Understand the Forrst wire protocol
+
+<a id="doc-docs-functions"></a>
 
 ---
 title: Functions
@@ -1225,6 +1231,8 @@ class UserCreateFunction extends AbstractFunction
 - **[Extensions](extensions)** - Add caching, idempotency, and other cross-cutting concerns
 - **[Servers](servers)** - Configure how functions are exposed
 - **[Discovery](spec/extensions/discovery)** - Understand automatic API documentation
+
+<a id="doc-docs-extensions"></a>
 
 ---
 title: Extensions
@@ -1762,6 +1770,8 @@ Client requests opt-in extensions:
 - **[Protocol Specification](spec/)** - Deep dive into the Forrst wire protocol
 - **[Extension Specifications](spec/extensions/)** - Detailed specs for each extension
 - **[Functions](functions)** - Build function handlers that use extensions
+
+<a id="doc-docs-clients"></a>
 
 ---
 title: Clients
@@ -2337,6 +2347,8 @@ class UserServiceConnector extends ForrstConnector
 - **[Functions](functions)** - Implement the functions clients call
 - **[Extensions](extensions)** - Understand extension data in responses
 
+<a id="doc-docs-testing"></a>
+
 ---
 title: Testing
 description: Test Forrst functions and servers with Pest and Laravel testing utilities
@@ -2805,6 +2817,8 @@ test('handles large result set without memory issues', function () {
 - **[Extensions](extensions)** - Test extension behavior
 - **[Clients](clients)** - Test client integrations
 
+<a id="doc-docs-events-request-validated-priority"></a>
+
 # RequestValidated Event Listener Priority
 
 The `RequestValidated` event is dispatched early in the request lifecycle, making it ideal for authentication, authorization, and rate limiting. Listeners should be ordered by priority to ensure security checks occur before other processing.
@@ -3041,6 +3055,8 @@ services:
 - **Sanitize input:** Clean user input before it reaches function execution to prevent injection attacks.
 
 - **Audit trail:** Log all requests, especially rejected ones, for security monitoring and incident response.
+
+<a id="doc-docs-naming-conventions"></a>
 
 ---
 title: Function Naming Conventions

@@ -19,12 +19,12 @@ composer require cline/forrst
 
 ## Documentation
 
-- **[Getting Started](docs/getting-started.md)** - Installation and basic usage
-- **[Servers](docs/servers.md)** - Configure Forrst servers and middleware
-- **[Functions](docs/functions.md)** - Build function handlers with validation
-- **[Extensions](docs/extensions.md)** - Add caching, idempotency, and rate limiting
-- **[Clients](docs/clients.md)** - Build type-safe Forrst clients
-- **[Testing](docs/testing.md)** - Test Forrst functions with Pest
+- **[Getting Started](DOCS.md#doc-docs-getting-started)** - Installation and basic usage
+- **[Servers](DOCS.md#doc-docs-servers)** - Configure Forrst servers and middleware
+- **[Functions](DOCS.md#doc-docs-functions)** - Build function handlers with validation
+- **[Extensions](DOCS.md#doc-docs-extensions)** - Add caching, idempotency, and rate limiting
+- **[Clients](DOCS.md#doc-docs-clients)** - Build type-safe Forrst clients
+- **[Testing](DOCS.md#doc-docs-testing)** - Test Forrst functions with Pest
 - **[Protocol Specification](spec/index.md)** - Deep dive into the Forrst protocol
 
 ## Quick Start
