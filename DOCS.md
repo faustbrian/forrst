@@ -1,13 +1,13 @@
 ## Table of Contents
 
-1. [Getting Started](#doc-docs-getting-started) (`docs/getting-started.md`)
-2. [Servers](#doc-docs-servers) (`docs/servers.md`)
-3. [Functions](#doc-docs-functions) (`docs/functions.md`)
-4. [Extensions](#doc-docs-extensions) (`docs/extensions.md`)
-5. [Clients](#doc-docs-clients) (`docs/clients.md`)
-6. [Testing](#doc-docs-testing) (`docs/testing.md`)
-7. [Request Validated Priority](#doc-docs-events-request-validated-priority) (`docs/events/request-validated-priority.md`)
-8. [Naming Conventions](#doc-docs-naming-conventions) (`docs/naming-conventions.md`)
+1. [Getting Started](#doc-docs-getting-started)
+2. [Servers](#doc-docs-servers)
+3. [Functions](#doc-docs-functions)
+4. [Extensions](#doc-docs-extensions)
+5. [Clients](#doc-docs-clients)
+6. [Testing](#doc-docs-testing)
+7. [Request Validated Priority](#doc-docs-events-request-validated-priority)
+8. [Naming Conventions](#doc-docs-naming-conventions)
 <a id="doc-docs-getting-started"></a>
 
 ---
