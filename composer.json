@@ -21,10 +21,7 @@
         "php": "^8.5.0",
         "cline/webhook": "^2.0.1",
         "facade/ignition-contracts": "^1.0.2",
-        "illuminate/bus": "^10.0 || ^11.0 || ^12.0 || ^13.0",
-        "illuminate/http": "^10.0 || ^11.0 || ^12.0 || ^13.0",
-        "illuminate/support": "^10.0 || ^11.0 || ^12.0 || ^13.0",
-        "illuminate/validation": "^10.0 || ^11.0 || ^12.0 || ^13.0",
+        "laravel/framework": "^10.0 || ^11.0 || ^12.0 || ^13.0",
         "saloonphp/saloon": "^3.15.0",
         "spatie/laravel-data": "^4.20.0",
         "symfony/intl": "^7.4.6"
