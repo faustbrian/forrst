@@ -11,7 +11,7 @@ use Cline\Forrst\Data\Configuration\ServerData;
 
 describe('ServerData', function (): void {
     test('creates instance from array', function (): void {
-        $data = ServerData::from([
+        $data = ServerData::create([
             'name' => 'test',
             'path' => '/rpc',
             'route' => '/rpc',

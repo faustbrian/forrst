@@ -1,8 +1,6 @@
 {
     "name": "urn:cline:forrst:ext:async:fn:cancel",
     "version": "1.0.0",
-    "stability": "stable",
-    "summary": "Cancel a pending async operation",
     "arguments": [
         {
             "name": "operation_id",
@@ -14,15 +12,12 @@
                 "description": "Operation identifier (format: op_ followed by 24 hex characters)"
             },
             "required": true,
-            "summary": null,
-            "description": "Unique operation identifier",
-            "default": null,
-            "deprecated": null,
-            "examples": null
+            "description": "Unique operation identifier"
         }
     ],
+    "stability": "stable",
+    "summary": "Cancel a pending async operation",
     "result": {
-        "resource": null,
         "schema": {
             "type": "object",
             "properties": {
@@ -98,14 +93,13 @@
         {
             "code": "ASYNC_OPERATION_NOT_FOUND",
             "message": "Operation not found",
-            "description": "The specified operation ID does not exist",
-            "details": null
+            "description": "The specified operation ID does not exist"
         },
         {
             "code": "ASYNC_CANNOT_CANCEL",
             "message": "Operation cannot be cancelled",
-            "description": "The operation has already completed or cannot be cancelled",
-            "details": null
+            "description": "The operation has already completed or cannot be cancelled"
         }
-    ]
+    ],
+    "discoverable": true
 }

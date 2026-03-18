@@ -11,7 +11,7 @@ namespace Cline\Forrst\Discovery;
 
 use Cline\Forrst\Discovery\Resource\ResourceData;
 use Cline\Forrst\Exceptions\ComponentReferenceNotFoundException;
-use Spatie\LaravelData\Data;
+use Cline\Forrst\Data\AbstractData;
 
 use function array_keys;
 use function array_merge;
@@ -32,7 +32,7 @@ use function str_starts_with;
  *
  * @see https://docs.cline.sh/forrst/extensions/discovery#components
  */
-final class ComponentsData extends Data
+final readonly class ComponentsData extends AbstractData
 {
     /**
      * Create a new components definition instance.

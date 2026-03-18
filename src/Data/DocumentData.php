@@ -36,7 +36,7 @@ use function is_array;
  * @see https://jsonapi.org/format/#document-top-level
  * @see https://jsonapi.org/format/#document-compound-documents
  */
-final class DocumentData extends AbstractData
+final readonly class DocumentData extends AbstractData
 {
     /**
      * Create a new Forrst document response.

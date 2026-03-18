@@ -212,11 +212,11 @@ final class IdempotencyExtension extends AbstractExtension
             }
 
             // Store context in request metadata for thread safety
-            $event->request->meta[self::META_KEY] = [
+            $event->setRequest($event->request->withMetaValue(self::META_KEY, [
                 'key' => $key,
                 'cache_key' => $cacheKey,
                 'lock' => $lock, // Store lock to release later
-            ];
+            ]));
         } catch (Throwable $throwable) {
             $lock->release();
 
@@ -236,7 +236,7 @@ final class IdempotencyExtension extends AbstractExtension
     public function onFunctionExecuted(FunctionExecuted $event): void
     {
         // Retrieve context from request metadata (thread-safe)
-        $context = $event->request->meta[self::META_KEY] ?? null;
+        $context = $event->request->getMeta(self::META_KEY);
 
         if ($context === null) {
             return;
@@ -421,7 +421,7 @@ final class IdempotencyExtension extends AbstractExtension
 
         /** @var array<string, mixed> $cachedResponseArray */
         $cachedResponseArray = $cached['response'];
-        $cachedResponse = ResponseData::from($cachedResponseArray);
+        $cachedResponse = ResponseData::create($cachedResponseArray);
 
         // Replace extensions with idempotency metadata
         $extensions = [

@@ -13,10 +13,9 @@ use Cline\Forrst\Data\AbstractData;
 use Cline\Forrst\Exceptions\EmptyArrayException;
 use Cline\Forrst\Exceptions\InvalidConfigurationException;
 use Cline\Forrst\Exceptions\InvalidFieldTypeException;
+use Cline\Struct\Attributes\AsDataCollection;
+use Cline\Struct\Support\DataCollection;
 use InvalidArgumentException;
-use Spatie\LaravelData\Attributes\DataCollectionOf;
-use Spatie\LaravelData\Attributes\Validation\Present;
-use Spatie\LaravelData\DataCollection;
 
 use function base_path;
 use function class_exists;
@@ -43,7 +42,7 @@ use function str_starts_with;
  * @author Brian Faust <brian@cline.sh>
  * @see https://docs.cline.sh/forrst/
  */
-final class ConfigurationData extends AbstractData
+final readonly class ConfigurationData extends AbstractData
 {
     /**
      * Create a new configuration data instance.
@@ -71,9 +70,8 @@ final class ConfigurationData extends AbstractData
     public function __construct(
         public readonly array $namespaces,
         public readonly array $paths,
-        #[Present()]
         public readonly array $resources,
-        #[DataCollectionOf(ServerData::class)]
+        #[AsDataCollection(ServerData::class)]
         public readonly DataCollection $servers,
     ) {
         $this->validateConfiguration();
@@ -91,10 +89,7 @@ final class ConfigurationData extends AbstractData
             namespaces: $data['namespaces'] ?? [],
             paths: $data['paths'] ?? [],
             resources: $data['resources'] ?? [],
-            servers: DataCollection::create(
-                ServerData::class,
-                $data['servers'] ?? [],
-            ),
+            servers: new DataCollection(ServerData::collect($data['servers'] ?? [])),
         );
     }
 

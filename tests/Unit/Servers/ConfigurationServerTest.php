@@ -18,7 +18,7 @@ use Tests\Support\Fakes\Functions\Sum;
 
 describe('ConfigurationServer', function (): void {
     test('creates server from configuration and accesses properties', function (): void {
-        $serverData = ServerData::from([
+        $serverData = ServerData::create([
             'name' => 'test',
             'path' => '/rpc',
             'route' => '/rpc',
@@ -44,7 +44,7 @@ describe('ConfigurationServer', function (): void {
             NotifyHello::class,
         ];
 
-        $serverData = ServerData::from([
+        $serverData = ServerData::create([
             'name' => 'test',
             'path' => '/rpc',
             'route' => '/rpc',
@@ -62,7 +62,7 @@ describe('ConfigurationServer', function (): void {
         Config::set('rpc.paths.functions', '/non/existent/directory');
         Config::set('rpc.namespaces.functions', 'App\\Methods');
 
-        $serverData = ServerData::from([
+        $serverData = ServerData::create([
             'name' => 'test',
             'path' => '/rpc',
             'route' => '/rpc',
@@ -84,7 +84,7 @@ describe('ConfigurationServer', function (): void {
         Config::set('rpc.paths.functions', $methodsPath);
         Config::set('rpc.namespaces.functions', $methodsNamespace);
 
-        $serverData = ServerData::from([
+        $serverData = ServerData::create([
             'name' => 'test-auto-discover',
             'path' => '/rpc',
             'route' => '/rpc',
@@ -111,7 +111,7 @@ describe('ConfigurationServer', function (): void {
         Config::set('rpc.paths.functions', $methodsPath);
         Config::set('rpc.namespaces.functions', $methodsNamespace);
 
-        $serverData = ServerData::from([
+        $serverData = ServerData::create([
             'name' => 'test',
             'path' => '/rpc',
             'route' => '/rpc',
@@ -143,7 +143,7 @@ describe('ConfigurationServer', function (): void {
             Config::set('rpc.paths.functions', $methodsPath);
             Config::set('rpc.namespaces.functions', $methodsNamespace);
 
-            $serverData = ServerData::from([
+            $serverData = ServerData::create([
                 'name' => 'test-pipeline',
                 'path' => '/rpc',
                 'route' => '/rpc',
@@ -177,7 +177,7 @@ describe('ConfigurationServer', function (): void {
             Config::set('rpc.paths.functions', $methodsPath);
             Config::set('rpc.namespaces.functions', $methodsNamespace);
 
-            $serverData = ServerData::from([
+            $serverData = ServerData::create([
                 'name' => 'test-nested',
                 'path' => '/rpc',
                 'route' => '/rpc',
@@ -210,7 +210,7 @@ describe('ConfigurationServer', function (): void {
             Config::set('rpc.paths.functions', $methodsPath);
             Config::set('rpc.namespaces.functions', $methodsNamespace);
 
-            $serverData = ServerData::from([
+            $serverData = ServerData::create([
                 'name' => 'test-ucfirst',
                 'path' => '/rpc',
                 'route' => '/rpc',
@@ -241,7 +241,7 @@ describe('ConfigurationServer', function (): void {
             Config::set('rpc.paths.functions', $methodsPath);
             Config::set('rpc.namespaces.functions', $methodsNamespace);
 
-            $serverData = ServerData::from([
+            $serverData = ServerData::create([
                 'name' => 'test-filtering',
                 'path' => '/rpc',
                 'route' => '/rpc',
@@ -272,7 +272,7 @@ describe('ConfigurationServer', function (): void {
             Config::set('rpc.paths.functions', $methodsPath);
             Config::set('rpc.namespaces.functions', $methodsNamespace);
 
-            $serverData = ServerData::from([
+            $serverData = ServerData::create([
                 'name' => 'test-interface-check',
                 'path' => '/rpc',
                 'route' => '/rpc',
@@ -304,7 +304,7 @@ describe('ConfigurationServer', function (): void {
             Config::set('rpc.paths.functions', $methodsPath);
             Config::set('rpc.namespaces.functions', $methodsNamespace);
 
-            $serverData = ServerData::from([
+            $serverData = ServerData::create([
                 'name' => 'test-return',
                 'path' => '/rpc',
                 'route' => '/rpc',
@@ -336,7 +336,7 @@ describe('ConfigurationServer', function (): void {
             Config::set('rpc.paths.functions', $methodsPath);
             Config::set('rpc.namespaces.functions', $methodsNamespace);
 
-            $serverData = ServerData::from([
+            $serverData = ServerData::create([
                 'name' => 'test-invalid',
                 'path' => '/rpc',
                 'route' => '/rpc',
@@ -362,7 +362,7 @@ describe('ConfigurationServer', function (): void {
             Config::set('rpc.paths.functions', $methodsPath);
             Config::set('rpc.namespaces.functions', $methodsNamespace);
 
-            $serverData = ServerData::from([
+            $serverData = ServerData::create([
                 'name' => 'test-no-interface',
                 'path' => '/rpc',
                 'route' => '/rpc',

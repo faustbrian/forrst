@@ -38,7 +38,7 @@ use function sprintf;
  * @see https://docs.cline.sh/forrst/protocol
  * @see https://docs.cline.sh/forrst/document-structure
  */
-final class ResponseData extends AbstractData
+final readonly class ResponseData extends AbstractData
 {
     /**
      * Maximum allowed size for errors array to prevent memory exhaustion.
@@ -188,7 +188,7 @@ final class ResponseData extends AbstractData
                         throw InvalidFieldTypeException::forField('errors', 'array', $errorData);
                     }
 
-                    return ErrorData::from($errorData);
+                    return ErrorData::create($errorData);
                 },
                 $data['errors'],
             );
@@ -211,7 +211,7 @@ final class ResponseData extends AbstractData
                         throw InvalidFieldTypeException::forField('extensions', 'array', $extensionData);
                     }
 
-                    return ExtensionData::from($extensionData);
+                    return ExtensionData::create($extensionData);
                 },
                 $data['extensions'],
             );
@@ -228,80 +228,6 @@ final class ResponseData extends AbstractData
         return new self(
             protocol: $protocol,
             id: $data['id'],
-            result: $data['result'] ?? null,
-            errors: $errors,
-            extensions: $extensions,
-            meta: $meta,
-        );
-    }
-
-    /**
-     * Create a response from an array.
-     *
-     * Hydrates a response object from an associative array, typically from JSON-decoded
-     * response data. Constructs nested protocol, error, and extension data objects.
-     *
-     * @param array<string, mixed> ...$payloads Response data arrays (only first element used)
-     *
-     * @return static Response instance with hydrated nested objects
-     */
-    #[Override()]
-    public static function from(mixed ...$payloads): static
-    {
-        $rawData = $payloads[0] ?? [];
-
-        /** @var array<string, mixed> $data */
-        $data = $rawData;
-
-        // Handle protocol transformation
-        $protocolData = $data['protocol'] ?? [];
-
-        /** @var array{name?: string, version?: string} $protocolArray */
-        $protocolArray = is_array($protocolData) ? $protocolData : [];
-
-        $protocol = ProtocolData::from($protocolArray);
-
-        // Handle errors array transformation
-        $errors = null;
-
-        if (isset($data['errors']) && is_array($data['errors'])) {
-            /** @var array<ErrorData> $errors */
-            $errors = array_map(
-                function (mixed $errorData): ErrorData {
-                    /** @var array<string, mixed> $errorArray */
-                    $errorArray = is_array($errorData) ? $errorData : [];
-
-                    return ErrorData::from($errorArray);
-                },
-                $data['errors'],
-            );
-        }
-
-        // Handle extensions array transformation
-        $extensions = null;
-
-        if (isset($data['extensions']) && is_array($data['extensions'])) {
-            /** @var array<ExtensionData> $extensions */
-            $extensions = array_map(
-                function (mixed $extensionData): ExtensionData {
-                    /** @var array<string, mixed> $extensionArray */
-                    $extensionArray = is_array($extensionData) ? $extensionData : [];
-
-                    return ExtensionData::from($extensionArray);
-                },
-                $data['extensions'],
-            );
-        }
-
-        $id = $data['id'] ?? '';
-        $rawMeta = $data['meta'] ?? null;
-
-        /** @var null|array<string, mixed> $meta */
-        $meta = is_array($rawMeta) ? $rawMeta : null;
-
-        return new self(
-            protocol: $protocol,
-            id: is_string($id) ? $id : '',
             result: $data['result'] ?? null,
             errors: $errors,
             extensions: $extensions,
@@ -615,8 +541,14 @@ final class ResponseData extends AbstractData
      * @return array<string, mixed> The Forrst protocol compliant response array
      */
     #[Override()]
-    public function toArray(): array
-    {
+    public function toArray(
+        bool $includeSensitive = false,
+        array $include = [],
+        array $exclude = [],
+        array $groups = [],
+        array $context = [],
+        ?\Cline\Struct\Serialization\SerializationOptions $serialization = null,
+    ): array {
         $response = [
             'protocol' => $this->protocol->toArray(),
             'id' => $this->id,

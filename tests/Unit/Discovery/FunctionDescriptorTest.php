@@ -318,7 +318,7 @@ describe('FunctionDescriptor', function (): void {
 
         test('adds example', function (): void {
             // Arrange
-            $example = ExampleData::from([
+            $example = ExampleData::create([
                 'name' => 'Basic example',
                 'value' => ['id' => '123'],
             ]);
@@ -337,7 +337,7 @@ describe('FunctionDescriptor', function (): void {
 
         test('adds link', function (): void {
             // Arrange
-            $link = LinkData::from([
+            $link = LinkData::create([
                 'name' => 'Get user',
                 'function' => 'urn:app:forrst:fn:users:get',
             ]);
@@ -390,7 +390,7 @@ describe('FunctionDescriptor', function (): void {
 
         test('sets extensions', function (): void {
             // Arrange
-            $extensions = FunctionExtensionsData::from([
+            $extensions = FunctionExtensionsData::create([
                 'allowed' => ['urn:cline:forrst:ext:caching'],
             ]);
 
@@ -551,8 +551,8 @@ describe('FunctionDescriptor', function (): void {
 
         test('multiple examples accumulate', function (): void {
             // Arrange
-            $example1 = ExampleData::from(['name' => 'Example 1']);
-            $example2 = ExampleData::from(['name' => 'Example 2']);
+            $example1 = ExampleData::create(['name' => 'Example 1']);
+            $example2 = ExampleData::create(['name' => 'Example 2']);
 
             // Act
             $descriptor = FunctionDescriptor::make()
@@ -567,8 +567,8 @@ describe('FunctionDescriptor', function (): void {
 
         test('multiple links accumulate', function (): void {
             // Arrange
-            $link1 = LinkData::from(['name' => 'Link 1', 'function' => 'urn:app:forrst:fn:link1']);
-            $link2 = LinkData::from(['name' => 'Link 2', 'function' => 'urn:app:forrst:fn:link2']);
+            $link1 = LinkData::create(['name' => 'Link 1', 'function' => 'urn:app:forrst:fn:link1']);
+            $link2 = LinkData::create(['name' => 'Link 2', 'function' => 'urn:app:forrst:fn:link2']);
 
             // Act
             $descriptor = FunctionDescriptor::make()

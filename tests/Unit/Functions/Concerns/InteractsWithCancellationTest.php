@@ -90,7 +90,6 @@ describe('InteractsWithCancellation', function (): void {
                     call: new CallData(
                         function: 'urn:cline:forrst:fn:test:function',
                     ),
-                    extensions: null,
                 );
 
                 $testClass = new TestClassWithCancellation($requestObject);
@@ -335,7 +334,6 @@ describe('InteractsWithCancellation', function (): void {
                     call: new CallData(
                         function: 'urn:cline:forrst:fn:test:function',
                     ),
-                    extensions: null,
                 );
 
                 $testClass = new TestClassWithCancellation($requestObject);
@@ -503,7 +501,6 @@ describe('InteractsWithCancellation', function (): void {
                     call: new CallData(
                         function: 'urn:cline:forrst:fn:test:function',
                     ),
-                    extensions: null,
                 );
 
                 $testClass = new TestClassWithCancellation($requestObject);

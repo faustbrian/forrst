@@ -10,8 +10,7 @@
 namespace Tests\Support\Fixtures;
 
 use Cline\Forrst\Data\AbstractData;
-use Spatie\LaravelData\Attributes\Validation\Required;
-use Spatie\LaravelData\Attributes\Validation\StringType;
+use Cline\Struct\Attributes\Validate;
 
 /**
  * Simple test data fixture for RulesTransformer tests.
@@ -22,7 +21,7 @@ use Spatie\LaravelData\Attributes\Validation\StringType;
  * @author Brian Faust <brian@cline.sh>
  * @internal
  */
-final class SimpleTestData extends AbstractData
+final readonly class SimpleTestData extends AbstractData
 {
     /**
      * Create a new simple test data instance.
@@ -34,7 +33,7 @@ final class SimpleTestData extends AbstractData
      * @param string $name Required string field for basic testing
      */
     public function __construct(
-        #[Required(), StringType()]
+        #[Validate('required|string')]
         public readonly string $name,
     ) {}
 }

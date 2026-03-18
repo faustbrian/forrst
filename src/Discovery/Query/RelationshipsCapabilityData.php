@@ -9,7 +9,7 @@
 
 namespace Cline\Forrst\Discovery\Query;
 
-use Spatie\LaravelData\Data;
+use Cline\Forrst\Data\AbstractData;
 
 /**
  * Relationship inclusion capability configuration for query operations.
@@ -23,7 +23,7 @@ use Spatie\LaravelData\Data;
  * @see https://docs.cline.sh/forrst/extensions/query Query extension documentation
  * @see https://docs.cline.sh/specs/forrst/discovery#relationships-capability Relationships capability specification
  */
-final class RelationshipsCapabilityData extends Data
+final readonly class RelationshipsCapabilityData extends AbstractData
 {
     /**
      * Create a new relationships capability configuration.

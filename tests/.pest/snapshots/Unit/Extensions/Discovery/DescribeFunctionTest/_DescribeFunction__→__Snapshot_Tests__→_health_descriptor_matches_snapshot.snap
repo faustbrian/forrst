@@ -1,8 +1,6 @@
 {
     "name": "urn:cline:forrst:ext:diagnostics:fn:health",
     "version": "1.0.0",
-    "stability": "stable",
-    "summary": "Comprehensive health check with component-level status",
     "arguments": [
         {
             "name": "component",
@@ -11,11 +9,7 @@
                 "description": "Specific component to check. Use \"self\" for basic server ping without running component checks."
             },
             "required": false,
-            "summary": null,
-            "description": "Check specific component only (use \"self\" for basic ping)",
-            "default": null,
-            "deprecated": null,
-            "examples": null
+            "description": "Check specific component only (use \"self\" for basic ping)"
         },
         {
             "name": "include_details",
@@ -24,15 +18,12 @@
                 "default": true
             },
             "required": false,
-            "summary": null,
-            "description": "Include detailed check info (default: true)",
-            "default": null,
-            "deprecated": null,
-            "examples": null
+            "description": "Include detailed check info (default: true)"
         }
     ],
+    "stability": "stable",
+    "summary": "Comprehensive health check with component-level status",
     "result": {
-        "resource": null,
         "schema": {
             "type": "object",
             "properties": {
@@ -116,5 +107,6 @@
             "code": "RATE_LIMITED",
             "message": "Rate limited"
         }
-    ]
+    ],
+    "discoverable": true
 }

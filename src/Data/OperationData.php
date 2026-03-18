@@ -40,7 +40,7 @@ use function sprintf;
  * @author Brian Faust <brian@cline.sh>
  * @see https://docs.cline.sh/forrst/extensions/async
  */
-final class OperationData extends AbstractData
+final readonly class OperationData extends AbstractData
 {
     /**
      * Create a new operation data instance.
@@ -163,95 +163,6 @@ final class OperationData extends AbstractData
     }
 
     /**
-     * Create from array representation.
-     *
-     * Deserializes operation data from array format, reconstructing nested
-     * ErrorData objects and parsing ISO8601 timestamps into CarbonImmutable
-     * instances. Handles both single array and Spatie Data variadic patterns.
-     *
-     * @param array<string, mixed> ...$payloads Array data to deserialize
-     *
-     * @return static OperationData instance
-     */
-    #[Override()]
-    public static function from(mixed ...$payloads): static
-    {
-        // Handle both single array and Spatie Data's variadic arguments
-        $payload = $payloads[0] ?? [];
-
-        // Type assertion: ensure we have an array to work with
-        /** @phpstan-ignore-next-line function.alreadyNarrowedType */
-        assert(is_array($payload));
-
-        /** @var array<string, mixed> $data */
-        $data = $payload;
-
-        $errors = null;
-
-        if (isset($data['errors']) && is_array($data['errors'])) {
-            /** @var array<int, ErrorData> $errorArray */
-            $errorArray = [];
-
-            foreach ($data['errors'] as $errorData) {
-                if (!is_array($errorData)) {
-                    continue;
-                }
-
-                /** @var array<string, mixed> $errorData */
-                $errorArray[] = ErrorData::from($errorData);
-            }
-
-            $errors = $errorArray;
-        }
-
-        $id = $data['id'] ?? '';
-        assert(is_string($id) || is_int($id));
-        $idString = (string) $id;
-
-        $function = $data['function'] ?? '';
-        assert(is_string($function));
-
-        $version = null;
-
-        if (isset($data['version'])) {
-            assert(is_string($data['version']));
-            $version = $data['version'];
-        }
-
-        $statusValue = $data['status'] ?? '';
-        assert(is_string($statusValue) || is_int($statusValue));
-        $status = OperationStatus::tryFrom($statusValue) ?? OperationStatus::Pending;
-
-        $metadata = null;
-
-        if (isset($data['metadata']) && is_array($data['metadata'])) {
-            /** @var array<string, mixed> $metadata */
-            $metadata = $data['metadata'];
-        }
-
-        $lockVersion = 1;
-
-        if (isset($data['lock_version']) && is_int($data['lock_version'])) {
-            $lockVersion = $data['lock_version'];
-        }
-
-        return new self(
-            id: $idString,
-            function: $function,
-            version: $version,
-            status: $status,
-            progress: isset($data['progress']) && is_numeric($data['progress']) ? (float) $data['progress'] : null,
-            result: $data['result'] ?? null,
-            errors: $errors,
-            startedAt: isset($data['started_at']) && (is_string($data['started_at']) || is_int($data['started_at'])) ? CarbonImmutable::parse($data['started_at']) : null,
-            completedAt: isset($data['completed_at']) && (is_string($data['completed_at']) || is_int($data['completed_at'])) ? CarbonImmutable::parse($data['completed_at']) : null,
-            cancelledAt: isset($data['cancelled_at']) && (is_string($data['cancelled_at']) || is_int($data['cancelled_at'])) ? CarbonImmutable::parse($data['cancelled_at']) : null,
-            metadata: $metadata,
-            lockVersion: $lockVersion,
-        );
-    }
-
-    /**
      * Check if the operation is pending.
      *
      * @return bool True when operation is queued but not yet executing
@@ -337,8 +248,14 @@ final class OperationData extends AbstractData
      * @return array<string, mixed> Array representation of the operation
      */
     #[Override()]
-    public function toArray(): array
-    {
+    public function toArray(
+        bool $includeSensitive = false,
+        array $include = [],
+        array $exclude = [],
+        array $groups = [],
+        array $context = [],
+        ?\Cline\Struct\Serialization\SerializationOptions $serialization = null,
+    ): array {
         $result = [
             'id' => $this->id,
             'function' => $this->function,

@@ -38,7 +38,7 @@ describe('ErrorData', function (): void {
         });
 
         test('creates from array using inherited from method', function (): void {
-            $error = ErrorData::from([
+            $error = ErrorData::create([
                 'code' => ErrorCode::InvalidArguments->value,
                 'message' => 'Invalid arguments',
                 'details' => ['info' => 'Extra information'],

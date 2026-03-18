@@ -12,7 +12,7 @@ namespace Cline\Forrst\Discovery;
 use Cline\Forrst\Exceptions\EmptyFieldException;
 use Cline\Forrst\Exceptions\InvalidFieldTypeException;
 use Cline\Forrst\Exceptions\InvalidFieldValueException;
-use Spatie\LaravelData\Data;
+use Cline\Forrst\Data\AbstractData;
 
 use const E_USER_WARNING;
 
@@ -41,7 +41,7 @@ use function trigger_error;
  * @see https://docs.cline.sh/forrst/system-functions
  * @see https://docs.cline.sh/specs/forrst/system-functions#extension-support
  */
-final class FunctionExtensionsData extends Data
+final readonly class FunctionExtensionsData extends AbstractData
 {
     /**
      * Create a new function extension configuration.

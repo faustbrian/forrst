@@ -275,6 +275,7 @@ describe('LocaleExtension', function (): void {
                 // Set up locale first
                 $validatedEvent = new RequestValidated($request);
                 $extension->onRequestValidated($validatedEvent);
+                $request = $validatedEvent->request;
 
                 // Act
                 $executedEvent = new FunctionExecuted(
@@ -312,6 +313,7 @@ describe('LocaleExtension', function (): void {
                 // Set up locale first
                 $validatedEvent = new RequestValidated($request);
                 $extension->onRequestValidated($validatedEvent);
+                $request = $validatedEvent->request;
 
                 // Act
                 $executedEvent = new FunctionExecuted(
@@ -351,6 +353,7 @@ describe('LocaleExtension', function (): void {
                 // Set up locale first
                 $validatedEvent = new RequestValidated($request);
                 $extension->onRequestValidated($validatedEvent);
+                $request = $validatedEvent->request;
 
                 // Act
                 $executedEvent = new FunctionExecuted(
@@ -385,6 +388,7 @@ describe('LocaleExtension', function (): void {
                 // Set up locale first (no timezone/currency)
                 $validatedEvent = new RequestValidated($request);
                 $extension->onRequestValidated($validatedEvent);
+                $request = $validatedEvent->request;
 
                 // Act
                 $executedEvent = new FunctionExecuted(

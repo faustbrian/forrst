@@ -34,7 +34,7 @@ use function is_string;
  * @author Brian Faust <brian@cline.sh>
  * @see https://docs.cline.sh/forrst/errors
  */
-final class ErrorData extends AbstractData
+final readonly class ErrorData extends AbstractData
 {
     /**
      * The error code as a string value.
@@ -70,28 +70,20 @@ final class ErrorData extends AbstractData
     /**
      * Create from an array representation.
      *
-     * Handles deserialization from array data, supporting both single array
-     * and Spatie Data's variadic argument patterns. Reconstructs nested
+     * Handles deserialization from array data and reconstructs nested
      * SourceData objects from array representation.
      *
-     * @param array<string, mixed> ...$payloads Array data to deserialize
+     * @param array<string, mixed> $input Array data to deserialize
      *
      * @return static ErrorData instance
      */
-    #[Override()]
-    public static function from(mixed ...$payloads): static
+    public static function create(array $input): static
     {
-        // Handle both single array and Spatie Data's variadic arguments
-        $rawData = $payloads[0] ?? [];
-
-        /** @var array<string, mixed> $data */
-        $data = $rawData;
-
         $source = null;
 
-        if (isset($data['source']) && is_array($data['source'])) {
-            $sourcePointer = $data['source']['pointer'] ?? null;
-            $sourcePosition = $data['source']['position'] ?? null;
+        if (isset($input['source']) && is_array($input['source'])) {
+            $sourcePointer = $input['source']['pointer'] ?? null;
+            $sourcePosition = $input['source']['position'] ?? null;
 
             $source = new SourceData(
                 pointer: is_string($sourcePointer) ? $sourcePointer : null,
@@ -99,14 +91,14 @@ final class ErrorData extends AbstractData
             );
         }
 
-        $code = $data['code'] ?? '';
+        $code = $input['code'] ?? '';
 
         if (is_int($code)) {
             $code = (string) $code;
         }
 
-        $message = $data['message'] ?? '';
-        $rawDetails = $data['details'] ?? null;
+        $message = $input['message'] ?? '';
+        $rawDetails = $input['details'] ?? null;
 
         /** @var null|array<string, mixed> $details */
         $details = is_array($rawDetails) ? $rawDetails : null;
@@ -199,8 +191,14 @@ final class ErrorData extends AbstractData
      * @return array<string, mixed> Array representation of the error
      */
     #[Override()]
-    public function toArray(): array
-    {
+    public function toArray(
+        bool $includeSensitive = false,
+        array $include = [],
+        array $exclude = [],
+        array $groups = [],
+        array $context = [],
+        ?\Cline\Struct\Serialization\SerializationOptions $serialization = null,
+    ): array {
         $result = [
             'code' => $this->code,
             'message' => $this->message,

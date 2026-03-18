@@ -10,13 +10,7 @@
 namespace Tests\Support\Fixtures;
 
 use Cline\Forrst\Data\AbstractData;
-use Spatie\LaravelData\Attributes\Validation\Email;
-use Spatie\LaravelData\Attributes\Validation\IntegerType;
-use Spatie\LaravelData\Attributes\Validation\Max;
-use Spatie\LaravelData\Attributes\Validation\Min;
-use Spatie\LaravelData\Attributes\Validation\Nullable;
-use Spatie\LaravelData\Attributes\Validation\Required;
-use Spatie\LaravelData\Attributes\Validation\StringType;
+use Cline\Struct\Attributes\Validate;
 
 /**
  * Complex test data fixture with multiple fields for RulesTransformer tests.
@@ -28,7 +22,7 @@ use Spatie\LaravelData\Attributes\Validation\StringType;
  * @author Brian Faust <brian@cline.sh>
  * @internal
  */
-final class ComplexTestData extends AbstractData
+final readonly class ComplexTestData extends AbstractData
 {
     /**
      * Create a new complex test data instance.
@@ -46,13 +40,13 @@ final class ComplexTestData extends AbstractData
      * @param null|string $bio   Optional text field with max length
      */
     public function __construct(
-        #[Required(), Max(255), Min(2), StringType()]
+        #[Validate('required|max:255|min:2|string')]
         public readonly string $name,
-        #[Required(), Email(), Max(255)]
+        #[Validate('required|email|max:255')]
         public readonly string $email,
-        #[Nullable(), IntegerType(), Max(150), Min(0)]
+        #[Validate('nullable|integer|max:150|min:0')]
         public readonly ?int $age = null,
-        #[Nullable(), Max(1_000), StringType()]
+        #[Validate('nullable|max:1000|string')]
         public readonly ?string $bio = null,
     ) {}
 }

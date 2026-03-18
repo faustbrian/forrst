@@ -9,7 +9,7 @@
 
 namespace Cline\Forrst\Discovery\Resource;
 
-use Spatie\LaravelData\Data;
+use Cline\Forrst\Data\AbstractData;
 
 /**
  * Resource relationship metadata and capabilities definition.
@@ -23,7 +23,7 @@ use Spatie\LaravelData\Data;
  * @see https://docs.cline.sh/forrst/resource-objects Resource objects documentation
  * @see https://docs.cline.sh/specs/forrst/discovery#relationship-definition-object Relationship definition specification
  */
-final class RelationshipDefinitionData extends Data
+final readonly class RelationshipDefinitionData extends AbstractData
 {
     /**
      * Create a new relationship definition.

@@ -1,8 +1,6 @@
 {
     "name": "urn:cline:forrst:ext:discovery:fn:describe",
     "version": "1.0.0",
-    "stability": "stable",
-    "summary": "Returns the Forrst Discovery document describing this service",
     "arguments": [
         {
             "name": "function",
@@ -10,11 +8,7 @@
                 "type": "string"
             },
             "required": false,
-            "summary": null,
-            "description": "Specific function to describe",
-            "default": null,
-            "deprecated": null,
-            "examples": null
+            "description": "Specific function to describe"
         },
         {
             "name": "version",
@@ -22,15 +16,12 @@
                 "type": "string"
             },
             "required": false,
-            "summary": null,
-            "description": "Specific version (with function)",
-            "default": null,
-            "deprecated": null,
-            "examples": null
+            "description": "Specific version (with function)"
         }
     ],
+    "stability": "stable",
+    "summary": "Returns the Forrst Discovery document describing this service",
     "result": {
-        "resource": null,
         "schema": {
             "type": "object",
             "description": "Forrst Discovery Document"
@@ -83,5 +74,6 @@
             "code": "RATE_LIMITED",
             "message": "Rate limited"
         }
-    ]
+    ],
+    "discoverable": true
 }

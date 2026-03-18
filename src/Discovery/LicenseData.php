@@ -13,7 +13,7 @@ use Cline\Forrst\Exceptions\EmptyFieldException;
 use Cline\Forrst\Exceptions\FieldExceedsMaxLengthException;
 use Cline\Forrst\Exceptions\InvalidProtocolException;
 use Cline\Forrst\Exceptions\InvalidUrlException;
-use Spatie\LaravelData\Data;
+use Cline\Forrst\Data\AbstractData;
 
 use const FILTER_VALIDATE_URL;
 
@@ -36,7 +36,7 @@ use function parse_url;
  * @see https://docs.cline.sh/forrst/system-functions
  * @see https://docs.cline.sh/specs/forrst/discovery#license-object
  */
-final class LicenseData extends Data
+final readonly class LicenseData extends AbstractData
 {
     /**
      * Create a new license information object.

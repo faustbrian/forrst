@@ -1,8 +1,6 @@
 {
     "name": "urn:cline:forrst:ext:atomic-lock:fn:release",
     "version": "1.0.0",
-    "stability": "stable",
-    "summary": "Release a lock with ownership verification",
     "arguments": [
         {
             "name": "key",
@@ -13,11 +11,7 @@
                 "pattern": "^[a-zA-Z0-9\\-_:.]+$"
             },
             "required": true,
-            "summary": null,
-            "description": "Lock key (with scope prefix if applicable). Must contain only alphanumeric characters, dash, underscore, colon, and dot.",
-            "default": null,
-            "deprecated": null,
-            "examples": null
+            "description": "Lock key (with scope prefix if applicable). Must contain only alphanumeric characters, dash, underscore, colon, and dot."
         },
         {
             "name": "owner",
@@ -27,15 +21,12 @@
                 "format": "uuid"
             },
             "required": true,
-            "summary": null,
-            "description": "Owner token from lock acquisition (UUID format)",
-            "default": null,
-            "deprecated": null,
-            "examples": null
+            "description": "Owner token from lock acquisition (UUID format)"
         }
     ],
+    "stability": "stable",
+    "summary": "Release a lock with ownership verification",
     "result": {
-        "resource": null,
         "schema": {
             "type": "object",
             "properties": {
@@ -104,14 +95,13 @@
         {
             "code": "LOCK_NOT_FOUND",
             "message": "Lock does not exist",
-            "description": "The specified lock does not exist or has already expired",
-            "details": null
+            "description": "The specified lock does not exist or has already expired"
         },
         {
             "code": "LOCK_OWNERSHIP_MISMATCH",
             "message": "Lock is owned by a different process",
-            "description": "The provided owner token does not match the lock owner",
-            "details": null
+            "description": "The provided owner token does not match the lock owner"
         }
-    ]
+    ],
+    "discoverable": true
 }

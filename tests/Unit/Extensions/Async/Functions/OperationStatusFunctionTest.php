@@ -281,7 +281,7 @@ describe('OperationStatusFunction', function (): void {
                     version: '1.0.0',
                     status: OperationStatus::Failed,
                     errors: [
-                        ErrorData::from([
+                        ErrorData::create([
                             'code' => 'PAYMENT_DECLINED',
                             'message' => 'Card was declined',
                         ]),

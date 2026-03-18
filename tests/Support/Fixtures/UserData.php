@@ -9,7 +9,7 @@
 
 namespace Tests\Support\Fixtures;
 
-use Spatie\LaravelData\Data;
+use Cline\Forrst\Data\AbstractData;
 
 /**
  * Test fixture for AbstractDataResource tests.
@@ -18,7 +18,7 @@ use Spatie\LaravelData\Data;
  * @author Brian Faust <brian@cline.sh>
  * @internal
  */
-final class UserData extends Data
+final readonly class UserData extends AbstractData
 {
     public function __construct(
         public readonly int $id,

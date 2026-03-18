@@ -87,7 +87,7 @@ final readonly class ModelNormalizer
             foreach ($relationModels as $relationModel) {
                 // Get full resource for the included array
                 $relatedResource = ResourceRepository::get($relationModel);
-                $relatedResourceObject = ResourceObjectData::from($relatedResource->toArray());
+                $relatedResourceObject = ResourceObjectData::create($relatedResource->toArray());
 
                 // Add to included array, keyed by type:id for deduplication
                 $includeKey = $relatedResourceObject->type.':'.$relatedResourceObject->id;
@@ -111,7 +111,7 @@ final readonly class ModelNormalizer
         }
 
         return new NormalizationResult(
-            resource: ResourceObjectData::from($pendingResourceObject),
+            resource: ResourceObjectData::create($pendingResourceObject),
             included: $included,
         );
     }

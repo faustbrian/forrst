@@ -16,6 +16,7 @@ use Cline\Forrst\Data\ProtocolData;
 use Cline\Forrst\Discovery\ComponentsData;
 use Cline\Forrst\Discovery\DiscoveryData;
 use Cline\Forrst\Discovery\DiscoveryServerData;
+use Cline\Forrst\Discovery\FunctionDescriptorData;
 use Cline\Forrst\Discovery\InfoData;
 use Cline\Forrst\Discovery\LicenseData;
 use Cline\Forrst\Enums\ErrorCode;
@@ -136,22 +137,22 @@ final class DescribeFunction extends AbstractFunction implements UnwrappedRespon
             $functions[] = $this->buildFunctionDescriptor($serverFunction, $errors);
         }
 
-        $discovery = DiscoveryData::from([
+        $discovery = DiscoveryData::create([
             'forrst' => ProtocolData::VERSION,
             'discovery' => self::DISCOVERY_VERSION,
-            'info' => InfoData::from([
+            'info' => InfoData::create([
                 'title' => Facade::getName(),
                 'version' => Facade::getVersion(),
-                'license' => LicenseData::from(['name' => 'Proprietary']),
+                'license' => LicenseData::create(['name' => 'Proprietary']),
             ]),
             'servers' => [
-                DiscoveryServerData::from([
+                DiscoveryServerData::create([
                     'name' => App::environment(),
                     'url' => URL::to(Facade::getRoutePath()),
                 ]),
             ],
             'functions' => $functions,
-            'components' => ComponentsData::from([
+            'components' => ComponentsData::create([
                 'errors' => collect($errors)->keyBy('code')->all(),
             ]),
         ]);
@@ -181,10 +182,9 @@ final class DescribeFunction extends AbstractFunction implements UnwrappedRespon
                 continue;
             }
 
-            /** @var array<string, mixed> $descriptor */
             $descriptor = $this->buildFunctionDescriptor($serverFunction, $this->buildStandardErrors());
 
-            return self::filterRecursive($descriptor);
+            return self::filterRecursive($descriptor->toArray());
         }
 
         return [];
@@ -194,34 +194,33 @@ final class DescribeFunction extends AbstractFunction implements UnwrappedRespon
      * Builds a function descriptor for the discovery document.
      *
      * @param  array<int, array<string, mixed>> $standardErrors
-     * @return array<string, mixed>
      */
-    private function buildFunctionDescriptor(FunctionInterface $function, array $standardErrors): array
+    private function buildFunctionDescriptor(FunctionInterface $function, array $standardErrors): FunctionDescriptorData
     {
         $version = $function->getVersion();
 
-        return [
-            'name' => $function->getUrn(),
-            'version' => $version,
-            'stability' => SemanticVersion::stability($version),
-            'summary' => $function->getSummary(),
-            'description' => $function->getDescription(),
-            'tags' => $function->getTags(),
-            'arguments' => $function->getArguments(),
-            'result' => $function->getResult(),
-            'errors' => [
+        return new FunctionDescriptorData(
+            name: $function->getUrn(),
+            version: $version,
+            arguments: $function->getArguments(),
+            stability: SemanticVersion::stability($version),
+            summary: $function->getSummary(),
+            description: $function->getDescription(),
+            tags: $function->getTags(),
+            result: $function->getResult(),
+            errors: [
                 ...$standardErrors,
                 ...$function->getErrors(),
             ],
-            'query' => $function->getQuery(),
-            'deprecated' => $function->getDeprecated(),
-            'sideEffects' => $function->getSideEffects(),
-            'examples' => $function->getExamples(),
-            'simulations' => $function->getSimulations(),
-            'links' => $function->getLinks(),
-            'externalDocs' => $function->getExternalDocs(),
-            'extensions' => $function->getExtensions(),
-        ];
+            query: $function->getQuery(),
+            deprecated: $function->getDeprecated(),
+            sideEffects: $function->getSideEffects(),
+            examples: $function->getExamples(),
+            simulations: $function->getSimulations(),
+            links: $function->getLinks(),
+            externalDocs: $function->getExternalDocs(),
+            extensions: $function->getExtensions(),
+        );
     }
 
     /**

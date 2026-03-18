@@ -32,10 +32,10 @@ describe('AbstractListFunction', function (): void {
         User::query()->create(['name' => 'Jane Doe', 'created_at' => now(), 'updated_at' => now()]);
 
         $method = new ListUsers();
-        $request = RequestObjectData::from([
+        $request = RequestObjectData::create([
             'protocol' => ProtocolData::forrst()->toArray(),
             'id' => '1',
-            'call' => CallData::from([
+            'call' => CallData::create([
                 'function' => 'urn:app:forrst:fn:users:list',
             ]),
         ]);

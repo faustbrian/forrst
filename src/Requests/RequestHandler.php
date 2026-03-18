@@ -141,7 +141,7 @@ final readonly class RequestHandler
             $size = mb_strlen($request);
 
             if ($maxSize > 0 && $size > $maxSize) {
-                return RequestResultData::from([
+                return RequestResultData::create([
                     'data' => ResponseData::fromException(
                         StructurallyInvalidRequestException::create([
                             [
@@ -167,11 +167,12 @@ final readonly class RequestHandler
 
             $this->validate($requestData);
 
-            $requestObject = RequestObjectData::from($requestData);
+            $requestObject = RequestObjectData::create($requestData);
 
             // EVENT: Request validated
             $validatedEvent = new RequestValidated($requestObject);
             event($validatedEvent);
+            $requestObject = $validatedEvent->request;
 
             if ($validatedEvent->getResponse() instanceof ResponseData) {
                 return $this->result($validatedEvent->getResponse(), $startTime);
@@ -181,6 +182,7 @@ final readonly class RequestHandler
             foreach ($requestObject->extensions ?? [] as $extensionData) {
                 $executingEvent = new ExecutingFunction($requestObject, $extensionData);
                 event($executingEvent);
+                $requestObject = $executingEvent->request;
 
                 if ($executingEvent->getResponse() instanceof ResponseData) {
                     return $this->result($executingEvent->getResponse(), $startTime);
@@ -201,7 +203,7 @@ final readonly class RequestHandler
             if (is_array($response)) {
                 $responseData = ResponseData::success($response, $requestObject->id);
 
-                return RequestResultData::from([
+                return RequestResultData::create([
                     'data' => $response,
                     'statusCode' => $responseData->toStatusCode(),
                 ]);
@@ -211,12 +213,14 @@ final readonly class RequestHandler
             foreach ($requestObject->extensions ?? [] as $extensionData) {
                 $executedEvent = new FunctionExecuted($requestObject, $extensionData, $response);
                 event($executedEvent);
+                $requestObject = $executedEvent->request;
                 $response = $executedEvent->getResponse();
             }
 
             // EVENT: Response sending
             $sendingEvent = new SendingResponse($requestObject, $response);
             event($sendingEvent);
+            $requestObject = $sendingEvent->request;
 
             return $this->result($sendingEvent->getResponse(), $startTime);
         } catch (Throwable $throwable) {
@@ -234,7 +238,7 @@ final readonly class RequestHandler
      */
     private function result(ResponseData $response, int $startTime): RequestResultData
     {
-        return RequestResultData::from([
+        return RequestResultData::create([
             'data' => $this->withDuration($response, $startTime),
             'statusCode' => $response->toStatusCode(),
         ]);
@@ -254,7 +258,7 @@ final readonly class RequestHandler
         $id = $this->extractRequestId($request);
 
         if ($throwable instanceof AbstractRequestException) {
-            return RequestResultData::from([
+            return RequestResultData::create([
                 'data' => $this->withDuration(ResponseData::fromException($throwable, $id), $startTime),
                 'statusCode' => $throwable->getStatusCode(),
             ]);
@@ -262,20 +266,20 @@ final readonly class RequestHandler
 
         // @codeCoverageIgnoreStart
         if ($throwable instanceof AuthenticationException) {
-            return RequestResultData::from([
+            return RequestResultData::create([
                 'data' => $this->withDuration(ResponseData::fromException(UnauthorizedException::create(), $id), $startTime),
                 'statusCode' => 401,
             ]);
         }
 
         if ($throwable instanceof AuthorizationException) {
-            return RequestResultData::from([
+            return RequestResultData::create([
                 'data' => $this->withDuration(ResponseData::fromException(ForbiddenException::create(), $id), $startTime),
                 'statusCode' => 403,
             ]);
         }
 
-        return RequestResultData::from([
+        return RequestResultData::create([
             'data' => $this->withDuration(
                 ResponseData::fromException(
                     InternalErrorException::create($throwable),

@@ -10,7 +10,7 @@
 namespace Cline\Forrst\Discovery;
 
 use Cline\Forrst\Exceptions\InvalidFieldValueException;
-use Spatie\LaravelData\Data;
+use Cline\Forrst\Data\AbstractData;
 
 use function preg_match;
 use function sprintf;
@@ -27,7 +27,7 @@ use function sprintf;
  *
  * @see https://docs.cline.sh/forrst/extensions/discovery#extension-declarations
  */
-final class ServerExtensionDeclarationData extends Data
+final readonly class ServerExtensionDeclarationData extends AbstractData
 {
     /**
      * Create a new server extension declaration.

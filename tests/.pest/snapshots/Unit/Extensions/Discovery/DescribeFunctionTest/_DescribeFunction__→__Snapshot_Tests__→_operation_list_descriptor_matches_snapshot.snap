@@ -1,8 +1,6 @@
 {
     "name": "urn:cline:forrst:ext:async:fn:list",
     "version": "1.0.0",
-    "stability": "stable",
-    "summary": "List operations for the current caller",
     "arguments": [
         {
             "name": "status",
@@ -17,11 +15,7 @@
                 ]
             },
             "required": false,
-            "summary": null,
-            "description": "Filter by status",
-            "default": null,
-            "deprecated": null,
-            "examples": null
+            "description": "Filter by status"
         },
         {
             "name": "function",
@@ -29,11 +23,7 @@
                 "type": "string"
             },
             "required": false,
-            "summary": null,
-            "description": "Filter by function name",
-            "default": null,
-            "deprecated": null,
-            "examples": null
+            "description": "Filter by function name"
         },
         {
             "name": "limit",
@@ -44,11 +34,7 @@
                 "maximum": 100
             },
             "required": false,
-            "summary": null,
-            "description": "Max results (default 50)",
-            "default": null,
-            "deprecated": null,
-            "examples": null
+            "description": "Max results (default 50)"
         },
         {
             "name": "cursor",
@@ -58,15 +44,12 @@
                 "description": "Opaque pagination cursor from previous response"
             },
             "required": false,
-            "summary": null,
-            "description": "Pagination cursor for retrieving next page",
-            "default": null,
-            "deprecated": null,
-            "examples": null
+            "description": "Pagination cursor for retrieving next page"
         }
     ],
+    "stability": "stable",
+    "summary": "List operations for the current caller",
     "result": {
-        "resource": null,
         "schema": {
             "type": "object",
             "properties": {
@@ -102,7 +85,6 @@
                             },
                             "progress": {
                                 "type": "number",
-                                "minimum": 0,
                                 "maximum": 1,
                                 "description": "Progress percentage (0-1)"
                             },
@@ -182,5 +164,6 @@
             "code": "RATE_LIMITED",
             "message": "Rate limited"
         }
-    ]
+    ],
+    "discoverable": true
 }

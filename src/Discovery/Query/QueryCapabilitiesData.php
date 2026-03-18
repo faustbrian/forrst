@@ -9,7 +9,7 @@
 
 namespace Cline\Forrst\Discovery\Query;
 
-use Spatie\LaravelData\Data;
+use Cline\Forrst\Data\AbstractData;
 
 /**
  * Aggregate query capabilities for list and search operations.
@@ -23,7 +23,7 @@ use Spatie\LaravelData\Data;
  * @see https://docs.cline.sh/forrst/extensions/query Query extension documentation
  * @see https://docs.cline.sh/specs/forrst/discovery#query-capabilities-object Query capabilities specification
  */
-final class QueryCapabilitiesData extends Data
+final readonly class QueryCapabilitiesData extends AbstractData
 {
     /**
      * Create a new query capabilities configuration.

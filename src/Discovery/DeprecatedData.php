@@ -17,7 +17,7 @@ use Cline\Forrst\Exceptions\WhitespaceOnlyException;
 use DateTimeImmutable;
 use Exception;
 use InvalidArgumentException;
-use Spatie\LaravelData\Data;
+use Cline\Forrst\Data\AbstractData;
 
 use function array_any;
 use function is_string;
@@ -39,7 +39,7 @@ use function strip_tags;
  * @see https://docs.cline.sh/forrst/
  * @see https://docs.cline.sh/forrst/extensions/deprecation
  */
-final class DeprecatedData extends Data
+final readonly class DeprecatedData extends AbstractData
 {
     /**
      * The sunset date when this element will be removed.
@@ -86,7 +86,7 @@ final class DeprecatedData extends Data
      * @param  null|string              $sunsetDate ISO 8601 date string (e.g., "2025-12-31")
      * @throws InvalidArgumentException if date format is invalid
      */
-    public static function create(?string $reason = null, ?string $sunsetDate = null): self
+    public static function fromStrings(?string $reason = null, ?string $sunsetDate = null): self
     {
         $sunset = null;
 

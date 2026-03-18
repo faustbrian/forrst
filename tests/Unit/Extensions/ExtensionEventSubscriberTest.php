@@ -52,7 +52,7 @@ describe('ExtensionEventSubscriber', function (): void {
                 SendingResponse::class,
             ]);
 
-            $request = RequestObjectData::from([
+            $request = RequestObjectData::create([
                 'protocol' => ['name' => 'forrst', 'version' => '1.0'],
                 'id' => '01JTEST0001',
                 'call' => ['function' => 'test.method'],
@@ -71,7 +71,7 @@ describe('ExtensionEventSubscriber', function (): void {
             // Arrange
             Event::fake([ExecutingFunction::class]);
 
-            $request = RequestObjectData::from([
+            $request = RequestObjectData::create([
                 'protocol' => ['name' => 'forrst', 'version' => '1.0'],
                 'id' => '01JTEST0002',
                 'call' => ['function' => 'test.method'],
@@ -92,7 +92,7 @@ describe('ExtensionEventSubscriber', function (): void {
             // Arrange
             Event::fake([FunctionExecuted::class]);
 
-            $request = RequestObjectData::from([
+            $request = RequestObjectData::create([
                 'protocol' => ['name' => 'forrst', 'version' => '1.0'],
                 'id' => '01JTEST0003',
                 'call' => ['function' => 'test.method'],
@@ -113,7 +113,7 @@ describe('ExtensionEventSubscriber', function (): void {
             // Arrange
             Event::fake([SendingResponse::class]);
 
-            $request = RequestObjectData::from([
+            $request = RequestObjectData::create([
                 'protocol' => ['name' => 'forrst', 'version' => '1.0'],
                 'id' => '01JTEST0004',
                 'call' => ['function' => 'test.method'],
@@ -146,7 +146,7 @@ describe('ExtensionEventSubscriber', function (): void {
     describe('Edge Cases', function (): void {
         test('event propagation can be stopped', function (): void {
             // Arrange
-            $request = RequestObjectData::from([
+            $request = RequestObjectData::create([
                 'protocol' => ['name' => 'forrst', 'version' => '1.0'],
                 'id' => '01JTEST0005',
                 'call' => ['function' => 'test.method'],
@@ -162,7 +162,7 @@ describe('ExtensionEventSubscriber', function (): void {
 
         test('event can set short-circuit response', function (): void {
             // Arrange
-            $request = RequestObjectData::from([
+            $request = RequestObjectData::create([
                 'protocol' => ['name' => 'forrst', 'version' => '1.0'],
                 'id' => '01JTEST0006',
                 'call' => ['function' => 'test.method'],
@@ -180,7 +180,7 @@ describe('ExtensionEventSubscriber', function (): void {
 
         test('FunctionExecuted response is mutable', function (): void {
             // Arrange
-            $request = RequestObjectData::from([
+            $request = RequestObjectData::create([
                 'protocol' => ['name' => 'forrst', 'version' => '1.0'],
                 'id' => '01JTEST0007',
                 'call' => ['function' => 'test.method'],
@@ -199,7 +199,7 @@ describe('ExtensionEventSubscriber', function (): void {
 
         test('SendingResponse response is mutable', function (): void {
             // Arrange
-            $request = RequestObjectData::from([
+            $request = RequestObjectData::create([
                 'protocol' => ['name' => 'forrst', 'version' => '1.0'],
                 'id' => '01JTEST0008',
                 'call' => ['function' => 'test.method'],
@@ -217,7 +217,7 @@ describe('ExtensionEventSubscriber', function (): void {
 
         test('events carry request context through lifecycle', function (): void {
             // Arrange
-            $request = RequestObjectData::from([
+            $request = RequestObjectData::create([
                 'protocol' => ['name' => 'forrst', 'version' => '1.0'],
                 'id' => '01JTEST0009',
                 'call' => ['function' => 'user.get', 'arguments' => ['id' => 123]],
@@ -241,7 +241,7 @@ describe('ExtensionEventSubscriber', function (): void {
     describe('Sad Paths', function (): void {
         test('getResponse returns null when not set', function (): void {
             // Arrange
-            $request = RequestObjectData::from([
+            $request = RequestObjectData::create([
                 'protocol' => ['name' => 'forrst', 'version' => '1.0'],
                 'id' => '01JTEST0010',
                 'call' => ['function' => 'test.method'],
@@ -254,7 +254,7 @@ describe('ExtensionEventSubscriber', function (): void {
 
         test('propagation is not stopped by default', function (): void {
             // Arrange
-            $request = RequestObjectData::from([
+            $request = RequestObjectData::create([
                 'protocol' => ['name' => 'forrst', 'version' => '1.0'],
                 'id' => '01JTEST0011',
                 'call' => ['function' => 'test.method'],

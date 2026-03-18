@@ -41,7 +41,7 @@ use function str_starts_with;
  * @author Brian Faust <brian@cline.sh>
  * @see https://docs.cline.sh/forrst/
  */
-final class ServerData extends AbstractData
+final readonly class ServerData extends AbstractData
 {
     /**
      * Create a new server configuration instance.
@@ -99,6 +99,14 @@ final class ServerData extends AbstractData
             middleware: $data['middleware'] ?? [],
             functions: $data['functions'] ?? null,
         );
+    }
+
+    /**
+     * @param array<string, mixed> $input
+     */
+    public static function create(array $input): static
+    {
+        return static::createFromArray($input);
     }
 
     /**

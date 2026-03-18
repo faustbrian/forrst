@@ -11,7 +11,7 @@ namespace Cline\Forrst\Discovery;
 
 use Cline\Forrst\Exceptions\EmptyFieldException;
 use Cline\Forrst\Exceptions\FieldExceedsMaxLengthException;
-use Spatie\LaravelData\Data;
+use Cline\Forrst\Data\AbstractData;
 
 use const E_USER_WARNING;
 
@@ -34,7 +34,7 @@ use function trigger_error;
  *
  * @see https://docs.cline.sh/forrst/extensions/discovery#componentslinks
  */
-final class LinkData extends Data
+final readonly class LinkData extends AbstractData
 {
     /**
      * Create a new link definition.

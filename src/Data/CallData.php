@@ -28,7 +28,7 @@ use function is_array;
  * @author Brian Faust <brian@cline.sh>
  * @see https://docs.cline.sh/forrst/protocol
  */
-final class CallData extends AbstractData
+final readonly class CallData extends AbstractData
 {
     /**
      * Create a new call data instance.
@@ -66,6 +66,14 @@ final class CallData extends AbstractData
             version: $data['version'] ?? null,
             arguments: isset($data['arguments']) && is_array($data['arguments']) ? $data['arguments'] : null,
         );
+    }
+
+    /**
+     * @param array<string, mixed> $input
+     */
+    public static function create(array $input): static
+    {
+        return static::createFromArray($input);
     }
 
     /**

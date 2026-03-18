@@ -16,7 +16,7 @@ use Cline\Forrst\Exceptions\InvalidProtocolException;
 use Cline\Forrst\Exceptions\InvalidUrlException;
 use Cline\Forrst\Exceptions\MissingRequiredFieldException;
 use Cline\Forrst\Exceptions\WhitespaceOnlyException;
-use Spatie\LaravelData\Data;
+use Cline\Forrst\Data\AbstractData;
 
 use const FILTER_VALIDATE_EMAIL;
 use const FILTER_VALIDATE_URL;
@@ -40,7 +40,7 @@ use function strip_tags;
  * @author Brian Faust <brian@cline.sh>
  * @see https://docs.cline.sh/forrst/
  */
-final class ContactData extends Data
+final readonly class ContactData extends AbstractData
 {
     /**
      * Create a new contact information instance.
@@ -83,7 +83,7 @@ final class ContactData extends Data
      * @param null|string $url   Contact URL
      * @param null|string $email Contact email
      */
-    public static function create(
+    public static function normalized(
         ?string $name = null,
         ?string $url = null,
         ?string $email = null,
@@ -102,7 +102,7 @@ final class ContactData extends Data
      */
     public static function email(string $email): self
     {
-        return self::create(email: $email);
+        return self::normalized(email: $email);
     }
 
     /**
@@ -113,7 +113,7 @@ final class ContactData extends Data
      */
     public static function person(string $name, string $email): self
     {
-        return self::create(name: $name, email: $email);
+        return self::normalized(name: $name, email: $email);
     }
 
     /**
@@ -125,7 +125,7 @@ final class ContactData extends Data
      */
     public static function full(string $name, string $url, string $email): self
     {
-        return self::create(name: $name, url: $url, email: $email);
+        return self::normalized(name: $name, url: $url, email: $email);
     }
 
     /**

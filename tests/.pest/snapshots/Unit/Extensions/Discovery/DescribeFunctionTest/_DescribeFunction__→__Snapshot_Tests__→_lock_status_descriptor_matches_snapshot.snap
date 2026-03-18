@@ -1,8 +1,6 @@
 {
     "name": "urn:cline:forrst:ext:atomic-lock:fn:status",
     "version": "1.0.0",
-    "stability": "stable",
-    "summary": "Check the status of a lock",
     "arguments": [
         {
             "name": "key",
@@ -13,15 +11,12 @@
                 "pattern": "^[a-zA-Z0-9\\-_:.]+$"
             },
             "required": true,
-            "summary": null,
-            "description": "Lock key (with scope prefix if applicable). Must contain only alphanumeric characters, dash, underscore, colon, and dot.",
-            "default": null,
-            "deprecated": null,
-            "examples": null
+            "description": "Lock key (with scope prefix if applicable). Must contain only alphanumeric characters, dash, underscore, colon, and dot."
         }
     ],
+    "stability": "stable",
+    "summary": "Check the status of a lock",
     "result": {
-        "resource": null,
         "schema": {
             "type": "object",
             "properties": {
@@ -108,8 +103,8 @@
         {
             "code": "INVALID_ARGUMENTS",
             "message": "Invalid or missing key",
-            "description": "The lock key is required and must be a non-empty string",
-            "details": null
+            "description": "The lock key is required and must be a non-empty string"
         }
-    ]
+    ],
+    "discoverable": true
 }

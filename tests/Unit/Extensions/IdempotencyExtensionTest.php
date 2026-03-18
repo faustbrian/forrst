@@ -204,6 +204,7 @@ describe('IdempotencyExtension', function (): void {
             // Set up context via onExecutingFunction first
             $executingEvent = new ExecutingFunction($request, $extensionData);
             $extension->onExecutingFunction($executingEvent);
+            $request = $executingEvent->request;
 
             // Act
             $executedEvent = new FunctionExecuted($request, $extensionData, $response);
@@ -402,6 +403,7 @@ describe('IdempotencyExtension', function (): void {
             // Set up context first
             $executingEvent = new ExecutingFunction($request, $extensionData);
             $extension->onExecutingFunction($executingEvent);
+            $request = $executingEvent->request;
 
             // Act
             $executedEvent = new FunctionExecuted($request, $extensionData, $response);
@@ -547,6 +549,7 @@ describe('IdempotencyExtension', function (): void {
             // Set up context first
             $executingEvent = new ExecutingFunction($request, $extensionData);
             $extension->onExecutingFunction($executingEvent);
+            $request = $executingEvent->request;
 
             // Act
             $executedEvent = new FunctionExecuted($request, $extensionData, $response);

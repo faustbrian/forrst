@@ -11,7 +11,7 @@ namespace Cline\Forrst\Discovery;
 
 use Cline\Forrst\Exceptions\EmptyFieldException;
 use Cline\Forrst\Exceptions\FieldExceedsMaxLengthException;
-use Spatie\LaravelData\Data;
+use Cline\Forrst\Data\AbstractData;
 
 use const E_USER_WARNING;
 
@@ -34,7 +34,7 @@ use function trigger_error;
  * @see https://docs.cline.sh/specs/forrst/discovery#tag-object
  * @see https://docs.cline.sh/forrst/
  */
-final class TagData extends Data
+final readonly class TagData extends AbstractData
 {
     /**
      * Create a new tag instance.

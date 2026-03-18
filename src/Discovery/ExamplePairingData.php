@@ -13,7 +13,7 @@ use Cline\Forrst\Exceptions\EmptyFieldException;
 use Cline\Forrst\Exceptions\InvalidFieldTypeException;
 use Cline\Forrst\Exceptions\InvalidFieldValueException;
 use Cline\Forrst\Exceptions\MissingRequiredFieldException;
-use Spatie\LaravelData\Data;
+use Cline\Forrst\Data\AbstractData;
 
 use function array_key_exists;
 use function is_array;
@@ -32,7 +32,7 @@ use function sprintf;
  *
  * @see https://docs.cline.sh/forrst/extensions/discovery#componentsexamplepairings
  */
-final class ExamplePairingData extends Data
+final readonly class ExamplePairingData extends AbstractData
 {
     /**
      * Create a new example pairing.

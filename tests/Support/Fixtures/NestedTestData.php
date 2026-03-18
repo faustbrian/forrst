@@ -10,11 +10,7 @@
 namespace Tests\Support\Fixtures;
 
 use Cline\Forrst\Data\AbstractData;
-use Spatie\LaravelData\Attributes\Validation\ArrayType;
-use Spatie\LaravelData\Attributes\Validation\Min;
-use Spatie\LaravelData\Attributes\Validation\Nullable;
-use Spatie\LaravelData\Attributes\Validation\Required;
-use Spatie\LaravelData\Attributes\Validation\StringType;
+use Cline\Struct\Attributes\Validate;
 
 /**
  * Nested test data fixture with object relationships for RulesTransformer tests.
@@ -26,7 +22,7 @@ use Spatie\LaravelData\Attributes\Validation\StringType;
  * @author Brian Faust <brian@cline.sh>
  * @internal
  */
-final class NestedTestData extends AbstractData
+final readonly class NestedTestData extends AbstractData
 {
     /**
      * Create a new nested test data instance.
@@ -45,11 +41,11 @@ final class NestedTestData extends AbstractData
      * @param null|array     $tags   Optional array field for flexible metadata
      */
     public function __construct(
-        #[Required(), Min(1), StringType()]
+        #[Validate('required|min:1|string')]
         public readonly string $title,
-        #[Required()]
+        #[Validate('required')]
         public readonly SimpleTestData $author,
-        #[Nullable(), ArrayType()]
+        #[Validate('array|nullable')]
         public readonly ?array $tags = null,
     ) {}
 }

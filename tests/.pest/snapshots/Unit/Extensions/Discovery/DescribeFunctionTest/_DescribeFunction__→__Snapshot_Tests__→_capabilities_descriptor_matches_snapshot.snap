@@ -1,11 +1,10 @@
 {
     "name": "urn:cline:forrst:ext:discovery:fn:capabilities",
     "version": "1.0.0",
+    "arguments": [],
     "stability": "stable",
     "summary": "Discover service capabilities and supported features",
-    "arguments": [],
     "result": {
-        "resource": null,
         "schema": {
             "type": "object",
             "properties": {
@@ -90,5 +89,6 @@
             "code": "RATE_LIMITED",
             "message": "Rate limited"
         }
-    ]
+    ],
+    "discoverable": true
 }

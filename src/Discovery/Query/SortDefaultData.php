@@ -9,7 +9,7 @@
 
 namespace Cline\Forrst\Discovery\Query;
 
-use Spatie\LaravelData\Data;
+use Cline\Forrst\Data\AbstractData;
 
 /**
  * Default sort order configuration for query operations.
@@ -23,7 +23,7 @@ use Spatie\LaravelData\Data;
  * @see https://docs.cline.sh/forrst/extensions/query Query extension documentation
  * @see https://docs.cline.sh/specs/forrst/discovery#sort-default Sort default specification
  */
-final class SortDefaultData extends Data
+final readonly class SortDefaultData extends AbstractData
 {
     /**
      * Create a new default sort configuration.

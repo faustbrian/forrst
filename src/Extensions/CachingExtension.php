@@ -360,7 +360,7 @@ final class CachingExtension extends AbstractExtension
         }
 
         try {
-            return ResponseData::from($cachedData);
+            return ResponseData::create($cachedData);
         } catch (Throwable) {
             // Delete corrupted entry on deserialization failure
             $this->cache->forget($cacheKey);

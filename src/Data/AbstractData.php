@@ -10,19 +10,22 @@
 namespace Cline\Forrst\Data;
 
 use Cline\Forrst\Exceptions\DataTransformationException;
+use Cline\Struct\AbstractData as StructData;
+use Cline\Struct\Serialization\SerializationOptions;
+use Cline\Struct\Validation\RuleInferrer;
 use Override;
-use Spatie\LaravelData\Data;
 
 use function is_array;
+use function resolve;
 use function sprintf;
 
 /**
  * Base data transfer object with automatic null value filtering.
  *
- * Extends Spatie's Laravel Data package to provide automatic removal of null
- * values during serialization. This ensures compliance with JSON:API and
- * Forrst specifications which require optional fields to be omitted rather
- * than explicitly set to null.
+ * Extends the underlying Struct data implementation to provide automatic
+ * removal of null values during serialization. This ensures compliance with
+ * JSON:API and Forrst specifications which require optional fields to be
+ * omitted rather than explicitly set to null.
  *
  * All data objects in the Forrst package extend this class to maintain
  * consistent serialization behavior. The null filtering is applied
@@ -58,7 +61,7 @@ use function sprintf;
  * @see https://docs.cline.sh/forrst/document-structure
  * @see https://jsonapi.org/format/#document-structure
  */
-abstract class AbstractData extends Data
+abstract readonly class AbstractData extends StructData
 {
     /**
      * Maximum allowed recursion depth during null value removal.
@@ -78,10 +81,23 @@ abstract class AbstractData extends Data
      * @return array<string, mixed> Array representation without null values
      */
     #[Override()]
-    public function toArray(): array
-    {
+    public function toArray(
+        bool $includeSensitive = false,
+        array $include = [],
+        array $exclude = [],
+        array $groups = [],
+        array $context = [],
+        ?SerializationOptions $serialization = null,
+    ): array {
         /** @var array<string, mixed> $array */
-        $array = parent::toArray();
+        $array = parent::toArray(
+            $includeSensitive,
+            $include,
+            $exclude,
+            $groups,
+            $context,
+            $serialization,
+        );
 
         return $this->removeNullValuesRecursively($array);
     }
@@ -98,6 +114,15 @@ abstract class AbstractData extends Data
     public function jsonSerialize(): array
     {
         return $this->toArray();
+    }
+
+    /**
+     * @param array<string, mixed> $context
+     * @return array<string, array<int, mixed>>
+     */
+    public static function getValidationRules(array $context = []): array
+    {
+        return resolve(RuleInferrer::class)->infer(static::metadata());
     }
 
     /**

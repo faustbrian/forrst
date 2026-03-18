@@ -100,11 +100,11 @@ final class FunctionWithArguments extends AbstractFunction
     public function getArguments(): array
     {
         return [
-            ArgumentData::from([
+            ArgumentData::create([
                 'name' => 'userId',
                 'schema' => ['type' => 'integer'],
             ]),
-            ArgumentData::from([
+            ArgumentData::create([
                 'name' => 'email',
                 'schema' => ['type' => 'string'],
             ]),
@@ -127,7 +127,7 @@ final class FunctionWithResult extends AbstractFunction
     #[Override()]
     public function getResult(): ResultDescriptorData
     {
-        return ResultDescriptorData::from([
+        return ResultDescriptorData::create([
             'schema' => [
                 'type' => 'object',
                 'properties' => [
@@ -441,10 +441,10 @@ describe('AbstractFunction', function (): void {
             test('stores request object for later access', function (): void {
                 // Arrange
                 $function = new ConcreteTestFunction();
-                $requestObject = RequestObjectData::from([
+                $requestObject = RequestObjectData::create([
                     'protocol' => ProtocolData::forrst()->toArray(),
                     'id' => '123',
-                    'call' => CallData::from([
+                    'call' => CallData::create([
                         'function' => 'urn:cline:forrst:fn:test:function',
                         'arguments' => ['key' => 'value'],
                     ]),
@@ -467,10 +467,10 @@ describe('AbstractFunction', function (): void {
             test('accepts request with null arguments', function (): void {
                 // Arrange
                 $function = new ConcreteTestFunction();
-                $requestObject = RequestObjectData::from([
+                $requestObject = RequestObjectData::create([
                     'protocol' => ProtocolData::forrst()->toArray(),
                     'id' => 'abc-123',
-                    'call' => CallData::from([
+                    'call' => CallData::create([
                         'function' => 'test.noArgs',
                         'arguments' => null,
                     ]),
@@ -491,10 +491,10 @@ describe('AbstractFunction', function (): void {
             test('accepts request with nested arguments structure', function (): void {
                 // Arrange
                 $function = new ConcreteTestFunction();
-                $requestObject = RequestObjectData::from([
+                $requestObject = RequestObjectData::create([
                     'protocol' => ProtocolData::forrst()->toArray(),
                     'id' => '456',
-                    'call' => CallData::from([
+                    'call' => CallData::create([
                         'function' => 'test.nested',
                         'arguments' => [
                             'user' => [
@@ -567,17 +567,17 @@ describe('AbstractFunction', function (): void {
             test('allows overwriting previous request object', function (): void {
                 // Arrange
                 $function = new ConcreteTestFunction();
-                $firstRequest = RequestObjectData::from([
+                $firstRequest = RequestObjectData::create([
                     'protocol' => ProtocolData::forrst()->toArray(),
                     'id' => '1',
-                    'call' => CallData::from([
+                    'call' => CallData::create([
                         'function' => 'first.function',
                     ]),
                 ]);
-                $secondRequest = RequestObjectData::from([
+                $secondRequest = RequestObjectData::create([
                     'protocol' => ProtocolData::forrst()->toArray(),
                     'id' => '2',
-                    'call' => CallData::from([
+                    'call' => CallData::create([
                         'function' => 'second.function',
                     ]),
                 ]);
@@ -690,7 +690,7 @@ describe('AbstractFunction', function (): void {
                         $args = [];
 
                         for ($i = 1; $i <= 20; ++$i) {
-                            $args[] = ArgumentData::from([
+                            $args[] = ArgumentData::create([
                                 'name' => 'arg'.$i,
                                 'schema' => ['type' => 'string'],
                             ]);
@@ -790,10 +790,10 @@ describe('AbstractFunction', function (): void {
             test('handles request with standard id', function (): void {
                 // Arrange
                 $function = new ConcreteTestFunction();
-                $requestObject = RequestObjectData::from([
+                $requestObject = RequestObjectData::create([
                     'protocol' => ProtocolData::forrst()->toArray(),
                     'id' => 'notification-123',
-                    'call' => CallData::from([
+                    'call' => CallData::create([
                         'function' => 'test.notification',
                     ]),
                 ]);
@@ -813,10 +813,10 @@ describe('AbstractFunction', function (): void {
             test('handles request with string id', function (): void {
                 // Arrange
                 $function = new ConcreteTestFunction();
-                $requestObject = RequestObjectData::from([
+                $requestObject = RequestObjectData::create([
                     'protocol' => ProtocolData::forrst()->toArray(),
                     'id' => 'string-id-123',
-                    'call' => CallData::from([
+                    'call' => CallData::create([
                         'function' => 'urn:cline:forrst:fn:test:function',
                     ]),
                 ]);
@@ -837,10 +837,10 @@ describe('AbstractFunction', function (): void {
             test('handles request with numeric-like string id', function (): void {
                 // Arrange
                 $function = new ConcreteTestFunction();
-                $requestObject = RequestObjectData::from([
+                $requestObject = RequestObjectData::create([
                     'protocol' => ProtocolData::forrst()->toArray(),
                     'id' => '42',
-                    'call' => CallData::from([
+                    'call' => CallData::create([
                         'function' => 'urn:cline:forrst:fn:test:function',
                     ]),
                 ]);
@@ -873,10 +873,10 @@ describe('AbstractFunction', function (): void {
                         'posts' => ['id', 'title'],
                     ],
                 ];
-                $requestObject = RequestObjectData::from([
+                $requestObject = RequestObjectData::create([
                     'protocol' => ProtocolData::forrst()->toArray(),
                     'id' => 'complex-1',
-                    'call' => CallData::from([
+                    'call' => CallData::create([
                         'function' => 'test.complex',
                         'arguments' => $complexArguments,
                     ]),
@@ -901,10 +901,10 @@ describe('AbstractFunction', function (): void {
             test('allows setting request before calling getName', function (): void {
                 // Arrange
                 $function = new ConcreteTestFunction();
-                $requestObject = RequestObjectData::from([
+                $requestObject = RequestObjectData::create([
                     'protocol' => ProtocolData::forrst()->toArray(),
                     'id' => '1',
-                    'call' => CallData::from([
+                    'call' => CallData::create([
                         'function' => 'urn:cline:forrst:fn:test:function',
                     ]),
                 ]);
@@ -922,10 +922,10 @@ describe('AbstractFunction', function (): void {
                 $function = new ConcreteTestFunction();
                 $nameBefore = $function->getUrn();
 
-                $requestObject = RequestObjectData::from([
+                $requestObject = RequestObjectData::create([
                     'protocol' => ProtocolData::forrst()->toArray(),
                     'id' => '1',
-                    'call' => CallData::from([
+                    'call' => CallData::create([
                         'function' => 'different.function',
                     ]),
                 ]);

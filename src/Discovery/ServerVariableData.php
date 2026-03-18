@@ -13,7 +13,7 @@ use Cline\Forrst\Exceptions\EmptyArrayException;
 use Cline\Forrst\Exceptions\EmptyFieldException;
 use Cline\Forrst\Exceptions\InvalidFieldTypeException;
 use Cline\Forrst\Exceptions\InvalidFieldValueException;
-use Spatie\LaravelData\Data;
+use Cline\Forrst\Data\AbstractData;
 
 use function implode;
 use function in_array;
@@ -34,7 +34,7 @@ use function sprintf;
  * @see https://docs.cline.sh/specs/forrst/discovery#server-variable-object
  * @see https://docs.cline.sh/forrst/
  */
-final class ServerVariableData extends Data
+final readonly class ServerVariableData extends AbstractData
 {
     /**
      * Create a new server variable instance.

@@ -14,7 +14,7 @@ use Cline\Forrst\Exceptions\EmptyFieldException;
 use Cline\Forrst\Exceptions\InvalidFieldTypeException;
 use Cline\Forrst\Exceptions\InvalidFieldValueException;
 use Cline\Forrst\Exceptions\InvalidFunctionNameException;
-use Spatie\LaravelData\Data;
+use Cline\Forrst\Data\AbstractData;
 
 use function implode;
 use function in_array;
@@ -36,7 +36,7 @@ use function sprintf;
  * @see https://docs.cline.sh/forrst/system-functions
  * @see https://docs.cline.sh/specs/forrst/discovery#function-object
  */
-final class FunctionDescriptorData extends Data
+final readonly class FunctionDescriptorData extends AbstractData
 {
     /**
      * Create a new function descriptor.

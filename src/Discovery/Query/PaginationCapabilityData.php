@@ -9,7 +9,7 @@
 
 namespace Cline\Forrst\Discovery\Query;
 
-use Spatie\LaravelData\Data;
+use Cline\Forrst\Data\AbstractData;
 
 /**
  * Pagination capability configuration for query operations.
@@ -23,7 +23,7 @@ use Spatie\LaravelData\Data;
  * @see https://docs.cline.sh/forrst/extensions/query Query extension documentation
  * @see https://docs.cline.sh/specs/forrst/discovery#pagination-capability Pagination capability specification
  */
-final class PaginationCapabilityData extends Data
+final readonly class PaginationCapabilityData extends AbstractData
 {
     /**
      * Create a new pagination capability configuration.

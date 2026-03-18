@@ -73,7 +73,7 @@ describe('FunctionExtensionsData', function (): void {
 
         test('creates from array with supported', function (): void {
             // Arrange & Act
-            $extensions = FunctionExtensionsData::from([
+            $extensions = FunctionExtensionsData::create([
                 'supported' => ['urn:cline:forrst:ext:deadline'],
             ]);
 
@@ -84,7 +84,7 @@ describe('FunctionExtensionsData', function (): void {
 
         test('creates from array with excluded', function (): void {
             // Arrange & Act
-            $extensions = FunctionExtensionsData::from([
+            $extensions = FunctionExtensionsData::create([
                 'excluded' => ['urn:cline:forrst:ext:batch'],
             ]);
 

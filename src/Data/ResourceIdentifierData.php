@@ -28,7 +28,7 @@ use function mb_strlen;
  * @see https://docs.cline.sh/forrst/resource-objects
  * @see https://jsonapi.org/format/#document-resource-identifier-objects
  */
-final class ResourceIdentifierData extends AbstractData
+final readonly class ResourceIdentifierData extends AbstractData
 {
     /**
      * Maximum length for type field to prevent memory exhaustion.

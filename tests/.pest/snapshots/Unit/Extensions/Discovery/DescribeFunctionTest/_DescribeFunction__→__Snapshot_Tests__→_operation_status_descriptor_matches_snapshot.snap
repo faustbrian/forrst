@@ -1,8 +1,6 @@
 {
     "name": "urn:cline:forrst:ext:async:fn:status",
     "version": "1.0.0",
-    "stability": "stable",
-    "summary": "Check status of an async operation",
     "arguments": [
         {
             "name": "operation_id",
@@ -14,15 +12,12 @@
                 "description": "Operation identifier (format: op_ followed by 24 hex characters)"
             },
             "required": true,
-            "summary": null,
-            "description": "Unique operation identifier",
-            "default": null,
-            "deprecated": null,
-            "examples": null
+            "description": "Unique operation identifier"
         }
     ],
+    "stability": "stable",
+    "summary": "Check status of an async operation",
     "result": {
-        "resource": null,
         "schema": {
             "type": "object",
             "properties": {
@@ -51,7 +46,6 @@
                 },
                 "progress": {
                     "type": "number",
-                    "minimum": 0,
                     "maximum": 1,
                     "description": "Progress percentage (0-1)"
                 },
@@ -129,8 +123,8 @@
         {
             "code": "ASYNC_OPERATION_NOT_FOUND",
             "message": "Operation not found",
-            "description": "The specified operation ID does not exist",
-            "details": null
+            "description": "The specified operation ID does not exist"
         }
-    ]
+    ],
+    "discoverable": true
 }

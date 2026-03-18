@@ -9,9 +9,9 @@
 
 namespace Cline\Forrst\Resources;
 
+use Cline\Forrst\Data\AbstractData;
 use Illuminate\Support\Str;
 use Override;
-use Spatie\LaravelData\Data;
 
 use function class_basename;
 use function data_get;
@@ -36,11 +36,11 @@ abstract class AbstractDataResource extends AbstractResource
     /**
      * Creates a resource wrapping a Spatie Data DTO.
      *
-     * @param Data $model Spatie Laravel Data object containing the source data to transform.
+     * @param AbstractData $model Forrst data object containing the source data to transform.
      *                    The DTO's properties will be exposed as resource attributes.
      */
     public function __construct(
-        private readonly Data $model,
+        private readonly AbstractData $model,
     ) {}
 
     /**

@@ -32,18 +32,8 @@ use function is_string;
  * @see https://docs.cline.sh/forrst/protocol
  * @see https://docs.cline.sh/forrst/document-structure
  */
-final class RequestObjectData extends AbstractData
+final readonly class RequestObjectData extends AbstractData
 {
-    /**
-     * Runtime metadata storage for extensions.
-     *
-     * Non-readonly to allow extensions to store per-request state during
-     * processing. This is NOT serialized or transmitted - only for internal use.
-     *
-     * @var array<string, mixed>
-     */
-    public array $meta = [];
-
     /**
      * Create a new Forrst request object instance.
      *
@@ -57,10 +47,10 @@ final class RequestObjectData extends AbstractData
      * @param CallData                  $call       The call object containing function name, optional version specifier,
      *                                              and function arguments. This represents the actual function invocation
      *                                              details that the server will execute.
-     * @param null|array<string, mixed> $context    Optional context data providing request-scoped information such as
+     * @param array<string, mixed>      $context    Optional context data providing request-scoped information such as
      *                                              authentication credentials, distributed tracing identifiers, tenant
      *                                              information, or other metadata required for request processing.
-     * @param null|array<ExtensionData> $extensions Optional array of extension configurations that modify request
+     * @param array<ExtensionData>      $extensions Optional array of extension configurations that modify request
      *                                              processing behavior. Extensions enable features like async execution,
      *                                              batch processing, caching, or custom protocol enhancements.
      */
@@ -68,9 +58,46 @@ final class RequestObjectData extends AbstractData
         public readonly ProtocolData $protocol,
         public readonly string $id,
         public readonly CallData $call,
-        public readonly ?array $context = null,
-        public readonly ?array $extensions = null,
+        public readonly array $context = [],
+        public readonly array $extensions = [],
+        public readonly array $meta = [],
     ) {}
+
+    /**
+     * Create a RequestObjectData from an array.
+     *
+     * Hydrates a request object from an associative array, typically from
+     * JSON-decoded request data. Validates required fields and ensures the
+     * request includes a valid identifier and function name before hydration.
+     *
+     * @param array<string, mixed> $input Data array to create from
+     *
+     * @throws InvalidRequestIdException    If id field is missing or invalid
+     * @throws MissingFunctionNameException If call.function field is missing
+     * @return static                       Configured request object
+     */
+    public static function create(array $input): static
+    {
+        if (!isset($input['id']) || !is_string($input['id'])) {
+            throw InvalidRequestIdException::create();
+        }
+
+        $call = $input['call'] ?? null;
+
+        if ($call instanceof CallData) {
+            return parent::create($input);
+        }
+
+        if (!is_array($call)) {
+            throw MissingFunctionNameException::create();
+        }
+
+        if (!isset($call['function']) || !is_string($call['function'])) {
+            throw MissingFunctionNameException::create();
+        }
+
+        return parent::create($input);
+    }
 
     /**
      * Create a standard Forrst request.
@@ -102,99 +129,61 @@ final class RequestObjectData extends AbstractData
                 version: $version,
                 arguments: $arguments,
             ),
-            context: $context,
-            extensions: $extensions,
+            context: $context ?? [],
+            extensions: $extensions ?? [],
         );
     }
 
     /**
-     * Create a RequestObjectData from an array.
+     * Retrieve runtime metadata for extensions.
      *
-     * Hydrates a request object from an associative array, typically from JSON-decoded
-     * request data. Validates required fields and constructs nested data objects.
+     * This metadata is maintained on the request object for internal
+     * processing and is not serialized onto the wire payload.
      *
-     * @param array<string, mixed> ...$payloads Data arrays to create from (only first element used)
-     *
-     * @throws InvalidRequestIdException    If id field is missing or invalid
-     * @throws MissingFunctionNameException If call.function field is missing
-     * @return static                       Configured request object
+     * @return array<string, mixed> Extension metadata for the current request
      */
-    #[Override()]
-    public static function from(mixed ...$payloads): static
+    public function meta(): array
     {
-        $rawData = $payloads[0] ?? [];
+        return $this->meta;
+    }
 
-        /** @var array<string, mixed> $data */
-        $data = $rawData;
+    /**
+     * Retrieve a specific metadata value using dot notation.
+     *
+     * @param  string $key     Metadata key in dot notation
+     * @param  mixed  $default Default value to return if not found
+     * @return mixed  The metadata value or the default value
+     */
+    public function getMeta(string $key, mixed $default = null): mixed
+    {
+        return Arr::get($this->meta(), $key, $default);
+    }
 
-        // Protocol must be an object with name and version
-        $protocolData = $data['protocol'] ?? [];
+    /**
+     * Replace the entire runtime metadata payload.
+     *
+     * @param  array<string, mixed> $meta Metadata to attach to the request
+     * @return self                  New request instance with updated metadata
+     */
+    public function withMeta(array $meta): self
+    {
+        return $this->with(meta: $meta);
+    }
 
-        /** @var array{name?: string, version?: string} $protocolArray */
-        $protocolArray = is_array($protocolData) ? $protocolData : [];
+    /**
+     * Replace a single metadata value using dot notation.
+     *
+     * @param  string $key   Metadata key in dot notation
+     * @param  mixed  $value Metadata value to set
+     * @return self          New request instance with updated metadata
+     */
+    public function withMetaValue(string $key, mixed $value): self
+    {
+        $meta = $this->meta();
 
-        $protocol = ProtocolData::from($protocolArray);
+        Arr::set($meta, $key, $value);
 
-        // ID is required
-        if (!isset($data['id']) || !is_string($data['id'])) {
-            throw InvalidRequestIdException::create();
-        }
-
-        // Call is required - can be CallData object or array
-        $callData = $data['call'] ?? [];
-
-        if ($callData instanceof CallData) {
-            $call = $callData;
-        } elseif (is_array($callData)) {
-            $rawFunctionName = $callData['function'] ?? null;
-
-            if (!is_string($rawFunctionName)) {
-                throw MissingFunctionNameException::create();
-            }
-
-            $rawVersion = $callData['version'] ?? null;
-            $rawArguments = $callData['arguments'] ?? null;
-
-            /** @var null|array<string, mixed> $arguments */
-            $arguments = is_array($rawArguments) ? $rawArguments : null;
-
-            $call = new CallData(
-                function: $rawFunctionName,
-                version: is_string($rawVersion) ? $rawVersion : null,
-                arguments: $arguments,
-            );
-        } else {
-            throw MissingFunctionNameException::create();
-        }
-
-        // Hydrate extensions array
-        $extensions = null;
-
-        if (isset($data['extensions']) && is_array($data['extensions'])) {
-            /** @var array<ExtensionData> $extensions */
-            $extensions = array_map(
-                function (mixed $extensionData): ExtensionData {
-                    /** @var array<string, mixed> $extensionArray */
-                    $extensionArray = is_array($extensionData) ? $extensionData : [];
-
-                    return ExtensionData::from($extensionArray);
-                },
-                $data['extensions'],
-            );
-        }
-
-        $rawContext = $data['context'] ?? null;
-
-        /** @var null|array<string, mixed> $context */
-        $context = is_array($rawContext) ? $rawContext : null;
-
-        return new self(
-            protocol: $protocol,
-            id: $data['id'],
-            call: $call,
-            context: $context,
-            extensions: $extensions,
-        );
+        return $this->withMeta($meta);
     }
 
     /**
@@ -255,10 +244,6 @@ final class RequestObjectData extends AbstractData
      */
     public function getContext(string $key, mixed $default = null): mixed
     {
-        if ($this->context === null) {
-            return $default;
-        }
-
         return Arr::get($this->context, $key, $default);
     }
 
@@ -271,10 +256,6 @@ final class RequestObjectData extends AbstractData
     public function getExtension(string|BackedEnum $urn): ?ExtensionData
     {
         $urn = $urn instanceof BackedEnum ? $urn->value : $urn;
-
-        if ($this->extensions === null) {
-            return null;
-        }
 
         foreach ($this->extensions as $extension) {
             if ($extension->urn === $urn) {
@@ -324,8 +305,14 @@ final class RequestObjectData extends AbstractData
      * @return array<string, mixed> Request data as Forrst protocol compliant associative array
      */
     #[Override()]
-    public function toArray(): array
-    {
+    public function toArray(
+        bool $includeSensitive = false,
+        array $include = [],
+        array $exclude = [],
+        array $groups = [],
+        array $context = [],
+        ?\Cline\Struct\Serialization\SerializationOptions $serialization = null,
+    ): array {
         $result = [
             'protocol' => $this->protocol->toArray(),
             'id' => $this->id,
@@ -342,11 +329,11 @@ final class RequestObjectData extends AbstractData
             $result['call']['arguments'] = $this->call->arguments;
         }
 
-        if ($this->context !== null) {
+        if ($this->context !== []) {
             $result['context'] = $this->context;
         }
 
-        if ($this->extensions !== null) {
+        if ($this->extensions !== []) {
             $result['extensions'] = array_map(
                 fn (ExtensionData $ext): array => $ext->toRequestArray(),
                 $this->extensions,

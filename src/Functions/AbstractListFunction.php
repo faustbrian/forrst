@@ -114,14 +114,14 @@ abstract class AbstractListFunction extends AbstractFunction
 
         // Add pagination arguments based on strategy
         if ($strategy === 'cursor') {
-            $arguments[] = ArgumentData::from([
+            $arguments[] = ArgumentData::create([
                 'name' => 'cursor',
                 'schema' => ['type' => 'string'],
                 'required' => false,
                 'description' => 'Pagination cursor for the next page',
             ]);
         } elseif ($strategy === 'offset') {
-            $arguments[] = ArgumentData::from([
+            $arguments[] = ArgumentData::create([
                 'name' => 'page',
                 'schema' => ['type' => 'integer', 'minimum' => 1],
                 'required' => false,
@@ -132,7 +132,7 @@ abstract class AbstractListFunction extends AbstractFunction
 
         // Limit is common to all strategies except 'none'
         if ($strategy !== 'none') {
-            $arguments[] = ArgumentData::from([
+            $arguments[] = ArgumentData::create([
                 'name' => 'limit',
                 'schema' => [
                     'type' => 'integer',
@@ -295,7 +295,7 @@ abstract class AbstractListFunction extends AbstractFunction
     {
         return [
             // Sparse fieldsets
-            ArgumentData::from([
+            ArgumentData::create([
                 'name' => 'fields',
                 'schema' => [
                     'type' => 'object',
@@ -309,7 +309,7 @@ abstract class AbstractListFunction extends AbstractFunction
                 'examples' => [['self' => ['id', 'name', 'created_at']]],
             ]),
             // Filters
-            ArgumentData::from([
+            ArgumentData::create([
                 'name' => 'filter',
                 'schema' => [
                     'type' => 'object',
@@ -319,7 +319,7 @@ abstract class AbstractListFunction extends AbstractFunction
                 'description' => 'Filter criteria',
             ]),
             // Relationships to include
-            ArgumentData::from([
+            ArgumentData::create([
                 'name' => 'include',
                 'schema' => [
                     'type' => 'array',
@@ -330,7 +330,7 @@ abstract class AbstractListFunction extends AbstractFunction
                 'examples' => [['customer', 'items']],
             ]),
             // Sorting
-            ArgumentData::from([
+            ArgumentData::create([
                 'name' => 'sort',
                 'schema' => [
                     'type' => 'array',

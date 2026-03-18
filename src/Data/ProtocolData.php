@@ -9,8 +9,6 @@
 
 namespace Cline\Forrst\Data;
 
-use Stringable;
-
 use function sprintf;
 
 /**
@@ -26,7 +24,7 @@ use function sprintf;
  * @see https://docs.cline.sh/forrst/document-structure
  * @psalm-immutable
  */
-final readonly class ProtocolData implements Stringable
+final readonly class ProtocolData extends AbstractData
 {
     public const string NAME = 'forrst';
 
@@ -101,8 +99,14 @@ final readonly class ProtocolData implements Stringable
      *
      * @return array{name: string, version: string} Protocol data as associative array
      */
-    public function toArray(): array
-    {
+    public function toArray(
+        bool $includeSensitive = false,
+        array $include = [],
+        array $exclude = [],
+        array $groups = [],
+        array $context = [],
+        ?\Cline\Struct\Serialization\SerializationOptions $serialization = null,
+    ): array {
         return [
             'name' => $this->name,
             'version' => $this->version,

@@ -28,10 +28,10 @@ describe('CallFunction', function (): void {
     describe('Happy Paths', function (): void {
         test('executes method successfully and returns wrapped response', function (): void {
             // Arrange
-            $requestObject = RequestObjectData::from([
+            $requestObject = RequestObjectData::create([
                 'protocol' => ProtocolData::forrst()->toArray(),
                 'id' => '123',
-                'call' => CallData::from([
+                'call' => CallData::create([
                     'function' => 'test.method',
                     'arguments' => ['name' => 'John'],
                 ]),
@@ -59,10 +59,10 @@ describe('CallFunction', function (): void {
 
         test('executes method with no parameters and returns result', function (): void {
             // Arrange
-            $requestObject = RequestObjectData::from([
+            $requestObject = RequestObjectData::create([
                 'protocol' => ProtocolData::forrst()->toArray(),
                 'id' => 'abc-123',
-                'call' => CallData::from([
+                'call' => CallData::create([
                     'function' => 'test.noParams',
                     'arguments' => null,
                 ]),
@@ -87,10 +87,10 @@ describe('CallFunction', function (): void {
 
         test('returns unwrapped response when method implements UnwrappedResponseInterface', function (): void {
             // Arrange
-            $requestObject = RequestObjectData::from([
+            $requestObject = RequestObjectData::create([
                 'protocol' => ProtocolData::forrst()->toArray(),
                 'id' => '456',
-                'call' => CallData::from([
+                'call' => CallData::create([
                     'function' => 'test.unwrapped',
                     'arguments' => [],
                 ]),
@@ -116,10 +116,10 @@ describe('CallFunction', function (): void {
 
         test('resolves method parameters from request data', function (): void {
             // Arrange
-            $requestObject = RequestObjectData::from([
+            $requestObject = RequestObjectData::create([
                 'protocol' => ProtocolData::forrst()->toArray(),
                 'id' => '789',
-                'call' => CallData::from([
+                'call' => CallData::create([
                     'function' => 'user.create',
                     'arguments' => [
                         'name' => 'Jane Doe',
@@ -152,10 +152,10 @@ describe('CallFunction', function (): void {
 
         test('handles method with requestObject parameter correctly', function (): void {
             // Arrange
-            $requestObject = RequestObjectData::from([
+            $requestObject = RequestObjectData::create([
                 'protocol' => ProtocolData::forrst()->toArray(),
                 'id' => 'req-123',
-                'call' => CallData::from([
+                'call' => CallData::create([
                     'function' => 'test.withRequestObject',
                     'arguments' => ['value' => 42],
                 ]),
@@ -185,10 +185,10 @@ describe('CallFunction', function (): void {
 
         test('resolves snake_case parameters to camelCase method parameters', function (): void {
             // Arrange
-            $requestObject = RequestObjectData::from([
+            $requestObject = RequestObjectData::create([
                 'protocol' => ProtocolData::forrst()->toArray(),
                 'id' => 'snake-123',
-                'call' => CallData::from([
+                'call' => CallData::create([
                     'function' => 'test.snakeCase',
                     'arguments' => [
                         'first.name' => 'John',
@@ -215,10 +215,10 @@ describe('CallFunction', function (): void {
 
         test('handles array data parameter when method expects array type', function (): void {
             // Arrange
-            $requestObject = RequestObjectData::from([
+            $requestObject = RequestObjectData::create([
                 'protocol' => ProtocolData::forrst()->toArray(),
                 'id' => 'array-123',
-                'call' => CallData::from([
+                'call' => CallData::create([
                     'function' => 'test.arrayData',
                     'arguments' => [
                         'items' => ['a', 'b', 'c'],
@@ -246,12 +246,12 @@ describe('CallFunction', function (): void {
             ]);
         });
 
-        test('resolves Data object parameter with validateAndCreate', function (): void {
+        test('resolves Data object parameter with createWithValidation', function (): void {
             // Arrange
-            $requestObject = RequestObjectData::from([
+            $requestObject = RequestObjectData::create([
                 'protocol' => ProtocolData::forrst()->toArray(),
                 'id' => 'data-object-123',
-                'call' => CallData::from([
+                'call' => CallData::create([
                     'function' => 'user.createWithData',
                     'arguments' => [
                         'userInfo' => [
@@ -292,10 +292,10 @@ describe('CallFunction', function (): void {
 
         test('resolves Data object when parameter name is "data"', function (): void {
             // Arrange - Special case where parameter is named "data"
-            $requestObject = RequestObjectData::from([
+            $requestObject = RequestObjectData::create([
                 'protocol' => ProtocolData::forrst()->toArray(),
                 'id' => 'data-param-123',
-                'call' => CallData::from([
+                'call' => CallData::create([
                     'function' => 'product.create',
                     'arguments' => [
                         'title' => 'Test Product',
@@ -334,10 +334,10 @@ describe('CallFunction', function (): void {
 
         test('resolves multiple Data object parameters', function (): void {
             // Arrange
-            $requestObject = RequestObjectData::from([
+            $requestObject = RequestObjectData::create([
                 'protocol' => ProtocolData::forrst()->toArray(),
                 'id' => 'multi-data-123',
-                'call' => CallData::from([
+                'call' => CallData::create([
                     'function' => 'order.create',
                     'arguments' => [
                         'user' => [
@@ -382,10 +382,10 @@ describe('CallFunction', function (): void {
 
         test('handles mixed Data objects and primitive parameters', function (): void {
             // Arrange
-            $requestObject = RequestObjectData::from([
+            $requestObject = RequestObjectData::create([
                 'protocol' => ProtocolData::forrst()->toArray(),
                 'id' => 'mixed-params-123',
-                'call' => CallData::from([
+                'call' => CallData::create([
                     'function' => 'invoice.create',
                     'arguments' => [
                         'product' => [
@@ -434,10 +434,10 @@ describe('CallFunction', function (): void {
     describe('Sad Paths', function (): void {
         test('catches exception and returns error response', function (): void {
             // Arrange
-            $requestObject = RequestObjectData::from([
+            $requestObject = RequestObjectData::create([
                 'protocol' => ProtocolData::forrst()->toArray(),
                 'id' => 'error-123',
-                'call' => CallData::from([
+                'call' => CallData::create([
                     'function' => 'test.failing',
                 ]),
             ]);
@@ -464,10 +464,10 @@ describe('CallFunction', function (): void {
 
         test('handles ValidationException during Data object validation', function (): void {
             // Arrange
-            $requestObject = RequestObjectData::from([
+            $requestObject = RequestObjectData::create([
                 'protocol' => ProtocolData::forrst()->toArray(),
                 'id' => 'validation-error',
-                'call' => CallData::from([
+                'call' => CallData::create([
                     'function' => 'test.validation',
                     'arguments' => [
                         'email' => 'not-an-email',
@@ -496,10 +496,10 @@ describe('CallFunction', function (): void {
 
         test('returns error response for method that throws exception', function (): void {
             // Arrange
-            $requestObject = RequestObjectData::from([
+            $requestObject = RequestObjectData::create([
                 'protocol' => ProtocolData::forrst()->toArray(),
                 'id' => 'runtime-error',
-                'call' => CallData::from([
+                'call' => CallData::create([
                     'function' => 'test.runtimeError',
                     'arguments' => [],
                 ]),
@@ -525,10 +525,10 @@ describe('CallFunction', function (): void {
 
         test('handles InvalidDataException during parameter resolution', function (): void {
             // Arrange
-            $requestObject = RequestObjectData::from([
+            $requestObject = RequestObjectData::create([
                 'protocol' => ProtocolData::forrst()->toArray(),
                 'id' => 'invalid-data',
-                'call' => CallData::from([
+                'call' => CallData::create([
                     'function' => 'test.invalidData',
                     'arguments' => [
                         'invalid' => 'data',
@@ -558,10 +558,10 @@ describe('CallFunction', function (): void {
 
         test('throws InvalidDataException when Data object validation fails', function (): void {
             // Arrange - Invalid email format to trigger validation error
-            $requestObject = RequestObjectData::from([
+            $requestObject = RequestObjectData::create([
                 'protocol' => ProtocolData::forrst()->toArray(),
                 'id' => 'data-validation-fail',
-                'call' => CallData::from([
+                'call' => CallData::create([
                     'function' => 'user.create',
                     'arguments' => [
                         'user' => [
@@ -595,10 +595,10 @@ describe('CallFunction', function (): void {
 
         test('handles validation error for Data parameter named "data"', function (): void {
             // Arrange - Missing required field to trigger validation
-            $requestObject = RequestObjectData::from([
+            $requestObject = RequestObjectData::create([
                 'protocol' => ProtocolData::forrst()->toArray(),
                 'id' => 'data-param-validation-fail',
-                'call' => CallData::from([
+                'call' => CallData::create([
                     'function' => 'product.create',
                     'arguments' => [
                         'title' => 'Test',  // Valid
@@ -628,10 +628,10 @@ describe('CallFunction', function (): void {
 
         test('handles validation failure for multiple Data parameters', function (): void {
             // Arrange - Invalid data for both parameters
-            $requestObject = RequestObjectData::from([
+            $requestObject = RequestObjectData::create([
                 'protocol' => ProtocolData::forrst()->toArray(),
                 'id' => 'multi-data-validation-fail',
-                'call' => CallData::from([
+                'call' => CallData::create([
                     'function' => 'order.create',
                     'arguments' => [
                         'user' => [
@@ -671,10 +671,10 @@ describe('CallFunction', function (): void {
     describe('Edge Cases', function (): void {
         test('handles empty params array', function (): void {
             // Arrange
-            $requestObject = RequestObjectData::from([
+            $requestObject = RequestObjectData::create([
                 'protocol' => ProtocolData::forrst()->toArray(),
                 'id' => 'empty-params',
-                'call' => CallData::from([
+                'call' => CallData::create([
                     'function' => 'test.noParams',
                     'arguments' => [],
                 ]),
@@ -699,10 +699,10 @@ describe('CallFunction', function (): void {
 
         test('handles null parameter values', function (): void {
             // Arrange
-            $requestObject = RequestObjectData::from([
+            $requestObject = RequestObjectData::create([
                 'protocol' => ProtocolData::forrst()->toArray(),
                 'id' => 'null-params',
-                'call' => CallData::from([
+                'call' => CallData::create([
                     'function' => 'test.nullValues',
                     'arguments' => [
                         'name' => 'Test',
@@ -729,10 +729,10 @@ describe('CallFunction', function (): void {
 
         test('filters out null values from resolved parameters', function (): void {
             // Arrange
-            $requestObject = RequestObjectData::from([
+            $requestObject = RequestObjectData::create([
                 'protocol' => ProtocolData::forrst()->toArray(),
                 'id' => 'filter-nulls',
-                'call' => CallData::from([
+                'call' => CallData::create([
                     'function' => 'test.filterNulls',
                     'arguments' => [
                         'name' => 'John',
@@ -758,10 +758,10 @@ describe('CallFunction', function (): void {
 
         test('handles method with multiple parameter types', function (): void {
             // Arrange
-            $requestObject = RequestObjectData::from([
+            $requestObject = RequestObjectData::create([
                 'protocol' => ProtocolData::forrst()->toArray(),
                 'id' => 'mixed-types',
-                'call' => CallData::from([
+                'call' => CallData::create([
                     'function' => 'test.mixedTypes',
                     'arguments' => [
                         'string' => 'text',
@@ -802,10 +802,10 @@ describe('CallFunction', function (): void {
 
         test('handles request with event parameter', function (): void {
             // Arrange - Note: In Forrst, ID is always required (no notifications)
-            $requestObject = RequestObjectData::from([
+            $requestObject = RequestObjectData::create([
                 'protocol' => ProtocolData::forrst()->toArray(),
                 'id' => 'event-req',
-                'call' => CallData::from([
+                'call' => CallData::create([
                     'function' => 'test.notification',
                     'arguments' => ['event' => 'test'],
                 ]),
@@ -831,10 +831,10 @@ describe('CallFunction', function (): void {
 
         test('handles nested parameter paths with dot notation', function (): void {
             // Arrange
-            $requestObject = RequestObjectData::from([
+            $requestObject = RequestObjectData::create([
                 'protocol' => ProtocolData::forrst()->toArray(),
                 'id' => 'nested-params',
-                'call' => CallData::from([
+                'call' => CallData::create([
                     'function' => 'test.nested',
                     'arguments' => [
                         'user.profile.name' => 'John',
@@ -861,10 +861,10 @@ describe('CallFunction', function (): void {
 
         test('handles exception in method that implements UnwrappedResponseInterface', function (): void {
             // Arrange
-            $requestObject = RequestObjectData::from([
+            $requestObject = RequestObjectData::create([
                 'protocol' => ProtocolData::forrst()->toArray(),
                 'id' => 'unwrapped-error',
-                'call' => CallData::from([
+                'call' => CallData::create([
                     'function' => 'test.unwrappedError',
                 ]),
             ]);
@@ -888,10 +888,10 @@ describe('CallFunction', function (): void {
 
         test('preserves protocol from request in response', function (): void {
             // Arrange
-            $requestObject = RequestObjectData::from([
+            $requestObject = RequestObjectData::create([
                 'protocol' => ProtocolData::forrst()->toArray(),
                 'id' => 'version-test',
-                'call' => CallData::from([
+                'call' => CallData::create([
                     'function' => 'test.version',
                 ]),
             ]);
@@ -914,10 +914,10 @@ describe('CallFunction', function (): void {
 
         test('handles method with no type hints on parameters', function (): void {
             // Arrange
-            $requestObject = RequestObjectData::from([
+            $requestObject = RequestObjectData::create([
                 'protocol' => ProtocolData::forrst()->toArray(),
                 'id' => 'no-types',
-                'call' => CallData::from([
+                'call' => CallData::create([
                     'function' => 'test.noTypes',
                     'arguments' => [
                         'value' => 'anything',
@@ -943,10 +943,10 @@ describe('CallFunction', function (): void {
 
         test('resolves parameters when reflection returns no named type', function (): void {
             // Arrange
-            $requestObject = RequestObjectData::from([
+            $requestObject = RequestObjectData::create([
                 'protocol' => ProtocolData::forrst()->toArray(),
                 'id' => 'union-type',
-                'call' => CallData::from([
+                'call' => CallData::create([
                     'function' => 'test.unionType',
                     'arguments' => [
                         'value' => 'test',
@@ -972,10 +972,10 @@ describe('CallFunction', function (): void {
 
         test('handles optional parameters that are not provided', function (): void {
             // Arrange
-            $requestObject = RequestObjectData::from([
+            $requestObject = RequestObjectData::create([
                 'protocol' => ProtocolData::forrst()->toArray(),
                 'id' => 'optional-params',
-                'call' => CallData::from([
+                'call' => CallData::create([
                     'function' => 'test.optionalParams',
                     'arguments' => [
                         'required' => 'value',
@@ -1009,10 +1009,10 @@ describe('CallFunction', function (): void {
 
         test('preserves explicitly provided falsy values', function (): void {
             // Arrange - Explicitly provided falsy values (0, '', false) should be preserved
-            $requestObject = RequestObjectData::from([
+            $requestObject = RequestObjectData::create([
                 'protocol' => ProtocolData::forrst()->toArray(),
                 'id' => 'falsy-params',
-                'call' => CallData::from([
+                'call' => CallData::create([
                     'function' => 'test.falsyParams',
                     'arguments' => [
                         'enabled' => false,
@@ -1051,10 +1051,10 @@ describe('CallFunction', function (): void {
 
         test('handles Data object parameter with empty object', function (): void {
             // Arrange - Empty object for Data parameter to test validation
-            $requestObject = RequestObjectData::from([
+            $requestObject = RequestObjectData::create([
                 'protocol' => ProtocolData::forrst()->toArray(),
                 'id' => 'empty-data-object',
-                'call' => CallData::from([
+                'call' => CallData::create([
                     'function' => 'process.withData',
                     'arguments' => [
                         'action' => 'validate',
@@ -1087,10 +1087,10 @@ describe('CallFunction', function (): void {
 
         test('handles Data object with partial valid data', function (): void {
             // Arrange - Some valid, some invalid fields
-            $requestObject = RequestObjectData::from([
+            $requestObject = RequestObjectData::create([
                 'protocol' => ProtocolData::forrst()->toArray(),
                 'id' => 'partial-data',
-                'call' => CallData::from([
+                'call' => CallData::create([
                     'function' => 'user.update',
                     'arguments' => [
                         'user' => [
@@ -1131,10 +1131,10 @@ describe('CallFunction', function (): void {
 
         test('handles Data object parameter with snake_case to camelCase conversion', function (): void {
             // Arrange
-            $requestObject = RequestObjectData::from([
+            $requestObject = RequestObjectData::create([
                 'protocol' => ProtocolData::forrst()->toArray(),
                 'id' => 'snake-case-data',
-                'call' => CallData::from([
+                'call' => CallData::create([
                     'function' => 'user.process',
                     'arguments' => [
                         'user.data' => [  // snake_case version of userData
@@ -1177,10 +1177,10 @@ describe('CallFunction', function (): void {
     describe('Regressions', function (): void {
         test('ensures ExceptionMapper is used for all caught exceptions', function (): void {
             // Arrange
-            $requestObject = RequestObjectData::from([
+            $requestObject = RequestObjectData::create([
                 'protocol' => ProtocolData::forrst()->toArray(),
                 'id' => 'mapper-test',
-                'call' => CallData::from([
+                'call' => CallData::create([
                     'function' => 'test.mapper',
                 ]),
             ]);
@@ -1206,10 +1206,10 @@ describe('CallFunction', function (): void {
 
         test('ensures requestObject parameter is always filtered from parameter resolution', function (): void {
             // Arrange
-            $requestObject = RequestObjectData::from([
+            $requestObject = RequestObjectData::create([
                 'protocol' => ProtocolData::forrst()->toArray(),
                 'id' => 'filter-request-object',
-                'call' => CallData::from([
+                'call' => CallData::create([
                     'function' => 'test.filterRequestObject',
                     'arguments' => [
                         'requestObject' => 'should-be-ignored',
@@ -1243,10 +1243,10 @@ describe('CallFunction', function (): void {
 
         test('ensures error responses always include protocol', function (): void {
             // Arrange
-            $requestObject = RequestObjectData::from([
+            $requestObject = RequestObjectData::create([
                 'protocol' => ProtocolData::forrst()->toArray(),
                 'id' => 'error-version',
-                'call' => CallData::from([
+                'call' => CallData::create([
                     'function' => 'test.errorVersion',
                 ]),
             ]);
@@ -1270,10 +1270,10 @@ describe('CallFunction', function (): void {
 
         test('ensures ValidationException is wrapped in InvalidDataException for Data objects', function (): void {
             // Arrange - Regression test to ensure line 154 is covered
-            $requestObject = RequestObjectData::from([
+            $requestObject = RequestObjectData::create([
                 'protocol' => ProtocolData::forrst()->toArray(),
                 'id' => 'validation-wrap',
-                'call' => CallData::from([
+                'call' => CallData::create([
                     'function' => 'user.register',
                     'arguments' => [
                         'userData' => [

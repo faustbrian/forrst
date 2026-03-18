@@ -165,14 +165,12 @@ describe('ResultDescriptorData', function (): void {
             // Act
             $array = $result->toArray();
 
-            // Assert - Spatie Data includes null fields in toArray output
+            // Assert - Struct omits null fields from serialized output
             expect($array)->toHaveKey('resource')
                 ->and($array['resource'])->toBe('order')
-                ->and($array)->toHaveKey('schema')
-                ->and($array['schema'])->toBeNull()
                 ->and($array)->toHaveKey('collection')
-                ->and($array)->toHaveKey('description')
-                ->and($array['description'])->toBeNull();
+                ->and($array)->not->toHaveKey('schema')
+                ->and($array)->not->toHaveKey('description');
         });
 
         test('toArray includes description when set', function (): void {

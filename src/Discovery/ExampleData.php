@@ -12,7 +12,7 @@ namespace Cline\Forrst\Discovery;
 use Cline\Forrst\Exceptions\InvalidFieldValueException;
 use Cline\Forrst\Exceptions\InvalidUrlException;
 use InvalidArgumentException;
-use Spatie\LaravelData\Data;
+use Cline\Forrst\Data\AbstractData;
 
 use const E_USER_WARNING;
 use const FILTER_VALIDATE_URL;
@@ -36,7 +36,7 @@ use function trigger_error;
  *
  * @see https://docs.cline.sh/forrst/extensions/discovery#componentsexamples
  */
-final class ExampleData extends Data
+final readonly class ExampleData extends AbstractData
 {
     /**
      * Create a new example.

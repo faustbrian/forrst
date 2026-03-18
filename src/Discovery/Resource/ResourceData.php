@@ -9,7 +9,7 @@
 
 namespace Cline\Forrst\Discovery\Resource;
 
-use Spatie\LaravelData\Data;
+use Cline\Forrst\Data\AbstractData;
 
 /**
  * Complete resource type definition with attributes, relationships, and capabilities.
@@ -23,7 +23,7 @@ use Spatie\LaravelData\Data;
  * @see https://docs.cline.sh/forrst/resource-objects Resource objects documentation
  * @see https://docs.cline.sh/specs/forrst/discovery#resource-object Resource object specification
  */
-final class ResourceData extends Data
+final readonly class ResourceData extends AbstractData
 {
     /**
      * Create a new resource definition.

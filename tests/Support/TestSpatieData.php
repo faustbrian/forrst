@@ -9,14 +9,14 @@
 
 namespace Tests\Support;
 
-use Spatie\LaravelData\Data;
+use Cline\Forrst\Data\AbstractData;
 
 /**
  * Test implementation of Spatie Data for unit testing.
  *
  * @author Brian Faust <brian@cline.sh>
  */
-final class TestSpatieData extends Data
+final readonly class TestSpatieData extends AbstractData
 {
     public function __construct(
         public readonly int $id,

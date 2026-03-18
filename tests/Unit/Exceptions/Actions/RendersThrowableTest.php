@@ -446,7 +446,7 @@ describe('RendersThrowable', function (): void {
             $request->shouldReceive('input')->with('id')->once()->andReturn('req-1');
 
             $customException = new CustomHeaderException(
-                ErrorData::from(['code' => ErrorCode::InternalError->value, 'message' => 'Custom']),
+                ErrorData::create(['code' => ErrorCode::InternalError->value, 'message' => 'Custom']),
             );
 
             $exceptions = Mockery::mock(Exceptions::class);
@@ -475,7 +475,7 @@ describe('RendersThrowable', function (): void {
             $request->shouldReceive('input')->with('id')->once()->andReturn('req-1');
 
             $customException = new CustomStatusCodeException(
-                ErrorData::from(['code' => ErrorCode::FunctionNotFound->value, 'message' => 'Function not found']),
+                ErrorData::create(['code' => ErrorCode::FunctionNotFound->value, 'message' => 'Function not found']),
             );
 
             $exceptions = Mockery::mock(Exceptions::class);

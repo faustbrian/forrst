@@ -17,6 +17,8 @@ use Cline\Forrst\Exceptions\ExceptionMapper;
 use Cline\Forrst\Exceptions\InvalidDataException;
 use Cline\Forrst\Exceptions\InvalidFieldTypeException;
 use Cline\Forrst\Exceptions\InvalidFieldValueException;
+use Cline\Struct\AbstractData;
+use Cline\Struct\Exceptions\DataValidationException;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Arr;
@@ -30,7 +32,6 @@ use ReflectionNamedType;
 use ReflectionParameter;
 use ReflectionType;
 use ReflectionUnionType;
-use Spatie\LaravelData\Data;
 use Throwable;
 
 use function call_user_func;
@@ -202,7 +203,7 @@ final readonly class CallFunction
 
         $parameterValue = Arr::get($arguments, $parameterName) ?? Arr::get($arguments, Str::snake($parameterName, '.'));
 
-        if ($parameterTypeName !== null && is_subclass_of($parameterTypeName, Data::class)) {
+        if ($parameterTypeName !== null && is_subclass_of($parameterTypeName, AbstractData::class)) {
             try {
                 $payload = $parameter->getName() === 'data' ? $arguments : $parameterValue;
 
@@ -215,11 +216,13 @@ final readonly class CallFunction
                 }
 
                 return call_user_func(
-                    [$parameterTypeName, 'validateAndCreate'],
+                    [$parameterTypeName, 'createWithValidation'],
                     $payload,
                 );
             } catch (ValidationException $exception) {
                 throw InvalidDataException::create($exception);
+            } catch (DataValidationException $exception) {
+                throw InvalidDataException::fromStructValidation($exception);
             }
         }
 

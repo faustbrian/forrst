@@ -9,27 +9,24 @@
 
 namespace Tests\Support\Fixtures;
 
-use Spatie\LaravelData\Attributes\Validation\Email;
-use Spatie\LaravelData\Attributes\Validation\Max;
-use Spatie\LaravelData\Attributes\Validation\Min;
-use Spatie\LaravelData\Attributes\Validation\Required;
-use Spatie\LaravelData\Data;
+use Cline\Forrst\Data\AbstractData;
+use Cline\Struct\Attributes\Validate;
 
 /**
  * Test fixture for Data object parameter validation in CallMethod tests.
- * Contains validation rules to test validateAndCreate behavior.
+ * Contains validation rules to test createWithValidation behavior.
  *
  * @author Brian Faust <brian@cline.sh>
  * @internal
  */
-final class ValidatedUserData extends Data
+final readonly class ValidatedUserData extends AbstractData
 {
     public function __construct(
-        #[Required(), Max(100), Min(3)]
+        #[Validate('required|max:100|min:3')]
         public readonly string $name,
-        #[Required(), Email()]
+        #[Validate('required|email')]
         public readonly string $email,
-        #[ Max(150), Min(1)]
+        #[Validate('max:150|min:1')]
         public readonly ?int $age = null,
     ) {}
 }

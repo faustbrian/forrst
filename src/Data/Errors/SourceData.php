@@ -25,7 +25,7 @@ use function is_string;
  * @author Brian Faust <brian@cline.sh>
  * @see https://datatracker.ietf.org/doc/html/rfc6901
  */
-final class SourceData extends AbstractData
+final readonly class SourceData extends AbstractData
 {
     /**
      * Create a new error source information object.
@@ -99,8 +99,14 @@ final class SourceData extends AbstractData
      * @return array<string, mixed> Array with pointer or position key
      */
     #[Override()]
-    public function toArray(): array
-    {
+    public function toArray(
+        bool $includeSensitive = false,
+        array $include = [],
+        array $exclude = [],
+        array $groups = [],
+        array $context = [],
+        ?\Cline\Struct\Serialization\SerializationOptions $serialization = null,
+    ): array {
         $result = [];
 
         if ($this->pointer !== null) {

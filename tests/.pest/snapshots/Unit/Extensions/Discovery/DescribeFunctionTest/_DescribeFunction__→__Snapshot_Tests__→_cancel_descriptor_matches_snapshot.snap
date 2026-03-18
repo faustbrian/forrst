@@ -1,8 +1,6 @@
 {
     "name": "urn:cline:forrst:ext:cancellation:fn:cancel",
     "version": "1.0.0",
-    "stability": "stable",
-    "summary": "Cancel a request by its cancellation token",
     "arguments": [
         {
             "name": "token",
@@ -10,15 +8,12 @@
                 "type": "string"
             },
             "required": true,
-            "summary": null,
-            "description": "Cancellation token from original request",
-            "default": null,
-            "deprecated": null,
-            "examples": null
+            "description": "Cancellation token from original request"
         }
     ],
+    "stability": "stable",
+    "summary": "Cancel a request by its cancellation token",
     "result": {
-        "resource": null,
         "schema": {
             "type": "object",
             "properties": {
@@ -87,14 +82,13 @@
         {
             "code": "CANCELLATION_TOKEN_UNKNOWN",
             "message": "Unknown cancellation token",
-            "description": "The specified cancellation token does not exist or has expired",
-            "details": null
+            "description": "The specified cancellation token does not exist or has expired"
         },
         {
             "code": "CANCELLATION_TOO_LATE",
             "message": "Request already completed",
-            "description": "The request has already completed and cannot be cancelled",
-            "details": null
+            "description": "The request has already completed and cannot be cancelled"
         }
-    ]
+    ],
+    "discoverable": true
 }

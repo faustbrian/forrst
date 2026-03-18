@@ -66,8 +66,13 @@ abstract class ExtensionEvent
      *                                   and request metadata for decision-making.
      */
     public function __construct(
-        public readonly RequestObjectData $request,
+        public RequestObjectData $request,
     ) {}
+
+    public function setRequest(RequestObjectData $request): void
+    {
+        $this->request = $request;
+    }
 
     /**
      * Stop further event propagation to subsequent listeners.

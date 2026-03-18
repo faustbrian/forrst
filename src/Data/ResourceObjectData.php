@@ -28,7 +28,7 @@ use function preg_match;
  * @see https://docs.cline.sh/forrst/resource-objects
  * @see https://jsonapi.org/format/#document-resource-objects
  */
-final class ResourceObjectData extends AbstractData
+final readonly class ResourceObjectData extends AbstractData
 {
     /**
      * Create a new resource object data instance.

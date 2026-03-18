@@ -10,7 +10,7 @@
 namespace Cline\Forrst\Discovery\Resource;
 
 use Cline\Forrst\Discovery\DeprecatedData;
-use Spatie\LaravelData\Data;
+use Cline\Forrst\Data\AbstractData;
 
 /**
  * Resource attribute metadata and capabilities definition.
@@ -24,7 +24,7 @@ use Spatie\LaravelData\Data;
  * @see https://docs.cline.sh/forrst/resource-objects Resource objects documentation
  * @see https://docs.cline.sh/specs/forrst/discovery#attribute-object Attribute object specification
  */
-final class AttributeData extends Data
+final readonly class AttributeData extends AbstractData
 {
     /**
      * Create a new resource attribute definition.

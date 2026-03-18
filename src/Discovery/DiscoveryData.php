@@ -13,7 +13,7 @@ use Cline\Forrst\Discovery\Resource\ResourceData;
 use Cline\Forrst\Exceptions\EmptyArrayException;
 use Cline\Forrst\Exceptions\InvalidFieldTypeException;
 use Cline\Forrst\Exceptions\InvalidFieldValueException;
-use Spatie\LaravelData\Data;
+use Cline\Forrst\Data\AbstractData;
 
 use function array_count_values;
 use function array_filter;
@@ -36,7 +36,7 @@ use function sprintf;
  * @see https://docs.cline.sh/forrst/system-functions
  * @see https://docs.cline.sh/specs/forrst/discovery#discovery-document-object
  */
-final class DiscoveryData extends Data
+final readonly class DiscoveryData extends AbstractData
 {
     /**
      * Create a new Forrst discovery document instance.

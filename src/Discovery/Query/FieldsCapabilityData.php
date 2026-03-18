@@ -9,7 +9,7 @@
 
 namespace Cline\Forrst\Discovery\Query;
 
-use Spatie\LaravelData\Data;
+use Cline\Forrst\Data\AbstractData;
 
 /**
  * Sparse fieldset capability configuration.
@@ -23,7 +23,7 @@ use Spatie\LaravelData\Data;
  * @see https://docs.cline.sh/forrst/extensions/query
  * @see https://docs.cline.sh/specs/forrst/discovery#fields-capability
  */
-final class FieldsCapabilityData extends Data
+final readonly class FieldsCapabilityData extends AbstractData
 {
     /**
      * Create a new sparse fieldset capability configuration.

@@ -123,25 +123,23 @@ final readonly class ExtensionData
      *
      * @return self ExtensionData instance
      */
-    public static function from(array $data): self
+    public static function create(array $data): self
     {
         // Validate URN is present and valid
         if (!isset($data['urn']) || !is_string($data['urn']) || $data['urn'] === '') {
             throw EmptyFieldException::forField('urn');
         }
 
-        $urn = $data['urn'];
         $rawOptions = $data['options'] ?? null;
         $rawData = $data['data'] ?? null;
 
         /** @var null|array<string, mixed> $options */
         $options = is_array($rawOptions) ? $rawOptions : null;
-
         /** @var null|array<string, mixed> $extensionData */
         $extensionData = is_array($rawData) ? $rawData : null;
 
         return new self(
-            urn: $urn,
+            urn: $data['urn'],
             options: $options,
             data: $extensionData,
         );
@@ -193,8 +191,14 @@ final readonly class ExtensionData
      *
      * @return array<string, mixed> Complete array representation
      */
-    public function toArray(): array
-    {
+    public function toArray(
+        bool $includeSensitive = false,
+        array $include = [],
+        array $exclude = [],
+        array $groups = [],
+        array $context = [],
+        ?\Cline\Struct\Serialization\SerializationOptions $serialization = null,
+    ): array {
         $result = ['urn' => $this->urn];
 
         if ($this->options !== null) {

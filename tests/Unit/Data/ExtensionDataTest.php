@@ -109,7 +109,7 @@ describe('ExtensionData', function (): void {
             ];
 
             // Act
-            $extension = ExtensionData::from($array);
+            $extension = ExtensionData::create($array);
 
             // Assert
             expect($extension->urn)->toBe('urn:cline:forrst:ext:idempotency')
@@ -175,7 +175,7 @@ describe('ExtensionData', function (): void {
             $array = ['urn' => '', 'options' => ['key' => 'value']];
 
             // Act & Assert
-            expect(fn (): ExtensionData => ExtensionData::from($array))
+            expect(fn (): ExtensionData => ExtensionData::create($array))
                 ->toThrow(EmptyFieldException::class, 'urn');
         });
 
@@ -187,7 +187,7 @@ describe('ExtensionData', function (): void {
             ];
 
             // Act
-            $extension = ExtensionData::from($array);
+            $extension = ExtensionData::create($array);
 
             // Assert
             expect($extension->urn)->toBe('urn:cline:forrst:ext:async')
@@ -203,7 +203,7 @@ describe('ExtensionData', function (): void {
             ];
 
             // Act
-            $extension = ExtensionData::from($array);
+            $extension = ExtensionData::create($array);
 
             // Assert
             expect($extension->urn)->toBe('urn:cline:forrst:ext:retry')
@@ -407,7 +407,7 @@ describe('ExtensionData', function (): void {
 
         test('deserializes from empty array with default values', function (): void {
             // Arrange & Act & Assert
-            expect(fn (): ExtensionData => ExtensionData::from([]))
+            expect(fn (): ExtensionData => ExtensionData::create([]))
                 ->toThrow(EmptyFieldException::class, 'urn');
         });
 
@@ -524,12 +524,12 @@ describe('ExtensionData', function (): void {
             ];
 
             foreach ($cases as $array) {
-                $extension = ExtensionData::from($array);
+                $extension = ExtensionData::create($array);
                 expect($extension)->toBeInstanceOf(ExtensionData::class);
             }
 
             // Test that both options AND data throws exception
-            expect(fn (): ExtensionData => ExtensionData::from([
+            expect(fn (): ExtensionData => ExtensionData::create([
                 'urn' => $validUrn,
                 'options' => ['opt' => 1],
                 'data' => ['dat' => 2],
@@ -545,7 +545,7 @@ describe('ExtensionData', function (): void {
 
             // Act
             $array = $original->toRequestArray();
-            $reconstructed = ExtensionData::from([...$array, 'data' => null]);
+            $reconstructed = ExtensionData::create([...$array, 'data' => null]);
 
             // Assert
             expect($reconstructed->urn)->toBe($original->urn)
@@ -561,7 +561,7 @@ describe('ExtensionData', function (): void {
 
             // Act
             $array = $original->toResponseArray();
-            $reconstructed = ExtensionData::from([...$array, 'options' => null]);
+            $reconstructed = ExtensionData::create([...$array, 'options' => null]);
 
             // Assert
             expect($reconstructed->urn)->toBe($original->urn)

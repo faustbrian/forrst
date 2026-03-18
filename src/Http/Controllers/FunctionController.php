@@ -19,11 +19,11 @@ use Cline\Forrst\Extensions\ExtensionUrn;
 use Cline\Forrst\Extensions\StreamExtension;
 use Cline\Forrst\Requests\RequestHandler;
 use Cline\Forrst\Streaming\StreamChunk;
+use Cline\Struct\AbstractData;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
-use Spatie\LaravelData\Data;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Throwable;
 
@@ -118,7 +118,7 @@ final readonly class FunctionController
             return $this->handleStreaming($streamContext);
         }
 
-        if ($result->data instanceof Data) {
+        if ($result->data instanceof AbstractData) {
             return Response::json($result->data->toArray(), $result->statusCode);
         }
 

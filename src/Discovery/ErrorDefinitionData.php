@@ -13,7 +13,7 @@ use BackedEnum;
 use Cline\Forrst\Exceptions\InvalidFieldTypeException;
 use Cline\Forrst\Exceptions\InvalidFieldValueException;
 use Cline\Forrst\Exceptions\MissingRequiredFieldException;
-use Spatie\LaravelData\Data;
+use Cline\Forrst\Data\AbstractData;
 
 use const E_USER_WARNING;
 use const ENT_QUOTES;
@@ -93,7 +93,7 @@ use function trigger_error;
  * @see https://docs.cline.sh/specs/forrst/discovery#error-definition-object
  * @see https://json-schema.org/ JSON Schema specification
  */
-final class ErrorDefinitionData extends Data
+final readonly class ErrorDefinitionData extends AbstractData
 {
     /**
      * Machine-readable error code identifier.

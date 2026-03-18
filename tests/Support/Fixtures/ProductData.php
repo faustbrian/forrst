@@ -9,9 +9,8 @@
 
 namespace Tests\Support\Fixtures;
 
-use Spatie\LaravelData\Attributes\Validation\Min;
-use Spatie\LaravelData\Attributes\Validation\Required;
-use Spatie\LaravelData\Data;
+use Cline\Forrst\Data\AbstractData;
+use Cline\Struct\Attributes\Validate;
 
 /**
  * Test fixture for Data object parameter testing.
@@ -20,12 +19,12 @@ use Spatie\LaravelData\Data;
  * @author Brian Faust <brian@cline.sh>
  * @internal
  */
-final class ProductData extends Data
+final readonly class ProductData extends AbstractData
 {
     public function __construct(
-        #[Required()]
+        #[Validate('required')]
         public readonly string $title,
-        #[Required(), Min(0)]
+        #[Validate('required|min:0')]
         public readonly float $price,
         public readonly ?string $description = null,
     ) {}

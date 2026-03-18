@@ -21,7 +21,7 @@ namespace Cline\Forrst\Data;
  * @see https://docs.cline.sh/forrst/protocol
  * @see https://docs.cline.sh/forrst/document-structure
  */
-final class RequestResultData extends AbstractData
+final readonly class RequestResultData extends AbstractData
 {
     /**
      * Create a new request result instance.

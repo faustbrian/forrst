@@ -149,7 +149,7 @@ final class LocaleExtension extends AbstractExtension
         $resolvedLocale = $this->resolveLocale($options);
 
         // Store in request metadata for thread safety
-        $event->request->meta['locale_resolved'] = $resolvedLocale;
+        $event->setRequest($event->request->withMetaValue('locale_resolved', $resolvedLocale));
     }
 
     /**
@@ -164,12 +164,12 @@ final class LocaleExtension extends AbstractExtension
     public function onFunctionExecuted(FunctionExecuted $event): void
     {
         // Retrieve resolved locale from metadata (thread-safe)
-        $resolvedLocale = $event->request->meta['locale_resolved'] ?? [
+        $resolvedLocale = $event->request->getMeta('locale_resolved', [
             'language' => self::DEFAULT_LANGUAGE,
             'fallback_used' => false,
             'timezone' => null,
             'currency' => null,
-        ];
+        ]);
 
         $responseData = array_filter([
             'language' => $resolvedLocale['language'],

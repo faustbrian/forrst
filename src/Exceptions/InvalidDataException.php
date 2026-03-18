@@ -10,6 +10,7 @@
 namespace Cline\Forrst\Exceptions;
 
 use Cline\Forrst\Enums\ErrorCode;
+use Cline\Struct\Exceptions\DataValidationException;
 use Illuminate\Validation\ValidationException;
 
 /**
@@ -64,5 +65,32 @@ final class InvalidDataException extends AbstractRequestException
 
         // @phpstan-ignore-next-line argument.type
         return self::new(ErrorCode::InvalidArguments, 'Invalid arguments', details: $normalized);
+    }
+
+    /**
+     * @param array<string, array<int, string>> $errors
+     */
+    public static function fromErrors(array $errors, string $pointerPrefix = '/params/data/'): self
+    {
+        $normalized = [];
+
+        foreach ($errors as $attribute => $messages) {
+            foreach ($messages as $message) {
+                $normalized[] = [
+                    'status' => '422',
+                    'source' => ['pointer' => $pointerPrefix.$attribute],
+                    'title' => 'Invalid params',
+                    'detail' => $message,
+                ];
+            }
+        }
+
+        // @phpstan-ignore-next-line argument.type
+        return self::new(ErrorCode::InvalidArguments, 'Invalid arguments', details: $normalized);
+    }
+
+    public static function fromStructValidation(DataValidationException $exception): self
+    {
+        return self::fromErrors($exception->errors());
     }
 }

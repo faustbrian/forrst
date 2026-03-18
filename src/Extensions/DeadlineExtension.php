@@ -84,7 +84,7 @@ final class DeadlineExtension extends AbstractExtension
     {
         // Record start time in request metadata for thread safety
         $startTime = CarbonImmutable::now();
-        $event->request->meta['deadline_start'] = $startTime;
+        $event->setRequest($event->request->withMetaValue('deadline_start', $startTime));
 
         // Track specified timeout in metadata for thread safety
         if (isset($event->extension->options['timeout']) && is_array($event->extension->options['timeout'])) {
@@ -94,10 +94,10 @@ final class DeadlineExtension extends AbstractExtension
             /** @var string $timeoutUnit */
             $timeoutUnit = $event->extension->options['timeout']['unit'] ?? 'second';
 
-            $event->request->meta['deadline_specified'] = [
+            $event->setRequest($event->request->withMetaValue('deadline_specified', [
                 'value' => $timeoutValue,
                 'unit' => $timeoutUnit,
-            ];
+            ]));
         }
 
         $deadline = $this->resolveDeadline($event->extension->options);
@@ -153,12 +153,12 @@ final class DeadlineExtension extends AbstractExtension
         $remainingMs = $deadline->isPast() ? 0 : (int) abs($deadline->diffInMilliseconds($now));
 
         // Retrieve start time from metadata (thread-safe)
-        $startTime = $event->request->meta['deadline_start'] ?? $now;
+        $startTime = $event->request->getMeta('deadline_start', $now);
         assert($startTime instanceof CarbonImmutable);
         $elapsedMs = (int) abs($startTime->diffInMilliseconds($now));
 
         // Retrieve specified timeout from metadata (thread-safe)
-        $specifiedTimeout = $event->request->meta['deadline_specified'] ?? null;
+        $specifiedTimeout = $event->request->getMeta('deadline_specified');
 
         if ($specifiedTimeout === null && isset($event->extension->options['timeout']) && is_array($event->extension->options['timeout'])) {
             $specifiedTimeout = [

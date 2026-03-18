@@ -134,7 +134,7 @@ describe('RequestObjectData', function (): void {
             ];
 
             // Act
-            $request = RequestObjectData::from($data);
+            $request = RequestObjectData::create($data);
 
             // Assert
             expect($request)->toBeInstanceOf(RequestObjectData::class)
@@ -229,7 +229,7 @@ describe('RequestObjectData', function (): void {
             ];
 
             // Act & Assert
-            expect(fn (): RequestObjectData => RequestObjectData::from($data))
+            expect(fn (): RequestObjectData => RequestObjectData::create($data))
                 ->toThrow(InvalidRequestIdException::class);
         });
 
@@ -242,7 +242,7 @@ describe('RequestObjectData', function (): void {
             ];
 
             // Act & Assert
-            expect(fn (): RequestObjectData => RequestObjectData::from($data))
+            expect(fn (): RequestObjectData => RequestObjectData::create($data))
                 ->toThrow(MissingFunctionNameException::class);
         });
     });

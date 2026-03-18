@@ -12,7 +12,7 @@ namespace Cline\Forrst\Discovery;
 use Cline\Forrst\Exceptions\InvalidFieldTypeException;
 use Cline\Forrst\Exceptions\UnknownSchemaTypeException;
 use InvalidArgumentException;
-use Spatie\LaravelData\Data;
+use Cline\Forrst\Data\AbstractData;
 
 use function get_debug_type;
 use function in_array;
@@ -28,7 +28,7 @@ use function sprintf;
  * @author Brian Faust <brian@cline.sh>
  * @see https://docs.cline.sh/forrst/
  */
-final class ArgumentData extends Data
+final readonly class ArgumentData extends AbstractData
 {
     /**
      * Create a new argument definition instance.

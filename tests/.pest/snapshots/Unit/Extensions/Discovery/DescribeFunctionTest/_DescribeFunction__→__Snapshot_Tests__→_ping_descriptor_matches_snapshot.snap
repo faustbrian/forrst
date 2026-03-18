@@ -1,11 +1,10 @@
 {
     "name": "urn:cline:forrst:ext:diagnostics:fn:ping",
     "version": "1.0.0",
+    "arguments": [],
     "stability": "stable",
     "summary": "Simple connectivity check",
-    "arguments": [],
     "result": {
-        "resource": null,
         "schema": {
             "type": "object",
             "properties": {
@@ -81,5 +80,6 @@
             "code": "RATE_LIMITED",
             "message": "Rate limited"
         }
-    ]
+    ],
+    "discoverable": true
 }

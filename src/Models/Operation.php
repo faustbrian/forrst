@@ -156,7 +156,7 @@ final class Operation extends Model
 
         if ($this->errors !== null) {
             $errors = array_map(
-                ErrorData::from(...),
+                ErrorData::create(...),
                 $this->errors,
             );
         }

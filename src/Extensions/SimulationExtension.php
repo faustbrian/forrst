@@ -206,7 +206,7 @@ final class SimulationExtension extends AbstractExtension
         }
 
         return ResponseData::error(
-            error: ErrorData::from($error),
+            error: ErrorData::create($error),
             id: $request->id,
             extensions: [
                 ExtensionData::response(ExtensionUrn::Simulation->value, $extensionData),

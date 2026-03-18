@@ -98,10 +98,10 @@ final readonly class Transformer
                 );
             }
 
-            return DocumentData::from($document);
+            return DocumentData::create($document);
         }
 
-        return DocumentData::from([
+        return DocumentData::create([
             'data' => ResourceNormalizer::normalize($item)->toArray(),
         ]);
     }
@@ -145,7 +145,7 @@ final readonly class Transformer
             );
         }
 
-        return DocumentData::from($document);
+        return DocumentData::create($document);
     }
 
     /**
@@ -191,7 +191,7 @@ final readonly class Transformer
             ];
         }
 
-        return DocumentData::from($document);
+        return DocumentData::create($document);
     }
 
     /**
@@ -237,7 +237,7 @@ final readonly class Transformer
             ];
         }
 
-        return DocumentData::from($document);
+        return DocumentData::create($document);
     }
 
     /**
@@ -282,6 +282,6 @@ final readonly class Transformer
             ];
         }
 
-        return DocumentData::from($document);
+        return DocumentData::create($document);
     }
 }

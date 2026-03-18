@@ -12,7 +12,7 @@ namespace Cline\Forrst\Discovery;
 use Cline\Forrst\Exceptions\InvalidFieldValueException;
 use Cline\Forrst\Exceptions\InvalidResultSchemaException;
 use Cline\Forrst\Exceptions\MissingRequiredFieldException;
-use Spatie\LaravelData\Data;
+use Cline\Forrst\Data\AbstractData;
 
 use function in_array;
 use function preg_match;
@@ -30,7 +30,7 @@ use function sprintf;
  * @see https://docs.cline.sh/forrst/document-structure Document structure documentation
  * @see https://docs.cline.sh/specs/forrst/discovery#result-object Result object specification
  */
-final class ResultDescriptorData extends Data
+final readonly class ResultDescriptorData extends AbstractData
 {
     /**
      * Create a new result descriptor.

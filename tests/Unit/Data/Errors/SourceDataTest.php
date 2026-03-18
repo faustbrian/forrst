@@ -12,7 +12,7 @@ use Cline\Forrst\Data\Errors\SourceData;
 describe('SourceData', function (): void {
     describe('Happy Paths', function (): void {
         test('creates instance with pointer', function (): void {
-            $data = SourceData::from([
+            $data = SourceData::create([
                 'pointer' => '/data/attributes/email',
             ]);
 
@@ -21,7 +21,7 @@ describe('SourceData', function (): void {
         });
 
         test('creates instance with position', function (): void {
-            $data = SourceData::from([
+            $data = SourceData::create([
                 'position' => 42,
             ]);
 
@@ -30,7 +30,7 @@ describe('SourceData', function (): void {
         });
 
         test('creates instance with both pointer and position', function (): void {
-            $data = SourceData::from([
+            $data = SourceData::create([
                 'pointer' => '/data/attributes/name',
                 'position' => 100,
             ]);

@@ -9,11 +9,20 @@
 
 namespace Cline\Forrst\JsonSchema;
 
-use Spatie\LaravelData\Data;
+use Cline\Struct\AbstractData;
+use Cline\Struct\Metadata\MetadataFactory;
+use Cline\Struct\Validation\RuleInferrer;
+use Error;
 
 use function array_merge;
+use function array_values;
+use function class_exists;
 use function explode;
+use function is_a;
+use function is_object;
 use function is_string;
+use function resolve;
+use function sprintf;
 
 /**
  * Transforms complete validation rule sets into JSON Schema documents.
@@ -94,7 +103,7 @@ final class RulesTransformer
      * standard transformation pipeline. Useful for automatically generating
      * schemas from typed Data classes.
      *
-     * @param class-string<Data>                  $data       The Laravel Data class to transform,
+     * @param class-string<AbstractData>          $data       The Laravel Data class to transform,
      *                                                        must have validation rules defined
      * @param array<string, array<string, mixed>> $properties Additional schema properties to merge
      *                                                        for custom field extensions
@@ -103,9 +112,54 @@ final class RulesTransformer
      */
     public static function transformDataObject(string $data, array $properties = []): array
     {
-        /** @var array<string, array<int, object|string>|string> $rules */
-        $rules = $data::getValidationRules([]);
+        if (!class_exists($data) || !is_a($data, AbstractData::class, true)) {
+            throw new Error(sprintf(
+                'Class [%s] must exist and extend [%s].',
+                $data,
+                AbstractData::class,
+            ));
+        }
 
-        return self::transform($rules, $properties);
+        /** @var MetadataFactory $metadataFactory */
+        $metadataFactory = resolve(MetadataFactory::class);
+        /** @var RuleInferrer $ruleInferrer */
+        $ruleInferrer = resolve(RuleInferrer::class);
+
+        return self::transform(
+            self::normalizeRules($ruleInferrer->infer($metadataFactory->for($data))),
+            $properties,
+        );
+    }
+
+    /**
+     * @param  array<string, array<int, mixed>> $rules
+     * @return array<string, array<int, mixed>>
+     */
+    private static function normalizeRules(array $rules): array
+    {
+        $normalized = [];
+
+        foreach ($rules as $field => $fieldRules) {
+            $seen = [];
+
+            foreach ($fieldRules as $rule) {
+                if ($rule === 'sometimes') {
+                    continue;
+                }
+
+                $key = is_object($rule) ? spl_object_hash($rule) : (string) $rule;
+
+                if (isset($seen[$key])) {
+                    continue;
+                }
+
+                $seen[$key] = true;
+                $normalized[$field][] = $rule;
+            }
+
+            $normalized[$field] = array_values($normalized[$field] ?? []);
+        }
+
+        return $normalized;
     }
 }

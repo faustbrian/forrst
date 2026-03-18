@@ -13,7 +13,7 @@ use Cline\Forrst\Exceptions\InvalidFieldTypeException;
 use Cline\Forrst\Exceptions\InvalidFieldValueException;
 use Cline\Forrst\Exceptions\InvalidUrlException;
 use Cline\Forrst\Exceptions\MissingRequiredFieldException;
-use Spatie\LaravelData\Data;
+use Cline\Forrst\Data\AbstractData;
 
 use const FILTER_VALIDATE_URL;
 
@@ -42,7 +42,7 @@ use function sprintf;
  * @see https://docs.cline.sh/forrst/system-functions
  * @see https://docs.cline.sh/specs/forrst/discovery#server-object
  */
-final class DiscoveryServerData extends Data
+final readonly class DiscoveryServerData extends AbstractData
 {
     /**
      * Create a new server endpoint definition.

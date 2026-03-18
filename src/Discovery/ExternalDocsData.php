@@ -11,7 +11,7 @@ namespace Cline\Forrst\Discovery;
 
 use Cline\Forrst\Exceptions\InvalidProtocolException;
 use Cline\Forrst\Exceptions\InvalidUrlException;
-use Spatie\LaravelData\Data;
+use Cline\Forrst\Data\AbstractData;
 
 use const E_USER_WARNING;
 use const FILTER_VALIDATE_URL;
@@ -36,7 +36,7 @@ use function trigger_error;
  * @see https://docs.cline.sh/forrst/system-functions
  * @see https://docs.cline.sh/specs/forrst/discovery#external-documentation-object
  */
-final class ExternalDocsData extends Data
+final readonly class ExternalDocsData extends AbstractData
 {
     /**
      * Create a new external documentation reference.

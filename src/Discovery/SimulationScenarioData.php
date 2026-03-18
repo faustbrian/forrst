@@ -13,7 +13,7 @@ use Cline\Forrst\Exceptions\EmptyArrayException;
 use Cline\Forrst\Exceptions\EmptyFieldException;
 use Cline\Forrst\Exceptions\InvalidFieldValueException;
 use Cline\Forrst\Exceptions\MissingRequiredFieldException;
-use Spatie\LaravelData\Data;
+use Cline\Forrst\Data\AbstractData;
 
 use function array_diff;
 use function array_keys;
@@ -40,7 +40,7 @@ use function preg_match;
  *
  * @see https://docs.cline.sh/specs/forrst/extensions/simulation
  */
-final class SimulationScenarioData extends Data
+final readonly class SimulationScenarioData extends AbstractData
 {
     /**
      * Create a new simulation scenario.
